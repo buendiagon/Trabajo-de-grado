@@ -14,5 +14,39 @@
         "serialización",
         "Zhen"
     ],
-    "cSpell.ignoreWords": ["letterpaper"]
+    "cSpell.ignoreWords": [
+        "letterpaper"
+    ],
+    "latex-workshop.latex.tools": [
+    {
+        "name": "latexmk",
+        "command": "latexmk",
+        "args": [
+            "--shell-escape", // added arg to default
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "-pdf",
+            "%DOC%"
+        ]
+    },
+    {
+        "name": "pdflatex",
+        "command": "pdflatex",
+        "args": [
+            "--shell-escape", // added arg to default
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-file-line-error",
+            "%DOC%"
+        ]
+    },
+    {
+        "name": "bibtex",
+        "command": "bibtex",
+        "args": [
+            "%DOCFILE%"
+        ]
+    }
+]
 }
