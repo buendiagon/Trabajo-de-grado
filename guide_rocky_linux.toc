@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Overview}{1}{section.1}%
+\contentsline {section}{\numberline {2}Installing TeX Live 2025 (Full Scheme)}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Downloading and unpacking the installer}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Running the TeX Live installer}{2}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Shell Environment Configuration}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Cleaning up install-only environment variables}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Adding TeX Live to PATH, MANPATH, and INFOPATH}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Installing and Configuring Cursor + LaTeX Workshop}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Installing the LaTeX Workshop extension}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Ensuring PATH inside Cursor}{4}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Using LaTeX Workshop with \texttt {latexmk}}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Testing with a minimal document}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Cleaning auxiliary files}{7}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Notes on Bibliography and BibTeX/Biber}{7}{section.6}%
+\contentsline {section}{\numberline {7}Summary}{8}{section.7}%

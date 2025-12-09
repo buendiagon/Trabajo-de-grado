@@ -1,0 +1,365 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Setting up \LaTeX{} Workshop on Cursor\\
+on Rocky Linux 10.1 with TeX Live 2025}
+\author{Documented Setup Guide}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Overview}
+
+This document describes the configuration used to set up a full \LaTeX{}
+environment on Rocky Linux 10.1, using:
+
+\begin{itemize}
+  \item TeX Live 2025 (scheme-full) installed under \verb|/usr/local/texlive/2025|.
+  \item Cursor (VS~Code--like editor).
+  \item The \texttt{LaTeX Workshop} extension.
+  \item \texttt{latexmk} as the main build tool.
+\end{itemize}
+
+The goal is to have:
+
+\begin{itemize}
+  \item A complete TeX Live installation to avoid missing packages.
+  \item Proper PATH configuration so both the terminal and Cursor can find TeX tools.
+  \item LaTeX Workshop configured explicitly to use \texttt{latexmk}.
+  \item A simple clean recipe using \texttt{latexmk -c}.
+\end{itemize}
+
+\section{Installing TeX Live 2025 (Full Scheme)}
+
+\subsection{Downloading and unpacking the installer}
+
+In a terminal:
+
+\begin{verbatim}
+mkdir -p ~/installers
+cd ~/installers
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xzf install-tl-unx.tar.gz
+cd install-tl-*
+\end{verbatim}
+
+\subsection{Running the TeX Live installer}
+
+Start the installer with root privileges (for system-wide installation):
+
+\begin{verbatim}
+sudo ./install-tl
+\end{verbatim}
+
+In the text-based menu:
+
+\begin{enumerate}[label=\arabic*.]
+  \item Select the installation scheme:
+  \begin{verbatim}
+<S> set installation scheme: scheme-full
+  \end{verbatim}
+  Choose the \textbf{full} scheme (everything) so that almost all
+  packages are installed.
+  \item Optionally, set letter-size paper as the default (recommended in
+  places that use US Letter):
+  \begin{verbatim}
+<O> options:
+  [X] use letter size instead of A4 by default
+  \end{verbatim}
+  \item Confirm directories (defaults are fine):
+  \begin{verbatim}
+<D> set directories:
+  TEXDIR:        /usr/local/texlive/2025
+  TEXMFLOCAL:    /usr/local/texlive/texmf-local
+  TEXMFSYSVAR:   /usr/local/texlive/2025/texmf-var
+  TEXMFSYSCONFIG:/usr/local/texlive/2025/texmf-config
+  TEXMFVAR:      ~/.texlive2025/texmf-var
+  TEXMFCONFIG:   ~/.texlive2025/texmf-config
+  TEXMFHOME:     ~/texmf
+  \end{verbatim}
+  \item When satisfied, start the installation:
+  \begin{verbatim}
+<I> start installation to hard disk
+  \end{verbatim}
+\end{enumerate}
+
+At the end of the installation, TeX Live prints a message reminding you
+to add the \verb|bin|, \verb|MANPATH|, and \verb|INFOPATH| entries to
+your environment.
+
+\section{Shell Environment Configuration}
+
+\subsection{Cleaning up install-only environment variables}
+
+If the variable \verb|TEXLIVE_INSTALL_NO_DISKCHECK| was used during the
+installation, it is safe---and recommended---to unset it afterwards,
+since it is no longer needed:
+
+\begin{verbatim}
+unset TEXLIVE_INSTALL_NO_DISKCHECK
+\end{verbatim}
+
+Remove any persistent export line for this variable that may have been
+added to \verb|~/.bashrc| or \verb|~/.profile|.
+
+\subsection{Adding TeX Live to PATH, MANPATH, and INFOPATH}
+
+Append the following lines to \verb|~/.bashrc|:
+
+\begin{verbatim}
+echo 'export PATH=/usr/local/texlive/2025/bin/x86_64-linux:$PATH' \
+  >> ~/.bashrc
+echo 'export MANPATH=/usr/local/texlive/2025/texmf-dist/doc/man:$MANPATH' \
+  >> ~/.bashrc
+echo 'export INFOPATH=/usr/local/texlive/2025/texmf-dist/doc/info:$INFOPATH' \
+  >> ~/.bashrc
+\end{verbatim}
+
+Reload the shell configuration:
+
+\begin{verbatim}
+source ~/.bashrc
+\end{verbatim}
+
+Then verify that \TeX{} tools are being found:
+
+\begin{verbatim}
+which pdflatex
+pdflatex --version
+
+which latexmk
+latexmk -v
+
+which biber
+biber --version
+\end{verbatim}
+
+The \verb|which| commands should report paths under
+\verb|/usr/local/texlive/2025/bin/x86_64-linux|.
+
+\section{Installing and Configuring Cursor + LaTeX Workshop}
+
+\subsection{Installing the LaTeX Workshop extension}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Open Cursor.
+  \item Open the Extensions view.
+  \item Search for \texttt{LaTeX Workshop} (author: James Yu).
+  \item Install the extension.
+\end{enumerate}
+
+\subsection{Ensuring PATH inside Cursor}
+
+Graphical applications sometimes do not inherit the same PATH as the
+terminal. To ensure that Cursor and the integrated terminal see TeX
+Live, we configure the PATH explicitly in the editor settings.
+
+Open the user settings JSON in Cursor:
+
+\begin{enumerate}[label=\arabic*.]
+  \item Press \texttt{Ctrl+Shift+P}.
+  \item Run \texttt{Preferences: Open User Settings (JSON)}.
+\end{enumerate}
+
+Use the following configuration (this is the final, working setup):
+
+\begin{verbatim}
+{
+  "window.commandCenter": true,
+
+  "terminal.integrated.env.linux": {
+    "PATH": "/usr/local/texlive/2025/bin/x86_64-linux:/usr/bin:/bin"
+  },
+
+  "latex-workshop.latex.path": "/usr/local/texlive/2025/bin/x86_64-linux",
+
+  // === Tools: define latexmk and clean tools ===
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "latexmk-clean",
+      "command": "latexmk",
+      "args": [
+        "-c",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ]
+    }
+  ],
+
+  // === Recipes: define latexmk recipes ===
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk",
+      "tools": ["latexmk"]
+    },
+    {
+      "name": "latexmk-clean",
+      "tools": ["latexmk-clean"]
+    }
+  ],
+
+  "latex-workshop.view.pdf.viewer": "tab"
+}
+\end{verbatim}
+
+Notes:
+
+\begin{itemize}
+  \item The key \verb|"terminal.integrated.env.linux"| ensures the
+  integrated terminal has the correct PATH to find TeX Live.
+  \item \verb|"latex-workshop.latex.path"| points LaTeX Workshop
+  directly to the TeX Live binaries.
+  \item A \texttt{latexmk} tool is defined for normal PDF builds.
+  \item A \texttt{latexmk-clean} tool is defined to clean auxiliary
+  files using \verb|latexmk -c|.
+  \item Two recipes are provided: one for building, one for cleaning.
+\end{itemize}
+
+After editing \verb|settings.json|, reload the Cursor window
+(\emph{Developer: Reload Window}) to ensure the new configuration is
+picked up.
+
+\section{Using LaTeX Workshop with \texttt{latexmk}}
+
+\subsection{Testing with a minimal document}
+
+Create a test directory and a simple document:
+
+\begin{verbatim}
+mkdir -p ~/tex-test
+cd ~/tex-test
+\end{verbatim}
+
+Create \verb|main.tex|:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+
+\title{TeX Live + LaTeX Workshop Test}
+\author{Me}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+This is a test. Here is an equation:
+\begin{equation}
+  E = mc^2
+\end{equation}
+
+A link: \url{https://example.com}
+
+\end{document}
+\end{verbatim}
+
+Then:
+
+\begin{enumerate}[label=\arabic*.]
+  \item Open the folder \verb|~/tex-test| in Cursor.
+  \item Open \verb|main.tex|.
+  \item In the LaTeX Workshop sidebar, select the \texttt{latexmk}
+  recipe.
+  \item Run ``Build LaTeX project''.
+\end{enumerate}
+
+You should see \texttt{latexmk} running in the LaTeX Workshop log, and
+the resulting PDF should open in a tab. SyncTeX (jumping between source
+and PDF) should also work.
+
+\subsection{Cleaning auxiliary files}
+
+To clean the auxiliary files produced by \texttt{latexmk}, select the
+\texttt{latexmk-clean} recipe and run it. This runs:
+
+\begin{verbatim}
+latexmk -c -outdir=%OUTDIR% %DOC%
+\end{verbatim}
+
+which removes common temporary files but leaves the PDF.
+
+\section{Notes on Bibliography and BibTeX/Biber}
+
+During setup, an error of the following form may appear in the
+\texttt{latexmk} log:
+
+\begin{verbatim}
+Running 'bibtex  "main.aux"'
+This is BibTeX, Version 0.99d (TeX Live 2025)
+I found no \citation commands---while reading file main.aux
+I found no \bibdata command---while reading file main.aux
+I found no \bibstyle command---while reading file main.aux
+(There were 3 error messages)
+\end{verbatim}
+
+This indicates that \texttt{latexmk} attempted to run BibTeX, but the
+document either:
+
+\begin{itemize}
+  \item does not contain any bibliography commands at all, or
+  \item is not yet properly configured with \verb|\bibliography{...}|
+  and \verb|\bibliographystyle{...}| (for classic BibTeX), or with
+  BibLaTeX and Biber.
+\end{itemize}
+
+For simple test documents with no citations, one can disable automatic
+calls to BibTeX by adding the option \verb|-bibtex-| in the
+\texttt{latexmk} tool definition, e.g.:
+
+\begin{verbatim}
+"args": [
+  "-synctex=1",
+  "-interaction=nonstopmode",
+  "-file-line-error",
+  "-pdf",
+  "-bibtex-",
+  "-outdir=%OUTDIR%",
+  "%DOC%"
+]
+\end{verbatim}
+
+For real projects with bibliographies, ensure that either classic BibTeX
+or BibLaTeX+Biber is configured correctly in \verb|main.tex| and that
+the corresponding \verb|.bib| files exist.
+
+\section{Summary}
+
+The working configuration consists of:
+
+\begin{itemize}
+  \item TeX Live 2025 installed with the full scheme in
+  \verb|/usr/local/texlive/2025|.
+  \item Environment variables PATH, MANPATH, and INFOPATH extended to
+  include the TeX Live directories.
+  \item Cursor configured so that its integrated terminal and LaTeX
+  Workshop extension can see the TeX Live binaries.
+  \item LaTeX Workshop explicitly configured to use \texttt{latexmk}
+  for building and \texttt{latexmk -c} for cleaning.
+\end{itemize}
+
+With these steps, a full \LaTeX{} project on Rocky Linux 10.1 can be
+edited and compiled comfortably in Cursor using LaTeX Workshop.
+
+\end{document}
