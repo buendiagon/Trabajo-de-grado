@@ -1,0 +1,336 @@
+\section{Marco Teórico}
+
+La computación cuántica representa un nuevo paradigma en el procesamiento de información,
+basado en fenómenos propios de la mecánica cuántica como la superposición, el entrelazamiento
+y la interferencia. Comprender estos conceptos es esencial para abordar los
+retos que plantea su simulación en computadoras clásicas y para justificar el
+uso de técnicas avanzadas como la compresión de datos sin pérdida. A continuación,
+se presentan los fundamentos teóricos necesarios para contextualizar el
+problema abordado en este trabajo.
+\subsection{\normalsize{Qubit y Representación del Estado Cuántico}}
+Un \textit{qubit} o \textit{bit cuántico} es la unidad básica de información en
+computación cuántica. A diferencia del bit clásico, que solo puede representar
+los valores $0$ o $1$, un qubit puede encontrarse en una superposición lineal
+de ambos estados. Matemáticamente, su estado se expresa como:
+\[
+    \ket{\psi}= \alpha_{1} \ket{0}+ \alpha_{2} \ket{1}
+\]
+donde $\alpha_{1}, \alpha_{2} \in \mathbb{C}$ y $|\alpha_{1}|^{2} + |\alpha_{2}|^{2} = 1$. Esta
+condición garantiza que la probabilidad de encontrar al qubit en el estado
+$\ket{0}$ o en el estado $\ket{1}$ sea del 100\%. Cuando se tienen $n$ qubits,
+el sistema completo se representa como un vector de $2^{n}$ amplitudes complejas
+en un espacio de Hilbert de dimensión $2^{n}$. Para $n=3$ hay $2^{3}=8$ estados computacionales.
+El estado general de 3 qubits puede escribirse como:
+\[
+    \ket{\psi}= \sum_{i=0}^{7}\alpha_{i} \ket{i}, \quad \text{con}\quad \ket{i}\in
+    \{\ket{000}, \ket{001}, \dots, \ket{111}\}
+\]
+Aquí, $\alpha_i \in \mathbb{C}$ es la amplitud asociada al estado base $\ket{i}$ y satisface la condición de normalización
+$\sum_{i=0}^{2^{n}-1} |\alpha_i|^{2} = 1$.
+Cada amplitud compleja en doble precisión ocupa 16 bytes (8 bytes para la parte real y 8 bytes para la imaginaria),
+lo que impone una gran carga de memoria cuando $n$ crece.
+\subsection{\normalsize{Superposición Cuántica}}
+La \textit{superposición} es una de las propiedades fundamentales de la mecánica
+cuántica. Consiste en la capacidad de un sistema cuántico de existir
+simultáneamente en múltiples estados posibles antes de ser observado o medido.
+En el caso de un qubit, esta propiedad se expresa formalmente como:
+\[
+    \ket{\psi}= \alpha_{1} \ket{0}+ \alpha_{2} \ket{1}, \quad \text{con }\alpha_{1}, \alpha_{2} \in
+    \mathbb{C}\text{ y }|\alpha_{1}|^{2} + |\alpha_{2}|^{2} = 1
+\]
+Aquí, $\ket{0}$ y $\ket{1}$ representan los estados clásicos posibles del
+qubit, mientras que $\alpha_{1}$ y $\alpha_{2}$ son las amplitudes de probabilidad asociadas
+a cada estado. Aunque el sistema `está' en ambos estados al mismo tiempo, una
+vez se realiza una medición, colapsa a uno solo de ellos con probabilidad $|\alpha_{1}
+|^{2}$ o $|\alpha_{2}|^{2}$, respectivamente. Desde una perspectiva geométrica, el
+estado de un qubit puede representarse como un punto en la esfera de Bloch, donde
+cada combinación válida de $\alpha_{1}$ y $\alpha_{2}$ corresponde a una ubicación en la
+superficie de la esfera. Esta representación visual resulta útil para entender
+cómo las puertas cuánticas rotan el estado en dicho espacio.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/quantum/bloch_sphere.png}
+    \caption{Representación de un estado cuántico sobre la esfera de Bloch. Los polos
+    corresponden a los estados $\ket{0}$ y $\ket{1}$,
+    y los puntos intermedios representan superposiciones.}
+    \label{fig:bloch-sphere}
+\end{figure}
+En términos computacionales, la superposición permite que un sistema de $n$
+qubits represente, de manera simultánea, todos los $2^{n}$ posibles estados
+clásicos, lo cual es el fundamento del \textit{paralelismo cuántico}. Este fenómeno,
+aunque no equivale directamente a realizar $2^{n}$ cálculos a la vez, permite evaluar
+de forma concurrente múltiples configuraciones de entrada, y es lo que hace
+potencialmente tan poderosos a los algoritmos cuánticos.
+\subsection{\normalsize{Entrelazamiento Cuántico}}
+El \textit{entrelazamiento} cuántico es un fenómeno mediante el cual dos o más
+qubits quedan conectados de tal manera que el estado de uno de ellos no puede
+describirse independientemente del estado del otro, sin importar cuán lejos se
+encuentren en el espacio. Esta correlación es más fuerte que cualquier
+correlación clásica y desafía las intuiciones tradicionales sobre causalidad y
+localidad. Formalmente, un sistema de dos qubits está entrelazado si su estado
+no puede expresarse como el producto tensorial de dos estados individuales. Por
+ejemplo, el siguiente estado de Bell:
+\[
+    \ket{\Phi^+}= \frac{1}{\sqrt{2}}(\ket{00}+ \ket{11})
+\]
+En esta expresión, el factor $1/\sqrt{2}$ garantiza la normalización del estado, ya que
+$\left|\tfrac{1}{\sqrt{2}}\right|^{2} + \left|\tfrac{1}{\sqrt{2}}\right|^{2} = 1$.
+El signo ``+'' indica una superposición lineal (suma vectorial en el espacio de Hilbert) de
+los estados base $\ket{00}$ y $\ket{11}$; no corresponde a concatenación ni a una operación lógica clásica.
+
+Este estado de Bell no puede escribirse como $\ket{\psi_1}\otimes \ket{\psi_2}$. Esto significa
+que no existe una descripción completa del sistema que consista simplemente en
+describir el estado de cada qubit por separado. Este tipo de correlación permite
+que la medición de uno de los qubits determine instantáneamente el estado del otro,
+incluso si están separados por distancias arbitrariamente grandes. Sin embargo,
+este efecto no viola la relatividad ni permite transmitir información más
+rápido que la luz, ya que el resultado de cada medición individual es aleatorio.
+El entrelazamiento es un recurso clave en muchos algoritmos cuánticos
+avanzados, en protocolos de teleportación cuántica, y en esquemas de
+criptografía cuántica como el intercambio de claves cuánticas (Quantum Key Distribution,
+QKD). Además, es una de las principales fuentes de complejidad en la simulación
+de sistemas cuánticos en hardware clásico, pues aumenta de forma significativa
+el entrecruzamiento de información entre los qubits.
+\subsection{\normalsize{Operadores Unitarios y Evolución del Estado Cuántico}}
+La evolución de un sistema cuántico aislado se describe mediante la mecánica cuántica
+a través de la ecuación de Schrödinger. Esta evolución es determinista, reversible
+y está gobernada por operadores matemáticos denominados \textit{operadores
+unitarios}. En términos generales, si el estado inicial de un sistema es
+$\ket{\psi(0)}$, su evolución en el tiempo $t$ viene dada por la aplicación de
+un operador unitario $U(t)$:
+\[
+    \ket{\psi(t)}= U(t)\ket{\psi(0)}
+\]
+Donde $U(t)$ es una matriz unitaria que cumple:
+\[
+    U^{\dagger} U = U U^{\dagger} = I
+\]
+Aquí, $U^{\dagger}$ representa el conjugado transpuesto (o adjunto) de $U$, e $I$
+es la matriz identidad. Esta condición garantiza que la norma del estado
+cuántico se conserva durante la evolución, lo que implica que la probabilidad total
+sigue siendo 1. Además, asegura la \textit{reversibilidad} de las operaciones,
+una característica fundamental de la dinámica cuántica (con excepción del proceso
+de medición).
+\subsubsection{Puertas cuánticas como operadores unitarios.}
+En computación cuántica, las operaciones que transforman los estados de los
+qubits se conocen como \textit{puertas cuánticas}. Estas puertas son
+implementaciones físicas y algorítmicas de operadores unitarios y constituyen
+los bloques fundamentales para construir circuitos cuánticos. Cada puerta cuántica
+puede representarse mediante una matriz unitaria. Por ejemplo, la puerta Hadamard
+($H$), que genera una superposición equitativa, se define como:
+\[
+    H = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 & 1  \\
+        1 & -1
+    \end{pmatrix}
+\]
+Aplicar $H$ al estado base $\ket{0}$ produce:
+\[
+    \ket{0} = \begin{bmatrix}1 \\ 0\end{bmatrix},\quad \ket{1} = \begin{bmatrix}0 \\ 1\end{bmatrix}
+\]
+\[
+    H\ket{0} = \frac{1}{\sqrt{2}}
+    \begin{pmatrix}
+        1 & 1  \\
+        1 & -1
+    \end{pmatrix}
+    \begin{bmatrix}
+        1 \\
+        0
+    \end{bmatrix}
+    = \frac{1}{\sqrt{2}}
+    \begin{bmatrix}
+        1 \\
+        1
+    \end{bmatrix}
+    = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1})
+\]
+Este resultado es una superposición con amplitudes iguales de los estados $\ket{0}$ y $\ket{1}$, un recurso clave en algoritmos como el de Grover o Deutsch-Jozsa.
+\subsubsection{Transformaciones en sistemas de múltiples qubits.}
+En sistemas con varios qubits, los operadores unitarios pueden actuar sobre
+uno o más qubits. Por ejemplo, la puerta CNOT (control-NOT) es una operación
+de dos qubits que invierte el segundo qubit (qubit objetivo) si el primero (qubit
+de control) está en el estado $\ket{1}$. Esta operación es esencial para generar
+entrelazamiento entre qubits. Para aplicar una puerta a un sistema completo de
+$n$ qubits, se utiliza el producto tensorial de matrices. Por ejemplo, para aplicar
+una puerta $G$ al tercer qubit en un sistema de 5 qubits, se construye:
+\[
+    U = I \otimes I \otimes G \otimes I \otimes I
+\]
+La dimensión total de la matriz $U$ será $2^{5} \times 2^{5} = 32 \times 32$, lo que
+ilustra el rápido crecimiento de la complejidad computacional al aumentar el
+número de qubits.
+\subsection{\normalsize{Circuitos Cuánticos: Profundidad, Reversibilidad e Interferencia}}
+La computación cuántica, en su forma más común, se modela a través del llamado
+\textit{modelo de circuitos cuánticos}. En este enfoque, un algoritmo cuántico
+se representa como una secuencia de operaciones —puertas cuánticas— aplicadas
+a un conjunto inicial de qubits. El circuito cuántico se construye de manera análoga
+a los circuitos digitales clásicos, pero con componentes que manipulan estados
+cuánticos en lugar de bits clásicos.
+\subsubsection{Estructura de un circuito cuántico.}
+Formalmente, un circuito cuántico está compuesto por tres fases:
+\begin{enumerate}
+    \item \textbf{Inicialización:} Se prepara el sistema en un estado base, usualmente
+        $\ket{0}^{\otimes n}$.
+
+    \item \textbf{Aplicación de puertas cuánticas:} Se aplica una secuencia de
+        operaciones unitarias sobre los qubits.
+
+    \item \textbf{Medición:} Se colapsa el sistema a un resultado clásico
+        mediante la observación.
+\end{enumerate}
+Cada puerta cuántica actúa sobre uno o varios qubits, y las operaciones se
+disponen en capas, donde una capa puede contener varias puertas que se aplican
+en paralelo a qubits distintos.
+\subsubsection{Profundidad de un circuito cuántico.}
+La \textit{profundidad} de un circuito se refiere al número de capas secuenciales
+de operaciones que deben ejecutarse en orden, considerando que algunas pueden
+realizarse en paralelo. Un circuito de menor profundidad implica que el algoritmo
+se ejecuta en menos pasos cuánticos, lo cual es deseable por dos razones
+principales:
+\begin{itemize}
+    \item Reduce la duración total del algoritmo, minimizando la exposición del
+        sistema a errores por decoherencia.
+
+    \item Mejora la viabilidad de implementación en dispositivos cuánticos actuales,
+        que están limitados en fidelidad y tiempo de coherencia.
+\end{itemize}
+Por ejemplo, un circuito que aplica $n$ puertas de una sola vez en paralelo
+tiene una profundidad de 1, mientras que si cada puerta debe aplicarse una tras
+otra, la profundidad será $n$. Así, la profundidad es una medida directa de la
+complejidad temporal del algoritmo.
+\subsubsection{Reversibilidad de los circuitos cuánticos.}
+Toda operación cuántica (exceptuando la medición) debe ser \textit{reversible},
+lo que significa que debe existir una operación inversa que recupere el estado
+anterior sin pérdida de información. Esto se garantiza matemáticamente porque
+las puertas cuánticas se representan mediante operadores unitarios, los cuales
+por definición son invertibles. Esta propiedad distingue a los circuitos
+cuánticos de los circuitos clásicos, donde muchas operaciones (como AND u OR) son
+irreversibles. En el mundo cuántico, la única operación no reversible es la medición,
+que colapsa el estado superpuesto a uno de sus posibles resultados y destruye
+la información contenida en las amplitudes de probabilidad. La reversibilidad también
+es esencial para ciertos algoritmos cuánticos que requieren `deshacer''
+operaciones intermedias sin borrar información, como ocurre en la técnica de \textit{descomputación}
+(uncomputation), utilizada para limpiar registros auxiliares antes de la medición.
+\subsubsection{Interferencia cuántica.}
+La \textit{interferencia} cuántica es un fenómeno exclusivo de los sistemas que
+evolucionan bajo la mecánica cuántica. En este contexto, las amplitudes de probabilidad
+asociadas a distintos caminos de evolución del sistema pueden combinarse de forma
+constructiva (reforzando la probabilidad de ciertos resultados) o destructiva (cancelando
+otros resultados). Esta propiedad es esencial para el funcionamiento de muchos
+algoritmos cuánticos. Por ejemplo, en el algoritmo de Grover para búsqueda no
+estructurada, las soluciones correctas se refuerzan mediante interferencia constructiva,
+mientras que las opciones incorrectas se atenúan mediante interferencia
+destructiva. A diferencia de la superposición, que permite explorar múltiples
+estados al mismo tiempo, la interferencia actúa como un mecanismo de filtrado que
+permite extraer los resultados deseados al final del proceso computacional. Es
+la combinación de ambas —superposición e interferencia— lo que da lugar a la
+aceleración cuántica.
+\subsection{\normalsize{Simulación tipo Schrödinger}}
+La simulación tipo Schrödinger es una de las aproximaciones más utilizadas en la
+computación cuántica para modelar la evolución de un sistema de qubits. Este
+método consiste en almacenar el vector de estado completo del sistema cuántico,
+que contiene $2^{n}$ amplitudes complejas para un sistema de $n$ qubits. En
+cada paso del circuito, se aplican directamente las puertas cuánticas como transformaciones
+matriciales sobre este vector. Este enfoque ofrece una representación exacta
+del sistema y permite la simulación precisa de cualquier circuito cuántico, independientemente
+del grado de entrelazamiento o la profundidad del circuito. Sin embargo, su principal
+limitación es el consumo de memoria, que crece exponencialmente con el número
+de qubits lo cual es impracticable para la mayoría de los sistemas.
+\subsection{\normalsize{Partición de Circuitos y Caminos de Feynman}}
+Una alternativa a la simulación tipo Schrödinger es el uso de técnicas basadas
+en \textit{partición de circuitos} y \textit{caminos de Feynman}. Estos
+métodos dividen el circuito cuántico en subcircuitos más pequeños o regiones
+menos entrelazadas, reduciendo así los requerimientos de memoria al costo de mayor
+tiempo de cómputo. La técnica de caminos de Feynman interpreta la evolución
+del sistema como una suma sobre todos los caminos computacionales posibles que
+conectan los estados iniciales y finales. Esta formulación, si bien elegante y
+más eficiente en términos de espacio, conlleva un crecimiento exponencial del número
+de caminos a evaluar, especialmente cuando la profundidad del circuito es alta.
+Estos enfoques han sido utilizados exitosamente para simular circuitos de hasta
+54 qubits, principalmente adoptando soluciones híbridas con las simulaciones
+de Schrödinger, obteniendo de esta manera una reducción significativa en el uso
+de la memoria, sin sacrificar rendimiento
+\cite{arute2019quantum, Boixo2017, Markov2018, Pednault2017}.
+\subsection{\normalsize{Diagramas de Decisión Cuánticos}}
+Los \textit{diagramas de decisión cuánticos} son estructuras de datos
+jerárquicas inspiradas en los diagramas de decisión binarios (BDDs) utilizados
+en verificación formal y diseño lógico. Estas estructuras permiten representar
+de forma comprimida vectores de estado y matrices unitarias aprovechando redundancias
+y patrones repetitivos.
+\begin{itemize}
+    \item \textbf{QuIDD (Quantum Information Decision Diagrams)} codifican
+        vectores y operadores mediante nodos reutilizables, lo que permite representar
+        estructuras altamente simétricas de manera eficiente.
+
+    \item \textbf{QMDD (Quantum Multiple-valued Decision Diagrams)} extienden
+        los QuIDD utilizando aristas ponderadas con matrices, lo que los hace más aptos
+        para representar operadores complejos y circuitos reversibles.
+
+    \item \textbf{LIMDD (Local Invertible Map Decision Diagrams)} introducen
+        transformaciones locales invertibles como aristas, lo cual permite representar
+        incluso estados estabilizadores y circuitos con entrelazamiento moderado de
+        manera eficiente.
+\end{itemize}
+Estas estructuras son altamente efectivas cuando el circuito presenta
+redundancia estructural, permitiendo pasar de una representación exponencial a
+una polinomial. Sin embargo, pierden eficacia en circuitos con alta interferencia
+o sin regularidad estructural, como ocurre en simulaciones aleatorias o
+algoritmos de propósito general.
+\subsection{\normalsize{Fidelidad entre Estados Cuánticos}}
+Una métrica fundamental para evaluar la similitud entre dos estados cuánticos es
+la \textit{fidelidad}. Generalmente, se emplea para cuantificar la diferencia
+entre dos estados cuánticos. Dado dos estados puros $\ket{\psi_r}$ (referencia)
+y $\ket{\psi_c}$ (estado simulado), la fidelidad entre ellos se define como:
+\[
+    F\!\left(\ket{\psi_r},\,\ket{\psi_c}\right)=\abs{\braket{\psi_r}{\psi_c}}^{2}.
+\]
+Esta expresión mide el cuadrado del valor absoluto del producto interno entre ambos
+vectores. La fidelidad toma valores entre 0 y 1, donde:
+\begin{itemize}
+    \item $F = 1$ indica que los estados son idénticos.
+
+    \item $F = 0$ indica que son ortogonales (completamente diferentes).
+
+    \item Valores intermedios indican distintos grados de similitud.
+\end{itemize}
+Por ejemplo, si:
+\[
+    \ket{\psi_r}= \frac{1}{\sqrt{2}}
+    \begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+        1
+    \end{bmatrix}, \quad \ket{\psi_c}= \frac{1}{\sqrt{2}}
+    \begin{bmatrix}
+        0.99 \\
+        0    \\
+        0    \\
+        1.01
+    \end{bmatrix}
+\]
+entonces, normalizando y aplicando la fórmula, se obtiene una fidelidad
+cercana a 1, lo que indica que el estado simulado es prácticamente indistinguible
+del original, a pesar de las pequeñas diferencias numéricas. Esta métrica es especialmente
+útil para evaluar estrategias de compresión: una fidelidad igual a 1 garantiza
+que el proceso de compresión y descompresión no ha alterado el estado cuántico
+original.
+\subsection{\normalsize{Bibliotecas de Compresión con Pérdida: SZ y ZFP}}
+Las bibliotecas \textbf{SZ} y \textbf{ZFP} son herramientas de compresión científica
+ampliamente utilizadas para reducir el tamaño de datos en punto flotante sin necesidad
+de conservar todos los dígitos exactos.
+\begin{itemize}
+    \item \textbf{SZ} aplica una estrategia de predicción adaptativa con control
+        de error. Estima el valor de cada dato basado en sus vecinos, almacena
+        solo la diferencia si esta cae dentro de un margen de error aceptable, y utiliza
+        codificación entropíca para comprimir los residuos. Es muy eficiente
+        cuando los datos presentan correlaciones locales.
+
+    \item \textbf{ZFP} divide los datos en bloques pequeños y los transforma a
+        un dominio más compresible mediante una técnica similar a la transformada
+        discreta del coseno. Posteriormente, se aplican técnicas de truncamiento y
+        codificación por bloques. ZFP permite controlar la compresión por tasa fija,
+        error absoluto o fidelidad relativa.
+\end{itemize}

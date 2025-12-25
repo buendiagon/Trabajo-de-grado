@@ -1,52 +1,21 @@
 {
-    "cSpell.enableFiletypes": ["markdown", "latex"],
+    "ltex.enabled": false,
+    "terminal.integrated.env.linux": {
+        "GTK_PATH": ""
+    },
+    "cSpell.language": "en,es",
     "cSpell.enabled": true,
     "cSpell.words": [
-        "Aiello",
-        "autoconfiguración",
-        "autogobernarse",
-        "Ferreira",
-        "Iancu",
-        "insustentable",
-        "manejador",
-        "MAPE",
-        "reconfigurarse",
-        "serialización",
-        "Zhen"
-    ],
-    "cSpell.ignoreWords": [
-        "letterpaper"
-    ],
-    "latex-workshop.latex.tools": [
-    {
-        "name": "latexmk",
-        "command": "latexmk",
-        "args": [
-            "--shell-escape", // added arg to default
-            "-synctex=1",
-            "-interaction=nonstopmode",
-            "-file-line-error",
-            "-pdf",
-            "%DOC%"
-        ]
-    },
-    {
-        "name": "pdflatex",
-        "command": "pdflatex",
-        "args": [
-            "--shell-escape", // added arg to default
-            "-synctex=1",
-            "-interaction=nonstopmode",
-            "-file-line-error",
-            "%DOC%"
-        ]
-    },
-    {
-        "name": "bibtex",
-        "command": "bibtex",
-        "args": [
-            "%DOCFILE%"
-        ]
-    }
-]
+        "AADL",
+        "agregador",
+        "agregadores",
+        "AMQP",
+        "deserialización",
+        "deserializarlos",
+        "editables",
+        "metamodelo",
+        "MQTT",
+        "reimplementación",
+        "serializado"
+    ]
 }

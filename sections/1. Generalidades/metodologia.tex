@@ -1,0 +1,76 @@
+\section{Metodología de la Investigación}
+
+Para este estudio, se ha seleccionado una metodología basada en investigación
+aplicada y evaluación experimental debido a la necesidad de diseñar, implementar
+y validar una estrategia de compresión sin pérdida de precisión en simuladores
+cuánticos. Dado que el problema a abordar implica la optimización del uso de
+memoria en simulaciones de alto consumo computacional, es fundamental seguir un
+enfoque sistemático que permita comparar la efectividad de la propuesta con otras
+estrategias existentes. Además, la metodología elegida permite realizar pruebas
+controladas sobre diferentes simuladores cuánticos y evaluar el impacto de la compresión
+en términos de memoria, rendimiento y fidelidad, garantizando así la reproducibilidad
+y validez de los resultados obtenidos.
+
+\begin{figure}[H]
+    \centering
+    \caption{\\Metodología de investigación}
+    \includegraphics[width=0.7\linewidth]{images/Metodologia.pdf}
+    \label{fig:met}
+\end{figure}
+
+
+
+\subsection{\normalsize Diseño}
+Comprende el estudio del estado del arte, la definición de requisitos y supuestos, la selección del simulador, y la planificación experimental y de integración técnica.
+
+\begin{itemize}
+  \item \textbf{Revisión de literatura y estado del arte.} Levantamiento sistemático de técnicas de compresión sin pérdida de precisión para arreglos de punto flotante y su aplicabilidad en simulación cuántica de \emph{véctores de estado}. Se identifican ventajas, limitaciones y brechas; se sintetizan los fundamentos teóricos y se establecen hipótesis de trabajo.
+  \item \textbf{Criterios y procedimiento de selección del simulador cuántico.} Evaluación de alternativas (p.\,ej., QuEST, Intel-QS, qsim, Quantum++, TMFQS) con base en: (i) \emph{apertura y modificabilidad} del código, (ii) \emph{facilidad de integración} de estructuras/arrays personalizados para el vector de estado, (iii) \emph{soporte a optimizaciones de memoria} y paralelismo (OpenMP/MPI/GPU), y (iv) \emph{capacidad de instrumentación} (medición de memoria y tiempo). Se aplica una matriz de decisión ponderada y se documenta la trazabilidad de la elección.
+  \item \textbf{Arquitectura de la solución y diseño de la estrategia de compresión.} Especificación de las estructuras de datos y puntos de inserción en el simulador (capa de almacenamiento del vector de amplitudes y rutas críticas de acceso). Selección del/los algoritmo(s) de compresión sin pérdida de precisión o equivalentes numéricos que no alteren la fidelidad numérica de los estados cuánticos (p.\,ej., representaciones compactas o transformaciones reversibles), así como políticas de (des)compresión y su impacto esperado en memoria, tiempo y paralelismo.
+\end{itemize}
+
+\subsection{\normalsize Implementación y optimización del modelo}
+La estrategia de compresión seleccionada se implementará en el simulador cuántico
+elegido, modificando su sistema de almacenamiento y gestión de memoria. Se realizarán
+optimizaciones para garantizar un desempeño eficiente, evitando costos
+computacionales excesivos debido a la aplicación de la compresión. Durante esta etapa, se llevarán
+a cabo las siguientes actividades:
+\begin{itemize}
+    \item Modificación del código fuente del simulador para integrar la compresión
+        sin pérdida.
+
+    \item Optimización del sistema de almacenamiento para reducir el uso de memoria
+        sin afectar el rendimiento.
+
+    \item Validación inicial de la implementación mediante pruebas con circuitos
+        de prueba.
+\end{itemize}
+\subsection{\normalsize Evaluación experimental}
+Se diseñará un conjunto de experimentos para evaluar el impacto de la
+estrategia de compresión en diferentes circuitos cuánticos. Los experimentos permitirán
+determinar si se logra un balance adecuado entre eficiencia computacional y fidelidad.
+En esta fase se realizarán las siguientes actividades:
+\begin{itemize}
+    \item Definición de un conjunto de circuitos de prueba para evaluar la estrategia
+        de compresión:
+        \begin{itemize}
+            \item Transformada de Fourier Cuántica (QFT)
+
+            \item Algoritmo de búsqueda de Grover
+        \end{itemize}
+
+    \item Ejecución de simulaciones con y sin compresión para medir su impacto en
+        el rendimiento y el uso de memoria:
+        \begin{itemize}
+            \item Tiempo de ejecución total (segundos)
+
+            \item Uso máximo de memoria (MB)
+
+            \item Fidelidad del estado final:
+                \[
+        F\!\left(\ket{\psi_r},\,\ket{\psi_c}\right)=\abs{\braket{\psi_r}{\psi_c}}^{2}.
+      \]
+        \end{itemize}
+
+    \item Análisis de los resultados obtenidos y comparación con enfoques tradicionales.
+\end{itemize}
