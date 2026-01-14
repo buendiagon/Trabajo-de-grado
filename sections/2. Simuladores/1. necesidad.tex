@@ -1,0 +1,13 @@
+\subsection{Motivación y necesidad de un simulador base}
+
+El núcleo experimental de este trabajo consiste en diseñar e integrar técnicas de compresión \emph{sin pérdida de precisión} sobre la estructura de datos más costosa en simulación cuántica tipo Schrödinger: el vector de estado (amplitudes complejas). Por lo tanto, el simulador seleccionado no es un detalle de implementación, sino una decisión metodológica que condiciona:
+
+\begin{itemize}
+    \item la \textbf{viabilidad técnica} de insertar estructuras de almacenamiento comprimidas sin alterar la fidelidad numérica;
+    \item el \textbf{costo de ingeniería} requerido para instrumentar mediciones reproducibles de memoria y tiempo;
+    \item y la \textbf{capacidad de aislar variables} (compresión vs.\ paralelismo vs.\ optimizaciones internas) durante la evaluación experimental.
+\end{itemize}
+
+De hecho, dentro de la fase \textit{Diseño} planteada en la metodología, se establece explícitamente que la selección debe basarse en: (i) apertura y modificabilidad del código, (ii) facilidad de integrar arreglos/estructuras personalizadas para el vector de estado, (iii) soporte a optimizaciones de memoria y paralelismo, y (iv) capacidad de instrumentación (medición de memoria y tiempo). \cite{metodologia_diseno_pdf}
+
+Bajo ese marco, se estudian cinco alternativas representativas por uso y disponibilidad en la comunidad: QuEST, Intel-QS, qsim, Quantum++ y TMFQSfullstate. Para asegurar trazabilidad, la decisión se formaliza con criterios y una matriz de decisión ponderada, de modo que la elección final sea justificable y reproducible.

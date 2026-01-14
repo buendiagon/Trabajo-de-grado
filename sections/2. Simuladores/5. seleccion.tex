@@ -1,0 +1,17 @@
+\subsection{Selección del simulador: TMFQSfullstate}
+
+Partiendo de la matriz de la tabla \ref{tab:evaluacion_sim}, se selecciona \textbf{TMFQSfullstate} como simulador base para esta tesis.
+
+La decisión se justifica por cuatro razones principales:
+
+\begin{itemize}
+    \item \textbf{Diseño orientado a experimentación de memoria (C3):} TMFQSfullstate se presenta como un prototipo cuyo foco explícito es evaluar consumo de memoria bajo distintas estrategias (full-state, OpenMP, MPI y escenarios con compresión), lo cual se alinea directamente con el objetivo de insertar compresión sin pérdida sobre el vector de estado. \cite{diaz_preprint_buildsim, diaz_mdpi_mmss}
+
+    \item \textbf{Alta modificabilidad del núcleo (C2) e instrumentación (C5):} al ser un prototipo compacto y de propósito investigativo, reduce el esfuerzo necesario para ubicar puntos de inserción (capa de almacenamiento del vector de amplitudes y rutas críticas) y para instrumentar mediciones finas de tiempo/memoria, tal como se exige en la fase de diseño metodológico. \cite{metodologia_diseno_pdf}
+
+    \item \textbf{Compatibilidad con arreglos de doble precisión (C1):} el material metodológico asociado al prototipo describe implementaciones basadas en arreglos en doble precisión para compuertas y estructuras numéricas, lo que facilita plantear compresión sin pérdida sobre datos de punto flotante sin introducir conversiones o cuantizaciones. \cite{diaz_preprint_buildsim, diaz_mdpi_mmss}
+
+    \item \textbf{Escenarios comparables de paralelismo (C7):} la disponibilidad de variantes con OpenMP/MPI permite evaluar la interacción entre compresión y paralelismo, y contrastar contra simuladores HPC sin que el paralelismo sea un factor ausente en el entorno experimental. \cite{diaz_preprint_buildsim}
+\end{itemize}
+
+En consecuencia, TMFQSfullstate ofrece el mejor balance entre \textit{control experimental} y \textit{esfuerzo de integración}, minimizando riesgo técnico para implementar y evaluar compresión sin pérdida en el vector de estado, manteniendo al mismo tiempo una base suficientemente realista para comparar memoria y rendimiento.

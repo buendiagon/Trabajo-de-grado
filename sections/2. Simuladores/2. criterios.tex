@@ -1,0 +1,47 @@
+\subsection{Criterios de selección}
+
+Con el fin de elegir un simulador adecuado para integrar y evaluar compresión \emph{sin pérdida de precisión} sobre el vector de estado, se definieron los criterios de la tabla \ref{tab:criterios_sim}. Estos criterios operacionalizan los lineamientos metodológicos del diseño (modificabilidad, integración de estructuras, optimización/paralelismo e instrumentación) \cite{metodologia_diseno_pdf}, y además incorporan requisitos prácticos de ingeniería para reducir riesgo técnico durante la implementación.
+
+\begin{table}[H]
+    \centering
+    \vspace{-2mm}
+    \caption{\\Criterios usados para la selección del simulador cuántico} \label{tab:criterios_sim}
+    \begin{tabular}{lm{4.2cm}m{0.58\linewidth}c}
+        \hline
+        \multicolumn{1}{l}{} &
+        \multicolumn{1}{c}{\textbf{Criterio}} &
+        \multicolumn{1}{c}{\textbf{Explicación}} &
+        \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
+
+        C1 & \centering Vector de estado apto para compresión sin pérdida &
+        El simulador debe representar el vector de estado como arreglos contiguos de valores de punto flotante en \textbf{doble precisión} (amplitudes complejas), de manera que la compresión sin pérdida se pueda aplicar directamente sobre dicha estructura sin cambios semánticos. &
+        0.10 \\
+
+        C2 & \centering Facilidad de integración de estructuras/arrays personalizados &
+        El código debe permitir reemplazar o envolver el almacenamiento del vector de amplitudes (p.\ ej.\ insertar un contenedor comprimido) con impacto controlado en el resto del simulador. Este criterio prioriza código modular y rutas críticas identificables. &
+        0.25 \\
+
+        C3 & \centering Soporte y afinidad con optimización de memoria &
+        Se valora que el simulador esté concebido para experimentar con estrategias de memoria (p.\ ej.\ compresión, poda/pruning, particionamiento o variantes del almacenamiento), reduciendo esfuerzo para insertar y validar la estrategia propuesta. &
+        0.20 \\
+
+        C4 & \centering Complejidad de construcción y dependencias &
+        Un proceso de compilación simple y pocas dependencias facilitan reproducibilidad y portabilidad de experimentos. Se penalizan toolchains complejas cuando incrementan el esfuerzo de integración e instrumentación. &
+        0.10 \\
+
+        C5 & \centering Capacidad de instrumentación (tiempo/memoria) &
+        El simulador debe permitir medir de forma fina (por secciones) el consumo de memoria y el tiempo de ejecución, idealmente en puntos cercanos al acceso al vector de estado. &
+        0.15 \\
+
+        C6 & \centering Cobertura funcional mínima para benchmarks &
+        Debe ser posible ejecutar circuitos estándar de evaluación (p.\ ej.\ QFT y/o Grover) con un conjunto mínimo de compuertas, para poder comparar desempeño con y sin compresión. &
+        0.10 \\
+
+        C7 & \centering Paralelismo relevante (CPU / OpenMP / MPI) &
+        Se considera valioso poder evaluar la interacción compresión--paralelismo. Se prioriza soporte a OpenMP/MPI cuando el objetivo incluye escalamiento o comparación bajo concurrencia. &
+        0.10 \\ \hline
+    \end{tabular}
+    \vspace{-3mm}
+\end{table}
+
+Los pesos fueron definidos para privilegiar la \textbf{integración del almacenamiento del vector de estado} (C2) y la \textbf{afinidad con experimentación en memoria} (C3), dado que son los factores que más reducen el riesgo técnico de insertar compresión sin pérdida sin distorsionar el comportamiento del simulador.
