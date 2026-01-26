@@ -1,0 +1,6 @@
+\subsection{Circuitos variacionales y circuitos aleatorios: entre regularidad y alta entropía}
+\label{subsec:patrones_variacionales_aleatorios}
+
+En aplicaciones NISQ, algunos circuitos variacionales producen distribuciones de amplitud sesgadas por la estructura del problema, lo cual puede inducir regularidades (por ejemplo, subconjuntos dominantes o restricciones que eliminan estados). Esto puede mejorar la compresibilidad frente a escenarios plenamente aleatorios.
+
+Por el contrario, circuitos aleatorios profundos tienden a generar estados altamente entrelazados y con amplitudes densas, donde la diversidad de valores reduce la redundancia. En simulación con compresión, este fenómeno se manifiesta como una caída del ratio a medida que el circuito genera más amplitudes no nulas y variadas, tal como se evidencia en evaluaciones de compresión sobre circuitos que densifican el vector de estado (por ejemplo, QFT) \cite{wu2018_sc18_aalc}.

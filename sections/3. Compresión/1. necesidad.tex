@@ -1,0 +1,12 @@
+\subsection{Motivación y contexto de evaluación}
+
+En este proyecto, la compresión \emph{sin pérdida de precisión} se plantea como un mecanismo para reducir
+la huella de memoria asociada a los datos numéricos del simulador, de modo que sea posible ampliar la escala
+de simulación y estudiar el costo-beneficio en términos de memoria, tiempo de ejecución y estabilidad numérica.
+La literatura ha mostrado que la compresión puede contribuir de forma significativa a disminuir requerimientos
+de memoria en simulación cuántica a gran escala, habilitando experimentos que de otra manera serían inviables
+(Wu y cols., 2019b; Department of Computer Science, University of Chicago, 2020).
+
+Bajo esta motivación, la selección del algoritmo de compresión se aborda como una decisión de diseño:
+se requiere un compresor que logre un buen balance entre ratio de compresión, velocidad, y costo adicional
+en recursos, de manera que su incorporación permita evaluar la propuesta de esta tesis en escenarios realistas.

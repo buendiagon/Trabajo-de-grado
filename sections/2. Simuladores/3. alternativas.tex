@@ -3,15 +3,15 @@
 A continuación, se resumen las herramientas evaluadas, enfatizando sus objetivos y características relevantes para esta tesis.
 
 \begin{itemize}
-    \item \textbf{QuEST (Quantum Exact Simulation Toolkit):} Es un simulador de alto rendimiento para vectores de estado y matrices densidad, con soporte híbrido de paralelismo que puede incluir multihilo, GPU y ejecución distribuida. Se caracteriza por estar orientado a rendimiento en múltiples arquitecturas de cómputo. \cite{quest_doc, quest_repo}
+    \item \textbf{QuEST (Quantum Exact Simulation Toolkit):} Es un simulador de alto rendimiento para vectores de estado y matrices de densidad, con soporte híbrido de paralelismo que puede incluir multihilo, GPU y ejecución distribuida. Se caracteriza por estar orientado a rendimiento en múltiples arquitecturas de cómputo. \cite{quest_doc, quest_repo}
 
-    \item \textbf{Intel-QS (Intel Quantum Simulator / qHiPSTER):} Simulador de circuitos optimizado para aprovechar arquitecturas multinúcleo y multinodo; usa representación completa del estado, y está diseñado para escalar mediante paralelismo y distribución. \cite{intelqs_doc}
+    \item \textbf{Intel-QS (Intel Quantum Simulator):} Simulador de circuitos optimizado para aprovechar arquitecturas multinúcleo y multinodo; usa representación completa del estado, y está diseñado para escalar mediante paralelismo y distribución. \cite{intelqs_doc}
 
-    \item \textbf{qsim (Google / Quantum AI):} Librería de C++/Python para simulación \emph{full state-vector}, ampliamente usada en integración con Cirq. En su documentación se describe explícitamente como simulador de vector de estado completo, donde el costo crece proporcionalmente al número de amplitudes $2^n$. \cite{qsim_repo, qsim_cirq}
+    \item \textbf{qsim (Google):} Librería de C++/Python para simulación \emph{full state-vector}, ampliamente usada en integración con Cirq. En su documentación se describe explícitamente como simulador de vector de estado completo, donde el costo crece proporcionalmente al número de amplitudes $2^n$. \cite{qsim_repo, qsim_cirq}
 
     \item \textbf{Quantum++:} Librería moderna en C++ (enfocada en facilidad de uso y portabilidad) para simulación de procesos cuánticos; se distribuye como librería \emph{header-only} y ofrece ejecución multihilo, siendo útil para prototipado. \cite{qpp_paper}
 
-    \item \textbf{TMFQSfullstate (Díaz Toro):} Prototipo de simulador implementado en C++ con enfoque explícito en estudiar estrategias de consumo de memoria (representación full-state, poda de estados, paralelismo compartido y distribuido, y compresión). En particular, el trabajo metodológico que acompaña este simulador reporta escenarios con OpenMP, MPI y la incorporación de compresión para evaluar huella de memoria. \cite{diaz_preprint_buildsim, diaz_mdpi_mmss, tmfqs_repo}
+    \item \textbf{TMFQSfullstate:} Prototipo de simulador implementado en C++ con enfoque explícito en estudiar estrategias de consumo de memoria (representación full-state, poda de estados, paralelismo compartido y distribuido, y compresión). En particular, el trabajo metodológico que acompaña este simulador reporta escenarios con OpenMP, MPI y la incorporación de compresión para evaluar huella de memoria. \cite{diaz_preprint_buildsim, diaz_mdpi_mmss, tmfqs_repo}
 \end{itemize}
 
 En conjunto, las alternativas cubren desde herramientas HPC maduras (QuEST, Intel-QS, qsim) hasta librerías generales (Quantum++) y un prototipo deliberadamente diseñado para experimentar con estrategias de memoria (TMFQSfullstate).

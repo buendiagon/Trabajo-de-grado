@@ -1,0 +1,6 @@
+\subsection{Algoritmo de Shor: periodicidad, dispersión y picos}
+\label{subsec:patrones_shor}
+
+Shor combina (i) una etapa de exponenciación modular que induce periodicidad y (ii) una QFT que transforma esa periodicidad en una distribución con picos relacionados con el período. En términos cualitativos, antes de aplicar QFT suelen aparecer patrones donde solo ciertos índices compatibles con una estructura periódica presentan amplitud significativa; dependiendo de la instancia, esto puede producir regiones con ceros exactos o repeticiones regulares que favorecen la compresión.
+
+Tras QFT, la distribución tiende a concentrarse alrededor de múltiplos específicos asociados a la frecuencia/período, generando picos dominantes y muchos valores de magnitud pequeña. En compresión estrictamente sin pérdida, la ganancia depende de si existen ceros exactos o repeticiones; cuando predominan muchos valores pequeños pero distintos, la redundancia disminuye. Estos escenarios se alinean con el fenómeno observado en circuitos que incrementan progresivamente la densidad del estado: conforme aparecen más amplitudes no nulas y variadas, el ratio de compresión disminuye \cite{wu2018_sc18_aalc}.

@@ -1,0 +1,28 @@
+\subsection{Alternativas de compresión sin pérdida consideradas}
+
+Se consideran compresores sin pérdida con disponibilidad en C/C++ y orientación a alto rendimiento, debido
+a su idoneidad para escenarios donde la compresión y descompresión pueden ejecutarse de manera recurrente.
+
+\begin{itemize}
+    \item \textbf{LZ4:} Compresor enfocado en velocidad. El proyecto reporta compresión superior a 500 MB/s por núcleo
+    y descompresión en múltiples GB/s por núcleo (frecuentemente limitada por la velocidad de la RAM) (lz4 contributors, s.f.).
+    Su ratio suele ser moderado, a cambio de overhead reducido y una API simple, lo que facilita integración y paralelización
+    por bloques (lz4 contributors, s.f.).
+
+    \item \textbf{Zstandard (Zstd):} Compresor moderno que busca balancear velocidad con ratios elevados. Su objetivo explícito
+    es ofrecer compresión comparable a zlib con mayor rendimiento, además de un rango amplio de niveles para ajustar el compromiso
+    velocidad/ratio (facebook/zstd contributors, s.f.; Zstandard project, s.f.). Un rasgo relevante es el soporte nativo para
+    compresión multihilo en la librería (facebook/zstd contributors, s.f.).
+
+    \item \textbf{Snappy:} Biblioteca de compresión orientada a baja latencia. Se reportan velocidades típicas de
+    $\sim$250 MB/s en compresión y $\sim$500 MB/s en descompresión en un solo núcleo (dependiente del hardware)
+    (google/snappy contributors, s.f.; Snappy project, s.f.). Su ratio suele ser inferior a gzip/zlib, dado que privilegia
+    throughput evitando etapas de entropía más costosas (Snappy project, s.f.).
+
+    \item \textbf{zlib/Deflate (Gzip):} Solución estándar ampliamente disponible. Presenta ratios típicos que con frecuencia se sitúan
+    entre 2:1 y 5:1 dependiendo del dato y del nivel de compresión (zlib authors, 2022). Sin embargo, su rendimiento suele ser menor
+    que alternativas modernas orientadas a tiempo real (zlib authors, 2022).
+\end{itemize}
+
+Existen alternativas con ratios potencialmente superiores (p.\ ej.\ LZMA/XZ o Bzip2), pero con mayor costo de CPU y latencia, por lo que
+son menos atractivas cuando el rendimiento es un requisito relevante en la ejecución del simulador (MaskRay, 2025).

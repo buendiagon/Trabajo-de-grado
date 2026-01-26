@@ -1,0 +1,39 @@
+\subsection{Matriz de evaluación ponderada}
+
+La selección se formaliza mediante una matriz ponderada basada en los criterios de la Tabla \ref{tab:criterios_compresion}.
+Se utiliza una escala discreta de 1 a 5, donde 5 representa el mejor desempeño relativo frente al criterio evaluado.
+Los puntajes se asignan con base en la documentación citada y la comparación cualitativa reportada en dichas fuentes.
+
+\begin{table}[H]
+    \centering
+    \caption{\\Evaluación de alternativas de compresión (escala 1--5) y total ponderado}
+    \label{tab:evaluacion_compresores}
+    \begin{tabular}{lcccccc}
+        \hline
+        \multicolumn{1}{l}{\textbf{Criterio}} &
+        \multicolumn{1}{c}{\textbf{Peso}} &
+        \multicolumn{1}{c}{\textbf{Zstd}} &
+        \multicolumn{1}{c}{\textbf{LZ4}} &
+        \multicolumn{1}{c}{\textbf{Snappy}} &
+        \multicolumn{1}{c}{\textbf{zlib}} \\
+        \hline
+        C1 (Ratio)                & 0.40 & 4 & 3 & 2 & 5 \\
+        C2 (Velocidad)            & 0.20 & 4 & 5 & 4 & 2 \\
+        C3 (Overhead memoria)     & 0.15 & 3 & 5 & 5 & 4 \\
+        C4 (Paralelismo)          & 0.15 & 5 & 4 & 4 & 3 \\
+        C5 (Integración C/C++)    & 0.10 & 5 & 5 & 4 & 5 \\
+        \hline
+        \textbf{Total}            & 1.00 &
+        \textbf{4.10} & \textbf{4.05} & \textbf{3.35} & \textbf{3.95} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+La tabla refleja el compromiso clásico entre ratio y velocidad: zlib tiende a maximizar la compresión, pero penaliza en throughput
+(zlib authors, 2022). LZ4 y Snappy destacan por velocidad y bajo overhead, usualmente con ratios inferiores a zlib y Zstd
+(lz4 contributors, s.f.; google/snappy contributors, s.f.; Snappy project, s.f.). Zstd se ubica como una alternativa de equilibrio,
+combinando ratios altos con rendimiento competitivo y soporte multihilo (facebook/zstd contributors, s.f.; Zstandard project, s.f.).
+
+Como referencia complementaria, una comparación práctica de ratios en datos generales reporta el orden
+zlib $>$ Zstandard $>$ LZ4 $>$ Snappy (StarRocks Documentation, s.f.), y benchmarks recientes ilustran el espectro de compromisos
+entre ratio, velocidad y memoria (MaskRay, 2025).
