@@ -1,12 +1,18 @@
 \subsection{Criterios de selección}
 
-Para integrar compresión de datos en TMFQSfullstate (simulador de estado completo de circuitos
-cuánticos), se definen los siguientes criterios técnicos, ordenados por prioridad:
+La selección de bibliotecas de compresión sin pérdida se realizó mediante los criterios de la
+Tabla \ref{tab:criterios_compresion}. Estos criterios recogen propiedades relevantes para la
+compresión de vectores de estado representados como arreglos numéricos de gran tamaño.
+
+Como condiciones mínimas de inclusión se consideraron la operación sin pérdida, la
+disponibilidad de interfaces utilizables desde C/C++, un licenciamiento compatible con el uso
+académico y la posibilidad de comprimir datos residentes en memoria. Las bibliotecas
+comparadas satisfacen estas condiciones.
 
 \begin{table}[H]
     \centering
     \vspace{-2mm}
-    \caption{\\Criterios para la selección de compresores sin pérdida en TMFQSfullstate}
+    \caption{\\Criterios para la selección de bibliotecas de compresión sin pérdida}
     \label{tab:criterios_compresion}
     \begin{tabular}{lm{4.1cm}m{0.62\linewidth}c}
         \hline
@@ -15,47 +21,42 @@ cuánticos), se definen los siguientes criterios técnicos, ordenados por priori
         \multicolumn{1}{c}{\textbf{Explicación}} &
         \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
 
-        C1 & \centering Ratio de compresión &
-        Un mayor factor de compresión permite representar el vector de estado con menor memoria,
-        habilitando la simulación de más qubits con los mismos recursos. En simulación de estado
-        completo, la memoria suele ser el cuello de botella principal, por lo que maximizar la
-        reducción de memoria sin pérdida es el objetivo dominante; este énfasis es consistente con
-        la motivación de compresión en simulación cuántica a gran escala reportada por Wu y cols.
-        (2019b). &
-        0.40 \\
+        C1 & \centering Efectividad de compresión sobre arreglos numéricos &
+        Se evalúa la capacidad de la biblioteca para reducir el tamaño de arreglos homogéneos de punto flotante,
+        condición central en un simulador basado en vectores de estado. &
+        0.25 \\
 
-        C2 & \centering Velocidad de compresión y descompresión &
-        La simulación puede requerir ciclos frecuentes de compresión/descompresión, por lo que el
-        algoritmo debe minimizar latencia y maximizar throughput. Se priorizan compresores con
-        throughput de centenas de MB/s (o más) y con descompresión aún más rápida para no retrasar
-        la recuperación de datos (lz4 contributors, s.f.; facebook/zstd contributors, s.f.; Snappy
-        project, s.f.; MaskRay, 2025). &
+        C2 & \centering Velocidad de descompresión &
+        La recuperación rápida de datos es importante cuando los valores comprimidos deben reutilizarse durante la
+        simulación. Este criterio mide qué tan favorable es la biblioteca para escenarios sensibles a la latencia
+        de lectura. &
         0.20 \\
 
-        C3 & \centering Bajo overhead de memoria &
-        Dado el crecimiento exponencial del estado, el compresor no debe demandar estructuras
-        internas (buffers/diccionarios/tablas) que incrementen sustancialmente el uso total de RAM.
-        Se favorecen métodos que operen en streaming o por bloques pequeños (lz4 contributors, s.f.;
-        Zstandard project, s.f.). &
+        C3 & \centering Velocidad de compresión &
+        Considera el costo temporal de comprimir los datos, ya que una estrategia útil para el ahorro de memoria no
+        debe introducir una penalización excesiva en el tiempo total de simulación. &
         0.15 \\
 
-        C4 & \centering Compatibilidad con procesamiento paralelo &
-        En escenarios multi-core o distribuidos (p. ej., MPI en HPC), interesa que el compresor
-        soporte multihilo de forma nativa o, como mínimo, que sea fácilmente paralelizable por
-        bloques sin degradaciones significativas de ratio o throughput (facebook/zstd contributors, s.f.). &
+        C4 & \centering Facilidad de integración e instrumentación en C/C++ &
+        La biblioteca debe ofrecer una API estable, reutilizable desde el simulador y con suficiente control sobre
+        parámetros operativos, buffers auxiliares y niveles de configuración, reduciendo el riesgo de integración. &
         0.15 \\
 
-        C5 & \centering Integración en C++ con TMFQSfullstate &
-        El algoritmo debe estar disponible como librería utilizable desde C/C++ y ser suficientemente
-        madura, con soporte y licencia permisiva, para minimizar riesgo de integración y mantenimiento
-        (lz4 contributors, s.f.; facebook/zstd contributors, s.f.; google/snappy contributors, s.f.). &
+        C5 & \centering Madurez y adopción &
+        Se valora la estabilidad del ecosistema de la biblioteca, la disponibilidad de documentación, la adopción en
+        entornos reales y la probabilidad de mantenimiento a mediano plazo. &
         0.10 \\
+
+        C6 & \centering Adecuación a datos científicos en punto flotante &
+        Para arreglos numéricos homogéneos, se valora la existencia o integración razonable de mecanismos que mejoren
+        el aprovechamiento de regularidades binarias sin comprometer el carácter sin pérdida de la compresión. &
+        0.15 \\
 
         \hline
     \end{tabular}
     \vspace{-2mm}
 \end{table}
 
-Los pesos se asignan para operacionalizar el orden de prioridad definido: se privilegia el ratio
-(C1) como objetivo dominante, seguido por el costo temporal (C2), y luego por restricciones de
-ingeniería relevantes para ejecución a gran escala e integración (C3--C5).
+Los pesos priorizan propiedades centrales del problema: ahorro efectivo de memoria sobre
+datos numéricos, bajo costo de acceso, integración práctica y adecuación al contexto
+científico.

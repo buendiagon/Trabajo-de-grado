@@ -8,7 +8,7 @@ memoria en simulaciones de alto consumo computacional, es fundamental seguir un
 enfoque sistemático que permita comparar la efectividad de la propuesta con otras
 estrategias existentes. Además, la metodología elegida permite realizar pruebas
 controladas sobre diferentes simuladores cuánticos y evaluar el impacto de la compresión
-en términos de memoria, rendimiento y fidelidad, garantizando así la reproducibilidad
+en términos de memoria, rendimiento y exactitud numérica, garantizando así la reproducibilidad
 y validez de los resultados obtenidos.
 
 \begin{figure}[H]
@@ -26,7 +26,7 @@ Comprende el estudio del estado del arte, la definición de requisitos y supuest
 \begin{itemize}
   \item \textbf{Revisión de literatura y estado del arte.} Levantamiento sistemático de técnicas de compresión sin pérdida de precisión para arreglos de punto flotante y su aplicabilidad en simulación cuántica de \emph{véctores de estado}. Se identifican ventajas, limitaciones y brechas; se sintetizan los fundamentos teóricos y se establecen hipótesis de trabajo.
   \item \textbf{Criterios y procedimiento de selección del simulador cuántico.} Evaluación de alternativas (p.\,ej., QuEST, Intel-QS, qsim, Quantum++, TMFQS) con base en: (i) \emph{apertura y modificabilidad} del código, (ii) \emph{facilidad de integración} de estructuras/arrays personalizados para el vector de estado, (iii) \emph{soporte a optimizaciones de memoria} y paralelismo (OpenMP/MPI/GPU), y (iv) \emph{capacidad de instrumentación} (medición de memoria y tiempo). Se aplica una matriz de decisión ponderada y se documenta la trazabilidad de la elección.
-  \item \textbf{Arquitectura de la solución y diseño de la estrategia de compresión.} Especificación de las estructuras de datos y puntos de inserción en el simulador (capa de almacenamiento del vector de amplitudes y rutas críticas de acceso). Selección del/los algoritmo(s) de compresión sin pérdida de precisión o equivalentes numéricos que no alteren la fidelidad numérica de los estados cuánticos (p.\,ej., representaciones compactas o transformaciones reversibles), así como políticas de (des)compresión y su impacto esperado en memoria, tiempo y paralelismo.
+  \item \textbf{Arquitectura de la solución y diseño de la estrategia de compresión.} Especificación de las estructuras de datos y puntos de inserción en el simulador (capa de almacenamiento del vector de amplitudes y rutas críticas de acceso). Selección del/los algoritmo(s) de compresión sin pérdida de precisión o equivalentes numéricos que no alteren las amplitudes de referencia, así como políticas de (des)compresión y su impacto esperado en memoria, tiempo y paralelismo.
 \end{itemize}
 
 \subsection{\normalsize Implementación y optimización del modelo}
@@ -48,7 +48,7 @@ a cabo las siguientes actividades:
 \subsection{\normalsize Evaluación experimental}
 Se diseñará un conjunto de experimentos para evaluar el impacto de la
 estrategia de compresión en diferentes circuitos cuánticos. Los experimentos permitirán
-determinar si se logra un balance adecuado entre eficiencia computacional y fidelidad.
+determinar si se logra un balance adecuado entre eficiencia computacional y exactitud numérica.
 En esta fase se realizarán las siguientes actividades:
 \begin{itemize}
     \item Definición de un conjunto de circuitos de prueba para evaluar la estrategia
@@ -66,9 +66,14 @@ En esta fase se realizarán las siguientes actividades:
 
             \item Uso máximo de memoria (MB)
 
-            \item Fidelidad del estado final:
+            \item Verificación de igualdad exacta del estado respecto a la referencia sin compresión:
                 \[
-        F\!\left(\ket{\psi_r},\,\ket{\psi_c}\right)=\abs{\braket{\psi_r}{\psi_c}}^{2}.
+        \alpha_i^{(\text{ref})} = \alpha_i^{(\text{comp})} \quad \forall i.
+      \]
+
+            \item Error absoluto máximo como medida auxiliar de discrepancia:
+                \[
+        e_{\text{abs}} = \max_i \left|\alpha_i^{(\text{ref})} - \alpha_i^{(\text{comp})}\right|.
       \]
         \end{itemize}
 

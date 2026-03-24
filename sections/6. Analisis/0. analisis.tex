@@ -1,4 +1,100 @@
-\section{\ Análisis de Resultados}
+\section{Desarrollo e implementación del backend basado en Blosc}
+\label{sec:development}
 
-\input{sections/6. Analisis/1. Escenario A.tex}
-\input{sections/6. Analisis/2. Escenario B.tex}
+Esta sección presenta el desarrollo del mecanismo de almacenamiento comprimido basado en
+Blosc incorporado en TMFQSfullstate. La descripción se organiza alrededor de la
+disposición en bloques del vector de estado, la caché LRU de bloques descomprimidos y la
+estrategia de acceso local utilizada durante la simulación.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para un diagrama de módulos del desarrollo realizado, mostrando la relación entre el registro cuántico, el backend Blosc,
+        la disposición en bloques, la caché y el flujo de compresión/descompresión.}}
+    \caption{Arquitectura del desarrollo implementado para el backend basado en Blosc}
+    \label{fig:development-architecture}
+\end{figure}
+
+\subsection{Contexto de implementación}
+
+La integración se realizó sobre TMFQSfullstate, manteniendo inalterada la interfaz lógica del simulador y concentrando los cambios en la capa de
+almacenamiento del vector de estado. Esta decisión permite que las operaciones de más alto nivel sigan trabajando con amplitudes complejas, compuertas
+y mediciones, mientras que la representación física del estado puede cambiar de densa a comprimida sin afectar la semántica del simulador.
+
+En ese contexto, el backend desarrollado se apoya en tres decisiones concretas. La primera es representar el estado mediante bloques de amplitudes.
+La segunda es emplear Blosc2 como biblioteca de compresión sin pérdida para cada bloque. La tercera es introducir una caché LRU de bloques
+descomprimidos para amortiguar accesos repetidos durante la aplicación de compuertas.
+
+\subsection{Backend de almacenamiento comprimido basado en Blosc}
+
+La implementación realizada adopta Blosc2 como realización concreta de la estrategia abstracta descrita antes. El estado cuántico completo se divide
+en bloques de tamaño configurable, y cada bloque se almacena de forma comprimida. Esta organización permite que la descompresión ocurra sobre una
+unidad local y no sobre el vector completo.
+
+Una ventaja importante de esta elección es que Blosc2 proporciona soporte directo para compresión rápida por bloques, así como filtros previos que
+mejoran la compresibilidad de arreglos numéricos. En el contexto del simulador, esto se traduce en una mejor adecuación al patrón ``descomprimir
+solo lo necesario, modificar localmente y recomprimir cuando corresponda''.
+
+Además, el backend expone parámetros de configuración relevantes para el experimento: número de estados por bloque, nivel de compresión, número de
+hilos y cantidad de entradas de caché. Estos parámetros permiten ajustar el compromiso entre uso de memoria y costo temporal, y por ello deben ser
+reportados explícitamente cuando se presenten resultados experimentales.
+
+\subsection{Disposición en bloques y mapeo del vector de estado}
+
+La primera parte del desarrollo consistió en introducir una disposición explícita del vector de estado en bloques contiguos. Cada bloque agrupa una
+cantidad fija de estados base y almacena sus componentes real e imaginaria en forma intercalada. Con ello, cualquier estado base puede mapearse a un
+índice de bloque y a un desplazamiento local dentro de ese bloque.
+
+Esta capa de mapeo es necesaria para que el backend identifique rápidamente qué bloque debe adquirirse ante una operación de lectura, escritura o
+aplicación de compuerta. También permite tratar el último bloque de manera especial cuando el número total de estados no llena exactamente una unidad
+completa de almacenamiento.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una figura que muestre el mapeo entre índices globales del vector de estado, bloques físicos y desplazamientos locales
+        dentro de cada bloque.}}
+    \caption{Mapeo entre estados base y bloques físicos en el backend comprimido}
+    \label{fig:development-layout}
+\end{figure}
+
+\subsection{Caché LRU de bloques descomprimidos}
+
+El segundo componente clave del desarrollo fue la incorporación de una caché de bloques descomprimidos. Su objetivo es mantener en memoria de trabajo
+los bloques usados recientemente, de modo que múltiples operaciones sucesivas puedan reutilizarlos sin repetir el proceso de descompresión.
+
+La política de reemplazo adoptada es LRU. Cada acceso actualiza la marca de uso reciente del bloque, y cuando la caché se llena se selecciona para
+expulsión el bloque con el acceso más antiguo. Si el bloque expulsado fue modificado, se marca como sucio y se recomprime antes de salir de la caché;
+si no hubo modificaciones, puede descartarse sin costo adicional de escritura.
+
+Desde el punto de vista de la simulación, esta decisión es importante porque muchas secuencias de compuertas reutilizan un subconjunto reducido del
+estado. En tales casos, una caché pequeña pero bien administrada puede reducir de forma significativa la frecuencia de descompresiones y recompresiones.
+
+\subsection{Estrategia de acceso y actualización local}
+
+La implementación concreta sigue el siguiente esquema operativo. Cuando una operación necesita una amplitud o un par de amplitudes, primero determina
+los bloques implicados. Después consulta la caché. Si el bloque ya está disponible, reutiliza el buffer descomprimido. Si no está disponible, lo
+recupera desde almacenamiento comprimido, lo inserta en la caché y continúa con la operación.
+
+Una vez modificado un bloque, este no se recomprime inmediatamente por defecto. En lugar de ello, se mantiene en la caché marcado como sucio hasta
+que sea necesario liberarlo o hasta que la operación actual requiera un vaciado explícito. Esta política evita recompresiones prematuras cuando varias
+compuertas consecutivas afectan el mismo conjunto de bloques.
+
+Para compuertas cuyas amplitudes involucradas residen en un mismo bloque, el procedimiento es completamente local. En cambio, para operaciones que
+afectan amplitudes distribuidas en bloques distintos, el backend debe adquirir ambos bloques y gestionar su permanencia en la caché. Este caso hace
+evidente la necesidad de al menos dos ranuras activas y explica por qué la caché no puede reducirse a una sola entrada.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una secuencia de pasos de acceso: localizar bloque, verificar caché, descomprimir, modificar, marcar como sucio y
+        eventualmente recomprimir al expulsar.}}
+    \caption{Secuencia operativa del backend basado en Blosc}
+    \label{fig:development-workflow}
+\end{figure}
+
+El mecanismo descrito en este capítulo establece la base operativa para medir el efecto de la
+compresión sobre circuitos representativos. La sección siguiente presenta la evaluación
+experimental realizada sobre Grover y QFT, así como la comparación cuantitativa entre la
+estrategia sin compresión, la estrategia sin pérdida basada en Blosc y una estrategia con
+pérdida controlada basada en ZFP.

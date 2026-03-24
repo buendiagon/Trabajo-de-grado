@@ -1,12 +1,23 @@
-\subsection{Motivación y contexto de evaluación}
+\subsection{Motivación y contexto de selección}
 
-En este proyecto, la compresión \emph{sin pérdida de precisión} se plantea como un mecanismo para reducir
-la huella de memoria asociada a los datos numéricos del simulador, de modo que sea posible ampliar la escala
-de simulación y estudiar el costo-beneficio en términos de memoria, tiempo de ejecución y estabilidad numérica.
-La literatura ha mostrado que la compresión puede contribuir de forma significativa a disminuir requerimientos
-de memoria en simulación cuántica a gran escala, habilitando experimentos que de otra manera serían inviables
-(Wu y cols., 2019b; Department of Computer Science, University of Chicago, 2020).
+Un simulador tipo Schrödinger puede
+particionar el vector de estado en bloques independientes, mantener una caché de bloques descomprimidos y
+aplicar una política de descompresión bajo demanda para evitar reconstruir el estado completo en cada operación.
+Sin embargo, para materializar esa arquitectura en un simulador real es necesario seleccionar una biblioteca
+de compresión concreta que se adapte bien al acceso parcial por bloques y al patrón repetido de lectura,
+modificación y escritura de amplitudes.
 
-Bajo esta motivación, la selección del algoritmo de compresión se aborda como una decisión de diseño:
-se requiere un compresor que logre un buen balance entre ratio de compresión, velocidad, y costo adicional
-en recursos, de manera que su incorporación permita evaluar la propuesta de esta tesis en escenarios realistas.
+Por esta razón, la decisión relevante es qué biblioteca de compresión sin pérdida facilita 
+una integración eficiente en una ruta crítica de simulación cuántica. En este contexto, interesan
+especialmente las soluciones que trabajen con bloques independientes, permitan incorporar filtros previos sobre
+datos de punto flotante y minimicen la latencia de descompresión cuando solo una fracción del vector de estado
+debe pasar temporalmente a representación densa.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una figura comparando el flujo general de almacenamiento denso frente a almacenamiento
+        por bloques comprimidos.}}
+    \caption{Contraste conceptual entre almacenamiento denso y almacenamiento por bloques comprimidos}
+    \label{fig:compression-context-placeholder}
+\end{figure}

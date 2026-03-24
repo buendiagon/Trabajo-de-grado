@@ -1,14 +1,13 @@
 \subsection{Selección del algoritmo recomendado}
 
-Con base en el total ponderado de la Tabla \ref{tab:evaluacion_compresores}, se recomienda \textbf{Zstandard (Zstd)} como opción principal.
-El resultado se explica por su balance entre ratio y velocidad, y por funcionalidades prácticas para escenarios de cómputo intensivo, como el
-soporte de compresión multihilo en la librería (facebook/zstd contributors, s.f.; Zstandard project, s.f.).
+Con base en la Tabla \ref{tab:evaluacion_compresores}, se selecciona \textbf{Blosc2} como
+biblioteca principal para la implementación del mecanismo de compresión sin pérdida.
 
-Dado que el propósito de este trabajo es reducir el consumo de memoria sin afectar la exactitud de los resultados, la elección del compresor
-debe favorecer un ratio suficiente para que la reducción sea significativa, sin introducir una penalización temporal que anule el beneficio.
-En este sentido, zlib ofrece ratios competitivos, pero típicamente con menor rendimiento (zlib authors, 2022), mientras que LZ4 ofrece excelente
-velocidad con ratios usualmente menores (lz4 contributors, s.f.). Por ello, Zstd se adopta como el mejor compromiso para la evaluación experimental.
+Zstd y LZ4 presentan ventajas claras como compresores generalistas de alta velocidad, mientras que zlib ofrece una
+base madura y ampliamente difundida. Dentro del conjunto de criterios definidos para este trabajo, Blosc2 obtiene el
+mejor balance entre descompresión rápida, integración en C/C++ y adecuación al tratamiento de datos numéricos.
 
-Finalmente, se reconoce que el desempeño real depende de la distribución de los datos a comprimir; existen casos donde un algoritmo supera a otro
-según los patrones presentes, como se discute en experiencias prácticas reportadas por usuarios (r/zfs, 2024). Por esta razón, además de adoptar Zstd
-como candidato principal, se mantiene LZ4 como referencia de baja latencia para comparación experimental.
+En consecuencia, la implementación concreta desarrollada en este trabajo adopta Blosc2 como
+realización de una estrategia general de compresión en memoria para vectores de estado,
+basada en particionamiento, acceso localizado y actualización selectiva de los datos
+comprimidos.

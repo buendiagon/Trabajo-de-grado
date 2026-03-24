@@ -1,39 +1,46 @@
 \subsection{Matriz de evaluación ponderada}
 
-La selección se formaliza mediante una matriz ponderada basada en los criterios de la Tabla \ref{tab:criterios_compresion}.
-Se utiliza una escala discreta de 1 a 5, donde 5 representa el mejor desempeño relativo frente al criterio evaluado.
-Los puntajes se asignan con base en la documentación citada y la comparación cualitativa reportada en dichas fuentes.
+La evaluación se presenta mediante una matriz ponderada basada en los criterios de la
+Tabla \ref{tab:criterios_compresion}. La escala de 1 a 5 expresa el grado de adecuación de
+cada biblioteca frente a compresión sin pérdida de arreglos numéricos, costo temporal de
+acceso e integración práctica en software científico escrito en C/C++.
 
 \begin{table}[H]
     \centering
-    \caption{\\Evaluación de alternativas de compresión (escala 1--5) y total ponderado}
+    \caption{\\Evaluación de bibliotecas de compresión sin pérdida (escala 1--5) y total ponderado}
     \label{tab:evaluacion_compresores}
     \begin{tabular}{lcccccc}
         \hline
         \multicolumn{1}{l}{\textbf{Criterio}} &
         \multicolumn{1}{c}{\textbf{Peso}} &
+        \multicolumn{1}{c}{\textbf{Blosc2}} &
         \multicolumn{1}{c}{\textbf{Zstd}} &
         \multicolumn{1}{c}{\textbf{LZ4}} &
-        \multicolumn{1}{c}{\textbf{Snappy}} &
         \multicolumn{1}{c}{\textbf{zlib}} \\
         \hline
-        C1 (Ratio)                & 0.40 & 4 & 3 & 2 & 5 \\
-        C2 (Velocidad)            & 0.20 & 4 & 5 & 4 & 2 \\
-        C3 (Overhead memoria)     & 0.15 & 3 & 5 & 5 & 4 \\
-        C4 (Paralelismo)          & 0.15 & 5 & 4 & 4 & 3 \\
-        C5 (Integración C/C++)    & 0.10 & 5 & 5 & 4 & 5 \\
+        C1 (Efectividad en datos numéricos)    & 0.25 & 4 & 4 & 2 & 3 \\
+        C2 (Descompresión)                     & 0.20 & 5 & 4 & 5 & 2 \\
+        C3 (Compresión)                        & 0.15 & 4 & 4 & 5 & 2 \\
+        C4 (Integración C/C++)                 & 0.15 & 5 & 5 & 5 & 5 \\
+        C5 (Madurez y adopción)                & 0.10 & 4 & 5 & 5 & 5 \\
+        C6 (Optimización para datos numéricos) & 0.15 & 5 & 2 & 1 & 1 \\
         \hline
         \textbf{Total}            & 1.00 &
-        \textbf{4.10} & \textbf{4.05} & \textbf{3.35} & \textbf{3.95} \\
+        \textbf{4.50} & 3.95 & 3.65 & 2.85 \\
         \hline
     \end{tabular}
 \end{table}
 
-La tabla refleja el compromiso clásico entre ratio y velocidad: zlib tiende a maximizar la compresión, pero penaliza en throughput
-(zlib authors, 2022). LZ4 y Snappy destacan por velocidad y bajo overhead, usualmente con ratios inferiores a zlib y Zstd
-(lz4 contributors, s.f.; google/snappy contributors, s.f.; Snappy project, s.f.). Zstd se ubica como una alternativa de equilibrio,
-combinando ratios altos con rendimiento competitivo y soporte multihilo (facebook/zstd contributors, s.f.; Zstandard project, s.f.).
+Los resultados de la matriz muestran perfiles diferenciados entre las bibliotecas evaluadas. Zstd y LZ4 presentan un
+buen comportamiento general como compresores de alta velocidad, zlib conserva interés como referencia madura y
+ampliamente adoptada, y Blosc2 obtiene la mayor puntuación total por su buen balance entre costo de acceso,
+integración y adecuación a arreglos numéricos homogéneos.
 
-Como referencia complementaria, una comparación práctica de ratios en datos generales reporta el orden
-zlib $>$ Zstandard $>$ LZ4 $>$ Snappy (StarRocks Documentation, s.f.), y benchmarks recientes ilustran el espectro de compromisos
-entre ratio, velocidad y memoria (MaskRay, 2025).
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una figura o tabla complementaria que compare ratio, latencia y costo de integración de las
+        bibliotecas evaluadas.}}
+    \caption{Espacio reservado para visualización comparativa de bibliotecas de compresión}
+    \label{fig:compression-matrix-placeholder}
+\end{figure}

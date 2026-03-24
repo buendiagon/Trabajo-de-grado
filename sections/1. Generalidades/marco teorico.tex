@@ -1,336 +1,168 @@
 \section{Marco Teórico}
 
-La computación cuántica representa un nuevo paradigma en el procesamiento de información,
-basado en fenómenos propios de la mecánica cuántica como la superposición, el entrelazamiento
-y la interferencia. Comprender estos conceptos es esencial para abordar los
-retos que plantea su simulación en computadoras clásicas y para justificar el
-uso de técnicas avanzadas como la compresión de datos sin pérdida. A continuación,
-se presentan los fundamentos teóricos necesarios para contextualizar el
-problema abordado en este trabajo.
-\subsection{\normalsize{Qubit y Representación del Estado Cuántico}}
-Un \textit{qubit} o \textit{bit cuántico} es la unidad básica de información en
-computación cuántica. A diferencia del bit clásico, que solo puede representar
-los valores $0$ o $1$, un qubit puede encontrarse en una superposición lineal
-de ambos estados. Matemáticamente, su estado se expresa como:
-\[
-    \ket{\psi}= \alpha_{1} \ket{0}+ \alpha_{2} \ket{1}
-\]
-donde $\alpha_{1}, \alpha_{2} \in \mathbb{C}$ y $|\alpha_{1}|^{2} + |\alpha_{2}|^{2} = 1$. Esta
-condición garantiza que la probabilidad de encontrar al qubit en el estado
-$\ket{0}$ o en el estado $\ket{1}$ sea del 100\%. Cuando se tienen $n$ qubits,
-el sistema completo se representa como un vector de $2^{n}$ amplitudes complejas
-en un espacio de Hilbert de dimensión $2^{n}$. Para $n=3$ hay $2^{3}=8$ estados computacionales.
-El estado general de 3 qubits puede escribirse como:
-\[
-    \ket{\psi}= \sum_{i=0}^{7}\alpha_{i} \ket{i}, \quad \text{con}\quad \ket{i}\in
-    \{\ket{000}, \ket{001}, \dots, \ket{111}\}
-\]
-Aquí, $\alpha_i \in \mathbb{C}$ es la amplitud asociada al estado base $\ket{i}$ y satisface la condición de normalización
-$\sum_{i=0}^{2^{n}-1} |\alpha_i|^{2} = 1$.
-Cada amplitud compleja en doble precisión ocupa 16 bytes (8 bytes para la parte real y 8 bytes para la imaginaria),
-lo que impone una gran carga de memoria cuando $n$ crece.
-\subsection{\normalsize{Superposición Cuántica}}
-La \textit{superposición} es una de las propiedades fundamentales de la mecánica
-cuántica. Consiste en la capacidad de un sistema cuántico de existir
-simultáneamente en múltiples estados posibles antes de ser observado o medido.
-En el caso de un qubit, esta propiedad se expresa formalmente como:
-\[
-    \ket{\psi}= \alpha_{1} \ket{0}+ \alpha_{2} \ket{1}, \quad \text{con }\alpha_{1}, \alpha_{2} \in
-    \mathbb{C}\text{ y }|\alpha_{1}|^{2} + |\alpha_{2}|^{2} = 1
-\]
-Aquí, $\ket{0}$ y $\ket{1}$ representan los estados clásicos posibles del
-qubit, mientras que $\alpha_{1}$ y $\alpha_{2}$ son las amplitudes de probabilidad asociadas
-a cada estado. Aunque el sistema `está' en ambos estados al mismo tiempo, una
-vez se realiza una medición, colapsa a uno solo de ellos con probabilidad $|\alpha_{1}
-|^{2}$ o $|\alpha_{2}|^{2}$, respectivamente. Desde una perspectiva geométrica, el
-estado de un qubit puede representarse como un punto en la esfera de Bloch, donde
-cada combinación válida de $\alpha_{1}$ y $\alpha_{2}$ corresponde a una ubicación en la
-superficie de la esfera. Esta representación visual resulta útil para entender
-cómo las puertas cuánticas rotan el estado en dicho espacio.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/quantum/bloch_sphere.png}
-    \caption{Representación de un estado cuántico sobre la esfera de Bloch. Los polos
-    corresponden a los estados $\ket{0}$ y $\ket{1}$,
-    y los puntos intermedios representan superposiciones.}
-    \label{fig:bloch-sphere}
-\end{figure}
-En términos computacionales, la superposición permite que un sistema de $n$
-qubits represente, de manera simultánea, todos los $2^{n}$ posibles estados
-clásicos, lo cual es el fundamento del \textit{paralelismo cuántico}. Este fenómeno,
-aunque no equivale directamente a realizar $2^{n}$ cálculos a la vez, permite evaluar
-de forma concurrente múltiples configuraciones de entrada, y es lo que hace
-potencialmente tan poderosos a los algoritmos cuánticos.
-\subsection{\normalsize{Entrelazamiento Cuántico}}
-El \textit{entrelazamiento} cuántico es un fenómeno mediante el cual dos o más
-qubits quedan conectados de tal manera que el estado de uno de ellos no puede
-describirse independientemente del estado del otro, sin importar cuán lejos se
-encuentren en el espacio. Esta correlación es más fuerte que cualquier
-correlación clásica y desafía las intuiciones tradicionales sobre causalidad y
-localidad. Formalmente, un sistema de dos qubits está entrelazado si su estado
-no puede expresarse como el producto tensorial de dos estados individuales. Por
-ejemplo, el siguiente estado de Bell:
-\[
-    \ket{\Phi^+}= \frac{1}{\sqrt{2}}(\ket{00}+ \ket{11})
-\]
-En esta expresión, el factor $1/\sqrt{2}$ garantiza la normalización del estado, ya que
-$\left|\tfrac{1}{\sqrt{2}}\right|^{2} + \left|\tfrac{1}{\sqrt{2}}\right|^{2} = 1$.
-El signo ``+'' indica una superposición lineal (suma vectorial en el espacio de Hilbert) de
-los estados base $\ket{00}$ y $\ket{11}$; no corresponde a concatenación ni a una operación lógica clásica.
+La simulación cuántica clásica de circuitos permite estudiar algoritmos, validar resultados y analizar costos computacionales antes de su ejecución en
+hardware cuántico. Entre los modelos disponibles, la simulación basada en vectores de estado ocupa un lugar central por su generalidad, aunque dicha
+generalidad viene acompañada de un crecimiento exponencial en memoria y tiempo. En este contexto, resulta necesario revisar los fundamentos de la
+representación del estado cuántico, los principales enfoques de simulación clásica, los conceptos de compresión de datos científicos y los criterios
+de exactitud numérica empleados para evaluar representaciones comprimidas y no comprimidas de un mismo estado.
 
-Este estado de Bell no puede escribirse como $\ket{\psi_1}\otimes \ket{\psi_2}$. Esto significa
-que no existe una descripción completa del sistema que consista simplemente en
-describir el estado de cada qubit por separado. Este tipo de correlación permite
-que la medición de uno de los qubits determine instantáneamente el estado del otro,
-incluso si están separados por distancias arbitrariamente grandes. Sin embargo,
-este efecto no viola la relatividad ni permite transmitir información más
-rápido que la luz, ya que el resultado de cada medición individual es aleatorio.
-El entrelazamiento es un recurso clave en muchos algoritmos cuánticos
-avanzados, en protocolos de teleportación cuántica, y en esquemas de
-criptografía cuántica como el intercambio de claves cuánticas (Quantum Key Distribution,
-QKD). Además, es una de las principales fuentes de complejidad en la simulación
-de sistemas cuánticos en hardware clásico, pues aumenta de forma significativa
-el entrecruzamiento de información entre los qubits.
-\subsection{\normalsize{Operadores Unitarios y Evolución del Estado Cuántico}}
-La evolución de un sistema cuántico aislado se describe mediante la mecánica cuántica
-a través de la ecuación de Schrödinger. Esta evolución es determinista, reversible
-y está gobernada por operadores matemáticos denominados \textit{operadores
-unitarios}. En términos generales, si el estado inicial de un sistema es
-$\ket{\psi(0)}$, su evolución en el tiempo $t$ viene dada por la aplicación de
-un operador unitario $U(t)$:
-\[
-    \ket{\psi(t)}= U(t)\ket{\psi(0)}
-\]
-Donde $U(t)$ es una matriz unitaria que cumple:
-\[
-    U^{\dagger} U = U U^{\dagger} = I
-\]
-Aquí, $U^{\dagger}$ representa el conjugado transpuesto (o adjunto) de $U$, e $I$
-es la matriz identidad. Esta condición garantiza que la norma del estado
-cuántico se conserva durante la evolución, lo que implica que la probabilidad total
-sigue siendo 1. Además, asegura la \textit{reversibilidad} de las operaciones,
-una característica fundamental de la dinámica cuántica (con excepción del proceso
-de medición).
-\subsubsection{Puertas cuánticas como operadores unitarios.}
-En computación cuántica, las operaciones que transforman los estados de los
-qubits se conocen como \textit{puertas cuánticas}. Estas puertas son
-implementaciones físicas y algorítmicas de operadores unitarios y constituyen
-los bloques fundamentales para construir circuitos cuánticos. Cada puerta cuántica
-puede representarse mediante una matriz unitaria. Por ejemplo, la puerta Hadamard
-($H$), que genera una superposición equitativa, se define como:
-\[
-    H = \frac{1}{\sqrt{2}}
-    \begin{pmatrix}
-        1 & 1  \\
-        1 & -1
-    \end{pmatrix}
-\]
-Aplicar $H$ al estado base $\ket{0}$ produce:
-\[
-    \ket{0} = \begin{bmatrix}1 \\ 0\end{bmatrix},\quad \ket{1} = \begin{bmatrix}0 \\ 1\end{bmatrix}
-\]
-\[
-    H\ket{0} = \frac{1}{\sqrt{2}}
-    \begin{pmatrix}
-        1 & 1  \\
-        1 & -1
-    \end{pmatrix}
-    \begin{bmatrix}
-        1 \\
-        0
-    \end{bmatrix}
-    = \frac{1}{\sqrt{2}}
-    \begin{bmatrix}
-        1 \\
-        1
-    \end{bmatrix}
-    = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1})
-\]
-Este resultado es una superposición con amplitudes iguales de los estados $\ket{0}$ y $\ket{1}$, un recurso clave en algoritmos como el de Grover o Deutsch-Jozsa.
-\subsubsection{Transformaciones en sistemas de múltiples qubits.}
-En sistemas con varios qubits, los operadores unitarios pueden actuar sobre
-uno o más qubits. Por ejemplo, la puerta CNOT (control-NOT) es una operación
-de dos qubits que invierte el segundo qubit (qubit objetivo) si el primero (qubit
-de control) está en el estado $\ket{1}$. Esta operación es esencial para generar
-entrelazamiento entre qubits. Para aplicar una puerta a un sistema completo de
-$n$ qubits, se utiliza el producto tensorial de matrices. Por ejemplo, para aplicar
-una puerta $G$ al tercer qubit en un sistema de 5 qubits, se construye:
-\[
-    U = I \otimes I \otimes G \otimes I \otimes I
-\]
-La dimensión total de la matriz $U$ será $2^{5} \times 2^{5} = 32 \times 32$, lo que
-ilustra el rápido crecimiento de la complejidad computacional al aumentar el
-número de qubits.
-\subsection{\normalsize{Circuitos Cuánticos: Profundidad, Reversibilidad e Interferencia}}
-La computación cuántica, en su forma más común, se modela a través del llamado
-\textit{modelo de circuitos cuánticos}. En este enfoque, un algoritmo cuántico
-se representa como una secuencia de operaciones —puertas cuánticas— aplicadas
-a un conjunto inicial de qubits. El circuito cuántico se construye de manera análoga
-a los circuitos digitales clásicos, pero con componentes que manipulan estados
-cuánticos en lugar de bits clásicos.
-\subsubsection{Estructura de un circuito cuántico.}
-Formalmente, un circuito cuántico está compuesto por tres fases:
-\begin{enumerate}
-    \item \textbf{Inicialización:} Se prepara el sistema en un estado base, usualmente
-        $\ket{0}^{\otimes n}$.
+\subsection{\normalsize{Representación del estado cuántico}}
 
-    \item \textbf{Aplicación de puertas cuánticas:} Se aplica una secuencia de
-        operaciones unitarias sobre los qubits.
-
-    \item \textbf{Medición:} Se colapsa el sistema a un resultado clásico
-        mediante la observación.
-\end{enumerate}
-Cada puerta cuántica actúa sobre uno o varios qubits, y las operaciones se
-disponen en capas, donde una capa puede contener varias puertas que se aplican
-en paralelo a qubits distintos.
-\subsubsection{Profundidad de un circuito cuántico.}
-La \textit{profundidad} de un circuito se refiere al número de capas secuenciales
-de operaciones que deben ejecutarse en orden, considerando que algunas pueden
-realizarse en paralelo. Un circuito de menor profundidad implica que el algoritmo
-se ejecuta en menos pasos cuánticos, lo cual es deseable por dos razones
-principales:
-\begin{itemize}
-    \item Reduce la duración total del algoritmo, minimizando la exposición del
-        sistema a errores por decoherencia.
-
-    \item Mejora la viabilidad de implementación en dispositivos cuánticos actuales,
-        que están limitados en fidelidad y tiempo de coherencia.
-\end{itemize}
-Por ejemplo, un circuito que aplica $n$ puertas de una sola vez en paralelo
-tiene una profundidad de 1, mientras que si cada puerta debe aplicarse una tras
-otra, la profundidad será $n$. Así, la profundidad es una medida directa de la
-complejidad temporal del algoritmo.
-\subsubsection{Reversibilidad de los circuitos cuánticos.}
-Toda operación cuántica (exceptuando la medición) debe ser \textit{reversible},
-lo que significa que debe existir una operación inversa que recupere el estado
-anterior sin pérdida de información. Esto se garantiza matemáticamente porque
-las puertas cuánticas se representan mediante operadores unitarios, los cuales
-por definición son invertibles. Esta propiedad distingue a los circuitos
-cuánticos de los circuitos clásicos, donde muchas operaciones (como AND u OR) son
-irreversibles. En el mundo cuántico, la única operación no reversible es la medición,
-que colapsa el estado superpuesto a uno de sus posibles resultados y destruye
-la información contenida en las amplitudes de probabilidad. La reversibilidad también
-es esencial para ciertos algoritmos cuánticos que requieren `deshacer''
-operaciones intermedias sin borrar información, como ocurre en la técnica de \textit{descomputación}
-(uncomputation), utilizada para limpiar registros auxiliares antes de la medición.
-\subsubsection{Interferencia cuántica.}
-La \textit{interferencia} cuántica es un fenómeno exclusivo de los sistemas que
-evolucionan bajo la mecánica cuántica. En este contexto, las amplitudes de probabilidad
-asociadas a distintos caminos de evolución del sistema pueden combinarse de forma
-constructiva (reforzando la probabilidad de ciertos resultados) o destructiva (cancelando
-otros resultados). Esta propiedad es esencial para el funcionamiento de muchos
-algoritmos cuánticos. Por ejemplo, en el algoritmo de Grover para búsqueda no
-estructurada, las soluciones correctas se refuerzan mediante interferencia constructiva,
-mientras que las opciones incorrectas se atenúan mediante interferencia
-destructiva. A diferencia de la superposición, que permite explorar múltiples
-estados al mismo tiempo, la interferencia actúa como un mecanismo de filtrado que
-permite extraer los resultados deseados al final del proceso computacional. Es
-la combinación de ambas —superposición e interferencia— lo que da lugar a la
-aceleración cuántica.
-\subsection{\normalsize{Simulación tipo Schrödinger}}
-La simulación tipo Schrödinger es una de las aproximaciones más utilizadas en la
-computación cuántica para modelar la evolución de un sistema de qubits. Este
-método consiste en almacenar el vector de estado completo del sistema cuántico,
-que contiene $2^{n}$ amplitudes complejas para un sistema de $n$ qubits. En
-cada paso del circuito, se aplican directamente las puertas cuánticas como transformaciones
-matriciales sobre este vector. Este enfoque ofrece una representación exacta
-del sistema y permite la simulación precisa de cualquier circuito cuántico, independientemente
-del grado de entrelazamiento o la profundidad del circuito. Sin embargo, su principal
-limitación es el consumo de memoria, que crece exponencialmente con el número
-de qubits lo cual es impracticable para la mayoría de los sistemas.
-\subsection{\normalsize{Partición de Circuitos y Caminos de Feynman}}
-Una alternativa a la simulación tipo Schrödinger es el uso de técnicas basadas
-en \textit{partición de circuitos} y \textit{caminos de Feynman}. Estos
-métodos dividen el circuito cuántico en subcircuitos más pequeños o regiones
-menos entrelazadas, reduciendo así los requerimientos de memoria al costo de mayor
-tiempo de cómputo. La técnica de caminos de Feynman interpreta la evolución
-del sistema como una suma sobre todos los caminos computacionales posibles que
-conectan los estados iniciales y finales. Esta formulación, si bien elegante y
-más eficiente en términos de espacio, conlleva un crecimiento exponencial del número
-de caminos a evaluar, especialmente cuando la profundidad del circuito es alta.
-Estos enfoques han sido utilizados exitosamente para simular circuitos de hasta
-54 qubits, principalmente adoptando soluciones híbridas con las simulaciones
-de Schrödinger, obteniendo de esta manera una reducción significativa en el uso
-de la memoria, sin sacrificar rendimiento
-\cite{arute2019quantum, Boixo2017, Markov2018, Pednault2017}.
-\subsection{\normalsize{Diagramas de Decisión Cuánticos}}
-Los \textit{diagramas de decisión cuánticos} son estructuras de datos
-jerárquicas inspiradas en los diagramas de decisión binarios (BDDs) utilizados
-en verificación formal y diseño lógico. Estas estructuras permiten representar
-de forma comprimida vectores de estado y matrices unitarias aprovechando redundancias
-y patrones repetitivos.
-\begin{itemize}
-    \item \textbf{QuIDD (Quantum Information Decision Diagrams)} codifican
-        vectores y operadores mediante nodos reutilizables, lo que permite representar
-        estructuras altamente simétricas de manera eficiente.
-
-    \item \textbf{QMDD (Quantum Multiple-valued Decision Diagrams)} extienden
-        los QuIDD utilizando aristas ponderadas con matrices, lo que los hace más aptos
-        para representar operadores complejos y circuitos reversibles.
-
-    \item \textbf{LIMDD (Local Invertible Map Decision Diagrams)} introducen
-        transformaciones locales invertibles como aristas, lo cual permite representar
-        incluso estados estabilizadores y circuitos con entrelazamiento moderado de
-        manera eficiente.
-\end{itemize}
-Estas estructuras son altamente efectivas cuando el circuito presenta
-redundancia estructural, permitiendo pasar de una representación exponencial a
-una polinomial. Sin embargo, pierden eficacia en circuitos con alta interferencia
-o sin regularidad estructural, como ocurre en simulaciones aleatorias o
-algoritmos de propósito general.
-\subsection{\normalsize{Fidelidad entre Estados Cuánticos}}
-Una métrica fundamental para evaluar la similitud entre dos estados cuánticos es
-la \textit{fidelidad}. Generalmente, se emplea para cuantificar la diferencia
-entre dos estados cuánticos. Dado dos estados puros $\ket{\psi_r}$ (referencia)
-y $\ket{\psi_c}$ (estado simulado), la fidelidad entre ellos se define como:
+En el modelo de circuitos cuánticos, el estado de un sistema de $n$ qubits se representa mediante un vector de dimensión $2^n$:
 \[
-    F\!\left(\ket{\psi_r},\,\ket{\psi_c}\right)=\abs{\braket{\psi_r}{\psi_c}}^{2}.
+    \ket{\psi}= \sum_{i=0}^{2^n-1} \alpha_i \ket{i},
 \]
-Esta expresión mide el cuadrado del valor absoluto del producto interno entre ambos
-vectores. La fidelidad toma valores entre 0 y 1, donde:
-\begin{itemize}
-    \item $F = 1$ indica que los estados son idénticos.
-
-    \item $F = 0$ indica que son ortogonales (completamente diferentes).
-
-    \item Valores intermedios indican distintos grados de similitud.
-\end{itemize}
-Por ejemplo, si:
+donde cada amplitud $\alpha_i \in \mathbb{C}$ satisface la condición de normalización
 \[
-    \ket{\psi_r}= \frac{1}{\sqrt{2}}
-    \begin{bmatrix}
-        1 \\
-        0 \\
-        0 \\
-        1
-    \end{bmatrix}, \quad \ket{\psi_c}= \frac{1}{\sqrt{2}}
-    \begin{bmatrix}
-        0.99 \\
-        0    \\
-        0    \\
-        1.01
-    \end{bmatrix}
+    \sum_{i=0}^{2^n-1} |\alpha_i|^2 = 1.
 \]
-entonces, normalizando y aplicando la fórmula, se obtiene una fidelidad
-cercana a 1, lo que indica que el estado simulado es prácticamente indistinguible
-del original, a pesar de las pequeñas diferencias numéricas. Esta métrica es especialmente
-útil para evaluar estrategias de compresión: una fidelidad igual a 1 garantiza
-que el proceso de compresión y descompresión no ha alterado el estado cuántico
-original.
-\subsection{\normalsize{Bibliotecas de Compresión con Pérdida: SZ y ZFP}}
-Las bibliotecas \textbf{SZ} y \textbf{ZFP} son herramientas de compresión científica
-ampliamente utilizadas para reducir el tamaño de datos en punto flotante sin necesidad
-de conservar todos los dígitos exactos.
-\begin{itemize}
-    \item \textbf{SZ} aplica una estrategia de predicción adaptativa con control
-        de error. Estima el valor de cada dato basado en sus vecinos, almacena
-        solo la diferencia si esta cae dentro de un margen de error aceptable, y utiliza
-        codificación entropíca para comprimir los residuos. Es muy eficiente
-        cuando los datos presentan correlaciones locales.
 
-    \item \textbf{ZFP} divide los datos en bloques pequeños y los transforma a
-        un dominio más compresible mediante una técnica similar a la transformada
-        discreta del coseno. Posteriormente, se aplican técnicas de truncamiento y
-        codificación por bloques. ZFP permite controlar la compresión por tasa fija,
-        error absoluto o fidelidad relativa.
-\end{itemize}
+Esta formulación expresa al sistema como una combinación lineal de estados base del espacio de Hilbert. En términos computacionales, cada amplitud debe
+almacenarse en memoria clásica cuando se utiliza una representación explícita del vector completo. Si se emplea doble precisión, cada amplitud
+compleja requiere 16 bytes: 8 para la parte real y 8 para la parte imaginaria. El costo teórico de memoria queda entonces dado por:
+\[
+    M(n)= 2^n \times 16\ \text{bytes}.
+\]
+
+El crecimiento exponencial de $M(n)$ constituye una de las principales limitaciones de la simulación cuántica clásica. Para valores moderados de $n$,
+el almacenamiento del vector de estado ya exige cantidades de memoria comparables con las de sistemas de cómputo de alto desempeño. Por esta razón, la
+representación del estado no solo es un concepto matemático fundamental, sino también el origen del problema computacional tratado en simulación
+cuántica a gran escala.
+
+\subsection{\normalsize{Evolución unitaria y simulación tipo Schrödinger}}
+
+La evolución de un sistema cuántico aislado se modela mediante operadores unitarios. Si $U$ representa una compuerta cuántica o una secuencia de
+compuertas, el nuevo estado del sistema se obtiene como
+\[
+    \ket{\psi'} = U\ket{\psi}.
+\]
+
+La simulación tipo Schrödinger consiste en mantener explícitamente el vector de estado y aplicar sobre él las transformaciones unitarias del circuito.
+Su principal ventaja es la generalidad: cualquier circuito que pueda expresarse en el modelo de compuertas puede, en principio, simularse sin imponer
+restricciones sobre el grado de entrelazamiento o la forma del estado intermedio. Esta propiedad convierte a la simulación Schrödinger en una base
+natural para contrastar representaciones alternativas del mismo estado cuántico.
+
+Su principal limitación es que tanto el costo de memoria como una parte importante del costo temporal crecen exponencialmente con el número de qubits.
+En consecuencia, cualquier estrategia orientada a reducir el uso de memoria debe analizarse sin perder de vista el formalismo de evolución unitaria que
+define el problema original.
+
+\subsection{\normalsize{Patrones de acceso inducidos por las compuertas cuánticas}}
+
+Aunque el vector de estado contiene $2^n$ amplitudes, las operaciones elementales de un circuito no siempre requieren tratar todas las entradas de
+manera arbitraria al mismo tiempo. Una compuerta de un solo qubit actúa sobre pares de amplitudes cuyos índices difieren en el bit asociado al qubit
+objetivo. De manera similar, una compuerta de dos qubits actúa sobre grupos de cuatro amplitudes relacionadas por las combinaciones binarias de los
+qubits involucrados.
+
+Desde la perspectiva algorítmica, esto significa que la actualización del estado presenta patrones estructurados de acceso. La importancia de esta
+observación reside en el hecho de que el costo práctico de simular un circuito depende
+no solo del tamaño total del vector, sino también de cómo se distribuyen y reutilizan los accesos sobre sus componentes.
+
+El concepto de localidad resulta entonces relevante. En computación, la localidad temporal describe la tendencia de ciertos datos a reutilizarse en un
+intervalo corto de tiempo, mientras que la localidad espacial se refiere a accesos cercanos dentro de una misma región de memoria. Ambas nociones son
+fundamentales para comprender por qué algunas representaciones del estado pueden explotarse con mayor eficiencia que otras.
+
+En simulación tipo Schrödinger, la localidad no implica necesariamente que los elementos afectados se encuentren siempre contiguos en memoria, sino que
+las compuertas inducen relaciones regulares entre índices. Dichas regularidades permiten razonar sobre patrones repetitivos de lectura y escritura, y
+por ello resultan importantes cuando más adelante se analizan estrategias de almacenamiento para vectores de gran tamaño.
+
+\subsection{\normalsize{Alternativas para reducir memoria en simulación cuántica clásica}}
+
+La literatura ha propuesto diversos enfoques para reducir el costo espacial de la simulación cuántica. Las redes tensoriales y métodos relacionados
+aprovechan estructuras favorables del circuito, como bajo entrelazamiento o geometrías particulares, para evitar la materialización explícita del
+vector completo. De forma análoga, los diagramas de decisión cuánticos explotan redundancias algebraicas y simetrías que permiten representar ciertos
+estados de manera compacta.
+
+También existen técnicas basadas en partición del circuito, formulaciones tipo caminos de Feynman y esquemas híbridos espacio-tiempo, donde la memoria
+se reduce al costo de incrementar el tiempo de cómputo o de restringir la clase de circuitos que pueden tratarse eficientemente. Estas alternativas
+demuestran que el problema de memoria puede abordarse desde distintos formalismos, pero también evidencian que las ventajas obtenidas suelen depender
+de propiedades estructurales específicas del circuito o del estado.
+
+Cuando se desea conservar la representación explícita del vector de estado, otra línea de trabajo consiste en estudiar estrategias de almacenamiento
+más eficientes sobre la misma formulación Schrödinger. En ese caso, el interés teórico deja de estar en sustituir el modelo de simulación y pasa a
+concentrarse en cómo representar, transformar y recuperar los datos numéricos del estado sin alterar su significado físico.
+
+Esta distinción es importante porque no todas las técnicas de reducción de memoria persiguen el mismo objetivo. Algunas cambian la representación
+matemática del estado para aprovechar estructura; otras mantienen la misma representación y modifican únicamente la manera en que los datos se guardan,
+se recuperan o se transfieren en memoria. Diferenciar ambos enfoques ayuda a interpretar con mayor claridad las decisiones presentadas en capítulos
+posteriores.
+
+\subsection{\normalsize{Compresión de datos científicos en punto flotante}}
+
+La compresión de datos busca reducir el espacio requerido para almacenar o transmitir información. En términos generales, puede clasificarse en dos
+grandes categorías: compresión sin pérdida y compresión con pérdida. La primera garantiza la reconstrucción exacta de los datos originales tras la
+descompresión; la segunda acepta una perturbación controlada a cambio de mayores ratios de compresión.
+
+En datos científicos representados en punto flotante, la distinción entre ambos enfoques es especialmente importante. Muchas aplicaciones numéricas
+toleran errores acotados y, por ello, emplean compresión con pérdida. Sin embargo, cuando se requiere preservar exactamente los valores originales,
+solo la compresión sin pérdida resulta admisible.
+
+Los arreglos de punto flotante presentan desafíos particulares para la compresión porque con frecuencia exhiben alta entropía aparente. No obstante,
+incluso en secuencias numéricas complejas pueden existir regularidades en su representación binaria, por ejemplo en signos, exponentes o patrones a
+nivel de bytes. Por esta razón, una práctica común en compresión científica consiste en aplicar primero transformaciones reversibles que reorganicen
+los datos y, posteriormente, utilizar compresores sin pérdida de propósito general o de alta velocidad.
+
+Técnicas como \emph{shuffle} y \emph{bitshuffle} son ejemplos de este principio. Ambas reorganizan los bytes o los planos de bits de un conjunto de
+valores para hacer más visibles ciertas regularidades al compresor posterior. Este tipo de preacondicionamiento es particularmente relevante en
+arreglos homogéneos de gran tamaño, como los que aparecen en simulación numérica y cómputo científico.
+
+Desde el punto de vista conceptual, estas transformaciones no cambian el significado de los datos, sino únicamente su organización antes de comprimir.
+Su utilidad radica en que muchos compresores funcionan mejor cuando reciben secuencias con patrones repetitivos explícitos. En consecuencia, una parte
+importante del problema no depende solo del compresor elegido, sino también de cuán favorable resulta la disposición binaria de los datos para dicho
+compresor.
+
+\subsection{\normalsize{Compresión por bloques y jerarquía de memoria}}
+
+En el manejo de grandes volúmenes de datos científicos, una estrategia frecuente consiste en particionar los arreglos en bloques independientes. Este
+principio aparece en técnicas de almacenamiento, procesamiento fuera de núcleo, cachés y bibliotecas de compresión orientadas a alto desempeño. La
+motivación general es que operar sobre unidades más pequeñas permite equilibrar mejor el costo de acceso, el aprovechamiento de la localidad y el uso
+de memoria temporal.
+
+La granularidad del bloque introduce un compromiso clásico. Bloques grandes tienden a capturar más redundancia y pueden favorecer mejores ratios de
+compresión, pero suelen incrementar la latencia de acceso cuando solo una fracción pequeña de los datos es necesaria. Bloques pequeños reducen el
+costo de acceso localizado, aunque pueden degradar el rendimiento del compresor y aumentar el peso relativo del metadato y la administración.
+
+Asociado a esta idea aparece el concepto de jerarquía de memoria. En muchos sistemas de cómputo, una parte de los datos permanece en almacenamiento
+principal, mientras otra se mantiene temporalmente en niveles de acceso más rápido. Las decisiones sobre reemplazo, reutilización y permanencia de los
+datos en estos niveles intermedios se relacionan con la noción general de caché. Dentro de este marco, políticas como \emph{Least Recently Used}
+(LRU) constituyen mecanismos clásicos para explotar localidad temporal cuando el conjunto de datos activo excede la capacidad de memoria inmediata.
+
+La intuición detrás de LRU es sencilla: si un dato fue utilizado recientemente, es razonable suponer que tiene mayor probabilidad de reutilizarse en el
+corto plazo que otro que lleva más tiempo sin accederse. Por ello, cuando la capacidad disponible es limitada, la política expulsa primero el elemento
+menos recientemente utilizado. Aunque esta regla no siempre produce la decisión óptima, su fundamento coincide con un principio ampliamente aceptado en
+sistemas de memoria: muchos programas exhiben conjuntos de trabajo que permanecen activos durante intervalos acotados de ejecución.
+
+En este sentido, el valor teórico de una política como LRU no depende de una implementación particular, sino de su relación con la noción de
+localidad temporal. Comprender este vínculo facilita interpretar por qué la reutilización reciente de datos puede traducirse en menores costos de
+acceso y, en términos generales, en una mejor utilización de memoria intermedia.
+
+\subsection{\normalsize{Exactitud numérica y métricas de comparación}}
+
+La evaluación de representaciones comprimidas y no comprimidas de un mismo estado requiere distinguir entre ahorro de memoria, costo temporal y
+exactitud numérica. En cuanto a memoria, una métrica habitual es la razón de compresión:
+\[
+    CR = \frac{S_{\text{sin comp.}}}{S_{\text{comp.}}},
+\]
+donde $S_{\text{sin comp.}}$ representa el tamaño del estado en su forma no comprimida y $S_{\text{comp.}}$ el tamaño total bajo compresión.
+
+En cuanto a desempeño, resulta natural medir el tiempo total de ejecución y la sobrecarga relativa frente a una simulación equivalente sin
+compresión:
+\[
+    OH = \frac{T_{\text{comp}} - T_{\text{sin comp.}}}{T_{\text{sin comp.}}}.
+\]
+
+Cuando el objetivo es preservar exactamente las amplitudes originales, la corrección debe formularse en primer lugar como una condición de igualdad
+exacta respecto a una simulación de referencia sin compresión. En términos ideales, esto significa verificar que
+\[
+    \alpha_i^{(\text{ref})} = \alpha_i^{(\text{comp})} \quad \forall i.
+\]
+
+Esta condición expresa de forma directa el significado de una estrategia sin pérdida: el estado recuperado debe coincidir exactamente con el estado de
+referencia, no solo aproximarse a él. Cuando la simulación utiliza la misma precisión numérica y el mismo orden de operaciones, esta igualdad puede
+incluso comprobarse a nivel bit a bit.
+
+Como medida auxiliar de reporte, puede emplearse el error absoluto máximo:
+\[
+    e_{\text{abs}} = \max_i \left|\alpha_i^{(\text{ref})} - \alpha_i^{(\text{comp})}\right|.
+\]
+Esta métrica no sustituye el criterio de igualdad exacta, pero resulta útil para resumir numéricamente cualquier discrepancia en un único valor. En un
+esquema estrictamente sin pérdida se espera que $e_{\text{abs}} = 0$.
