@@ -9,7 +9,7 @@ represente como un vector de amplitudes complejas en doble precisión.
 \begin{figure}[H]
     \centering
     \caption{Arquitectura abstracta para integración de compresión sin pérdida en simuladores tipo Schrödinger}
-    \includegraphics[width=0.5\linewidth]{images/simulation-design-architecture}
+    \includegraphics[width=1\linewidth]{images/simulation-design-architecture}
     \label{fig:simulation-design-architecture}
 \end{figure}
 
@@ -72,13 +72,6 @@ que uno accedido hace muchas operaciones.
 
 Si el bloque expulsado fue modificado, debe recomprimirse antes de abandonar la caché. Si no fue modificado, puede descartarse sin costo de escritura.
 Esta distinción entre bloques limpios y sucios evita recompresiones innecesarias y reduce la sobrecarga total del sistema.
-
-\begin{figure}[H]
-    \centering
-    \caption{Esquema conceptual de la caché LRU de bloques descomprimidos}
-    \includegraphics[height=0.6\textheight]{images/simulation-design-lru}
-    \label{fig:simulation-design-lru}
-\end{figure}
 
 \subsection{Flujo de compresión y descompresión}
 

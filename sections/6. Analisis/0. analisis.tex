@@ -9,7 +9,7 @@ estrategia de acceso local utilizada durante la simulación.
 \begin{figure}[H]
     \centering
     \caption{Arquitectura del desarrollo implementado para el backend basado en Blosc}
-    \includegraphics[width=1\linewidth]{images/development-architecture}
+    \includegraphics[width=0.8\linewidth]{images/development-architecture}
     \label{fig:development-architecture}
 \end{figure}
 
@@ -84,11 +84,9 @@ evidente la necesidad de al menos dos ranuras activas y explica por qué la cach
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para una secuencia de pasos de acceso: localizar bloque, verificar caché, descomprimir, modificar, marcar como sucio y
-        eventualmente recomprimir al expulsar.}}
     \caption{Secuencia operativa del backend basado en Blosc}
-    \label{fig:development-workflow}
+    \includegraphics[height=0.9\linewidth]{images/simulation-design-lru}
+    \label{fig:simulation-design-lru}
 \end{figure}
 
 El mecanismo descrito en este capítulo establece la base operativa para medir el efecto de la
