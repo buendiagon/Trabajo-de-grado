@@ -4,40 +4,42 @@ Con el fin de elegir un simulador adecuado para integrar y evaluar compresión \
 
 \begin{table}[H]
     \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
     \vspace{-2mm}
-    \caption{\\Criterios usados para la selección del simulador cuántico} \label{tab:criterios_sim}
-    \begin{tabular}{lm{4.2cm}m{0.58\linewidth}c}
+    \caption{Criterios usados para la selección del simulador cuántico} \label{tab:criterios_sim}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{0.7cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{0.56\linewidth}>{\centering\arraybackslash}p{0.9cm}}
         \hline
         \multicolumn{1}{l}{} &
         \multicolumn{1}{c}{\textbf{Criterio}} &
         \multicolumn{1}{c}{\textbf{Explicación}} &
         \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
 
-        C1 & \centering Vector de estado apto para compresión sin pérdida &
+        C1 & Vector de estado apto para compresión sin pérdida &
         El simulador debe representar el vector de estado como arreglos contiguos de valores de punto flotante en \textbf{doble precisión} (amplitudes complejas), de manera que la compresión sin pérdida se pueda aplicar directamente sobre dicha estructura sin cambios semánticos. &
         0.10 \\
 
-        C2 & \centering Facilidad de integración de estructuras/arrays personalizados &
+        C2 & Facilidad de integración de estructuras o arreglos personalizados &
         El código debe permitir reemplazar o envolver el almacenamiento del vector de amplitudes (p.\ ej.\ insertar un contenedor comprimido) con impacto controlado en el resto del simulador. Este criterio prioriza código modular y rutas críticas identificables. &
         0.25 \\
 
-        C3 & \centering Soporte y afinidad con optimización de memoria &
+        C3 & Soporte y afinidad con optimización de memoria &
         Se valora que el simulador esté concebido para experimentar con estrategias de memoria (p.\ ej.\ compresión, poda/pruning, particionamiento o variantes del almacenamiento), reduciendo esfuerzo para insertar y validar la estrategia propuesta. &
         0.20 \\
 
-        C4 & \centering Complejidad de construcción y dependencias &
+        C4 & Complejidad de construcción y dependencias &
         Un proceso de compilación simple y pocas dependencias facilitan reproducibilidad y portabilidad de experimentos. Se penalizan toolchains complejas cuando incrementan el esfuerzo de integración e instrumentación. &
         0.10 \\
 
-        C5 & \centering Capacidad de instrumentación (tiempo/memoria) &
+        C5 & Capacidad de instrumentación (tiempo y memoria) &
         El simulador debe permitir medir de forma fina (por secciones) el consumo de memoria y el tiempo de ejecución, idealmente en puntos cercanos al acceso al vector de estado. &
         0.15 \\
 
-        C6 & \centering Cobertura funcional mínima para benchmarks &
+        C6 & Cobertura funcional mínima para casos de prueba &
         Debe ser posible ejecutar circuitos estándar de evaluación (p.\ ej.\ QFT y/o Grover) con un conjunto mínimo de compuertas, para poder comparar desempeño con y sin compresión. &
         0.10 \\
 
-        C7 & \centering Paralelismo relevante (CPU / OpenMP / MPI) &
+        C7 & Paralelismo relevante (CPU, OpenMP, MPI) &
         Se considera valioso poder evaluar la interacción compresión--paralelismo. Se prioriza soporte a OpenMP/MPI cuando el objetivo incluye escalamiento o comparación bajo concurrencia. &
         0.10 \\ \hline
     \end{tabular}

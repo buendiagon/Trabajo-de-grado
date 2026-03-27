@@ -1,0 +1,10 @@
+\subsection{Objetivos de diseño}
+
+El diseño propuesto busca satisfacer cuatro objetivos simultáneos. En primer lugar, reducir la huella de memoria del vector de estado, que crece
+exponencialmente con el número de qubits. En segundo lugar, preservar la exactitud numérica del simulador, evitando pérdidas de precisión en las
+amplitudes complejas. En tercer lugar, impedir que cada compuerta obligue a reconstruir el vector de estado completo en memoria densa. Finalmente,
+se requiere que la sobrecarga temporal introducida por la compresión permanezca controlada y pueda ser ajustada mediante parámetros de diseño.
+
+Estos objetivos conducen a una separación clara entre la lógica del simulador y la estrategia de almacenamiento. La lógica cuántica continúa
+operando sobre amplitudes complejas, compuertas y mediciones, mientras que la representación física del vector puede variar entre una forma densa
+y una forma comprimida por bloques, siempre que ambas expongan el mismo comportamiento observable.

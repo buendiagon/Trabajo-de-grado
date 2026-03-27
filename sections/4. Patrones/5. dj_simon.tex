@@ -1,8 +1,8 @@
-\subsection{Deutsch--Jozsa y Simon: superposiciones estructuradas y esparsidad}
+\subsection{Deutsch--Jozsa y Simon: estructura y esparsidad}
 \label{subsec:patrones_dj_simon}
 
 Varios algoritmos tempranos construyen superposiciones altamente estructuradas mediante oráculos e interferencia.
 
-En Deutsch--Jozsa, la computación induce cancelaciones que llevan el estado hacia un resultado fuertemente concentrado en un subconjunto pequeño de estados base (en casos ideales, un estado base dominante). Este tipo de concentración implica esparsidad (muchos ceros exactos), lo que es altamente favorable para compresión sin pérdida.
+En Deutsch--Jozsa, la interferencia inducida por el oráculo y la transformación final de Hadamard concentra la amplitud sobre un subconjunto reducido de estados base cuando la función pertenece a una de las clases consideradas por el algoritmo. Este tipo de concentración implica esparsidad o repetición exacta de amplitudes, lo que favorece la compresión sin pérdida \cite{DeutschJozsa1992, Nielsen2010}.
 
-En Simon, tras medir el registro de salida, el registro de entrada colapsa a una superposición de dos estados relacionados por una máscara secreta. Ese estado intermedio es extremadamente esparso (dos entradas no nulas) y, por tanto, muy compresible. Posteriormente, la aplicación de Hadamards produce una superposición uniforme sobre un subconjunto que satisface una condición lineal; nuevamente aparecen patrones de ceros exactos y amplitudes repetidas. Una exposición divulgativa describe este comportamiento estructurado y la naturaleza de las superposiciones restringidas en Simon \cite{gupta2025_simon}.
+En Simon, tras medir el registro de salida, el registro de entrada colapsa a una superposición de dos estados relacionados por una máscara secreta. Ese estado intermedio es extremadamente esparso y, por tanto, muy compresible. Posteriormente, la aplicación de compuertas de Hadamard produce una superposición uniforme sobre un subconjunto definido por una restricción lineal, donde reaparecen ceros exactos y amplitudes repetidas \cite{Simon1997, Nielsen2010}.

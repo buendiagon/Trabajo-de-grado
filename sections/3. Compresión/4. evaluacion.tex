@@ -3,11 +3,14 @@
 La evaluación se presenta mediante una matriz ponderada basada en los criterios de la
 Tabla \ref{tab:criterios_compresion}. La escala de 1 a 5 expresa el grado de adecuación de
 cada biblioteca frente a compresión sin pérdida de arreglos numéricos, costo temporal de
-acceso e integración práctica en software científico escrito en C/C++.
+acceso e integración práctica en software científico escrito en C/C++. Las puntuaciones se
+asignaron a partir de la documentación oficial de cada biblioteca, de sus características de
+integración y del comportamiento esperado sobre arreglos numéricos homogéneos, con el fin de
+dejar explícito el criterio usado en la selección.
 
 \begin{table}[H]
     \centering
-    \caption{\\Evaluación de bibliotecas de compresión sin pérdida (escala 1--5) y total ponderado}
+    \caption{Evaluación de bibliotecas de compresión sin pérdida (escala 1--5) y total ponderado}
     \label{tab:evaluacion_compresores}
     \begin{tabular}{lcccccc}
         \hline
@@ -34,7 +37,7 @@ acceso e integración práctica en software científico escrito en C/C++.
 Los resultados de la matriz muestran perfiles diferenciados entre las bibliotecas evaluadas. Zstd y LZ4 presentan un
 buen comportamiento general como compresores de alta velocidad, zlib conserva interés como referencia madura y
 ampliamente adoptada, y Blosc2 obtiene la mayor puntuación total por su buen balance entre costo de acceso,
-integración y adecuación a arreglos numéricos homogéneos.
+integración y adecuación a arreglos numéricos homogéneos. Esta ventaja es coherente con el panorama del estado del arte: Blosc2 no sustituye por sí mismo a los algoritmos analizados allí, pero sí ofrece una realización práctica que combina compresión por bloques, filtros reversibles tipo \emph{shuffle} y selección de códec en una interfaz directamente integrable en el simulador.
 
 \begin{figure}[H]
     \centering

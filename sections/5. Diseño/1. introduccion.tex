@@ -1,0 +1,13 @@
+Una vez seleccionado el simulador base y definida la biblioteca de compresión a emplear, el siguiente paso consiste en establecer una arquitectura
+de simulación que permita introducir compresión sin pérdida sin alterar la semántica del simulador de estado completo. En esta sección se presenta
+una propuesta de diseño en niveles de abstracción, pensada para ser reutilizable en cualquier simulador tipo Schrödinger cuyo estado cuántico se
+represente como un vector de amplitudes complejas en doble precisión.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para un diagrama general de la arquitectura propuesta, con capas de simulación lógica, almacenamiento del vector de estado,
+        gestión de compresión y orquestación de accesos.}}
+    \caption{Arquitectura abstracta para integración de compresión sin pérdida en simuladores tipo Schrödinger}
+    \label{fig:simulation-design-architecture}
+\end{figure}

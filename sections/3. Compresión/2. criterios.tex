@@ -11,43 +11,45 @@ comparadas satisfacen estas condiciones.
 
 \begin{table}[H]
     \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
     \vspace{-2mm}
-    \caption{\\Criterios para la selección de bibliotecas de compresión sin pérdida}
+    \caption{Criterios para la selección de bibliotecas de compresión sin pérdida}
     \label{tab:criterios_compresion}
-    \begin{tabular}{lm{4.1cm}m{0.62\linewidth}c}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{0.7cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{0.56\linewidth}>{\centering\arraybackslash}p{0.9cm}}
         \hline
         \multicolumn{1}{l}{} &
         \multicolumn{1}{c}{\textbf{Criterio}} &
         \multicolumn{1}{c}{\textbf{Explicación}} &
         \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
 
-        C1 & \centering Efectividad de compresión sobre arreglos numéricos &
+        C1 & Efectividad de compresión sobre arreglos numéricos &
         Se evalúa la capacidad de la biblioteca para reducir el tamaño de arreglos homogéneos de punto flotante,
         condición central en un simulador basado en vectores de estado. &
         0.25 \\
 
-        C2 & \centering Velocidad de descompresión &
+        C2 & Velocidad de descompresión &
         La recuperación rápida de datos es importante cuando los valores comprimidos deben reutilizarse durante la
         simulación. Este criterio mide qué tan favorable es la biblioteca para escenarios sensibles a la latencia
         de lectura. &
         0.20 \\
 
-        C3 & \centering Velocidad de compresión &
+        C3 & Velocidad de compresión &
         Considera el costo temporal de comprimir los datos, ya que una estrategia útil para el ahorro de memoria no
         debe introducir una penalización excesiva en el tiempo total de simulación. &
         0.15 \\
 
-        C4 & \centering Facilidad de integración e instrumentación en C/C++ &
+        C4 & Facilidad de integración e instrumentación en C/C++ &
         La biblioteca debe ofrecer una API estable, reutilizable desde el simulador y con suficiente control sobre
         parámetros operativos, buffers auxiliares y niveles de configuración, reduciendo el riesgo de integración. &
         0.15 \\
 
-        C5 & \centering Madurez y adopción &
+        C5 & Madurez y adopción &
         Se valora la estabilidad del ecosistema de la biblioteca, la disponibilidad de documentación, la adopción en
         entornos reales y la probabilidad de mantenimiento a mediano plazo. &
         0.10 \\
 
-        C6 & \centering Adecuación a datos científicos en punto flotante &
+        C6 & Adecuación a datos científicos en punto flotante &
         Para arreglos numéricos homogéneos, se valora la existencia o integración razonable de mecanismos que mejoren
         el aprovechamiento de regularidades binarias sin comprometer el carácter sin pérdida de la compresión. &
         0.15 \\

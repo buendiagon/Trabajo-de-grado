@@ -1,6 +1,6 @@
-\subsection{Implicaciones para compresión sin pérdida en simulación de estado completo}
+\subsection{Implicaciones para la compresión sin pérdida}
 \label{subsec:patrones_implicaciones}
 
 Los ejemplos anteriores sugieren una heurística práctica: algoritmos que preservan simetrías fuertes (valores repetidos), esparsidad (ceros exactos) o distribuciones con pocas categorías de amplitud tienden a ser más favorables para compresión sin pérdida. En cambio, transformaciones que producen estados densos y con amplitudes altamente variadas limitan la efectividad de compresores sin pérdida.
 
-Esta relación patrón--compresibilidad es un insumo útil para diseñar experimentos y seleccionar benchmarks representativos al evaluar técnicas de reducción de memoria en simuladores cuánticos. Resultados experimentales sobre compresión en simulación de circuitos muestran precisamente que, en presencia de estados densos y sin reglas simples de distribución, el ratio puede acercarse a 1 \cite{wu2018_sc18_aalc}, mientras que en algoritmos con alta regularidad (como Grover) pueden observarse reducciones de memoria sustanciales \cite{wu2019_fullstate}.
+Esta relación patrón--compresibilidad es un insumo útil para diseñar experimentos y seleccionar casos de prueba representativos al evaluar técnicas de reducción de memoria en simuladores cuánticos. Resultados experimentales sobre compresión en simulación de circuitos muestran precisamente que, en presencia de estados densos y sin reglas simples de distribución, el ratio puede acercarse a 1 \cite{wu2018amplitude}, mientras que en algoritmos con alta regularidad (como Grover) pueden observarse reducciones de memoria sustanciales \cite{wu2019full}.

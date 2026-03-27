@@ -1,0 +1,15 @@
+\subsection{Descompresión selectiva y estrategia de acceso}
+
+En una arquitectura densa tradicional, cualquier compuerta opera directamente sobre el arreglo completo de amplitudes. En contraste, cuando el
+estado está comprimido por bloques, la política de acceso debe asegurar que solo se materialicen en memoria densa los bloques realmente tocados por
+la operación actual. De este modo, una compuerta de uno o dos qubits no desencadena una descompresión global, sino un proceso local de adquisición
+de bloques, modificación y posterior recompresión.
+
+Esta idea conduce a una estrategia de descompresión selectiva. Cada acceso a una amplitud o a un conjunto de amplitudes se traduce en la identificación
+de los bloques involucrados. Si un bloque ya se encuentra disponible en forma descomprimida, la operación se realiza directamente sobre ese buffer.
+Si el bloque aún está almacenado en forma comprimida, primero se descomprime, se ejecuta la actualización necesaria y luego se conserva temporalmente
+en memoria de trabajo para evitar recomprimirlo de inmediato si es probable que vuelva a usarse en operaciones posteriores.
+
+Desde el punto de vista algorítmico, esta estrategia es especialmente relevante para compuertas que inducen accesos repetidos a subconjuntos del
+estado, así como para secuencias cortas de compuertas sobre qubits cercanos. En esos casos, mantener un subconjunto pequeño del vector en memoria
+descomprimida puede amortiguar el costo de las transiciones entre representación comprimida y representación densa.

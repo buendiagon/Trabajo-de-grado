@@ -1,0 +1,30 @@
+Esta sección presenta la evaluación experimental del mecanismo de almacenamiento comprimido
+integrado en el simulador. La comparación se realizó entre tres estrategias de representación
+del estado cuántico: almacenamiento no comprimido, compresión sin pérdida mediante Blosc y
+compresión con pérdida controlada mediante ZFP. El análisis se organizó sobre dos familias de
+circuitos con perfiles de acceso contrastantes al vector de estado: búsqueda de Grover y
+transformada cuántica de Fourier (QFT).
+
+La campaña experimental cubrió 22, 23 y 24 qubits. En Grover se evaluaron instancias con
+objetivo único y multiobjetivo; en QFT se estudiaron una superposición periódica y una
+superposición de alta entropía con fases aleatorias. Esta combinación permite contrastar
+casos con alta regularidad estructural frente a entradas donde la compresión dispone de poca
+redundancia explotable.
+
+Las tablas de resultados reportan memoria residente máxima, ahorro de memoria respecto a la
+referencia no comprimida, tiempo total de ejecución y tiempo relativo expresado en múltiplos
+de la referencia. En Blosc, al tratarse de una estrategia sin pérdida, el error máximo
+absoluto frente a la referencia es cero. Este resultado se obtuvo comparando amplitud por
+amplitud el vector completo exportado por la ejecución densa y el vector completo exportado
+por la ejecución con Blosc sobre la misma carga de trabajo. En ZFP, la columna de error
+reporta el máximo error absoluto medido mediante la misma comparación completa frente a la
+referencia no comprimida. En la comparación complementaria con la
+variante optimizada de Grover, en cambio, la lectura se concentra en memoria y tiempo, ya que
+el propósito de esa subsección es aislar el efecto de comprimir un esquema cuya ventaja
+principal proviene de la reducción analítica del estado.
+
+En el caso de Grover se añade una comparación complementaria con la variante de
+parametrización reducida descrita en la Sección~\ref{subsec:grover_reducido_impl}. Su
+propósito es delimitar cuánto puede reducirse el costo computacional cuando la simulación
+explota directamente la simetría global del algoritmo, más allá del efecto atribuible al
+esquema de almacenamiento.

@@ -1,0 +1,166 @@
+\subsection{Resultados para Grover}
+
+Grover fue el circuito más favorable para la compresión del estado. En los seis escenarios
+evaluados, Blosc produjo los mayores ahorros de memoria y lo hizo con un patrón muy estable a
+medida que aumentó el número de qubits. ZFP introdujo errores máximos absolutos del orden de
+$10^{-14}$, pero aun admitiendo esa pérdida controlada redujo menos memoria y presentó una
+penalización temporal mucho mayor. En consecuencia, la principal conclusión
+de esta subsección es que, dentro de la campaña experimental realizada, la alternativa más
+coherente para Grover es Blosc cuando la restricción dominante es la memoria disponible.
+
+\subsubsection{Objetivo único}
+
+La Tabla~\ref{tab:grover-single-results} resume los promedios de las tres posiciones
+evaluadas para el estado marcado: $N/8$, $N/2$ y $7N/8$. Las variaciones entre estas tres
+ubicaciones fueron pequeñas en cada tamaño, por lo que el promedio preserva adecuadamente la
+tendencia general del caso de objetivo único.
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Grover con objetivo único: promedios sobre las posiciones $N/8$, $N/2$ y $7N/8$}
+    \label{tab:grover-single-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 71.6 & 0.0 & 7.66 & 1.00 & 0 \\
+        22 & Blosc & 15.9 & 77.8 & 37.16 & 4.85 & 0 \\
+        22 & ZFP & 45.5 & 36.4 & 289.30 & 37.78 & $1.61\times 10^{-14}$ \\
+        23 & Referencia & 135.5 & 0.0 & 24.82 & 1.00 & 0 \\
+        23 & Blosc & 16.2 & 88.1 & 104.85 & 4.22 & 0 \\
+        23 & ZFP & 78.2 & 42.3 & 801.01 & 32.27 & $1.11\times 10^{-14}$ \\
+        24 & Referencia & 263.7 & 0.0 & 65.40 & 1.00 & 0 \\
+        24 & Blosc & 17.1 & 93.5 & 279.33 & 4.27 & 0 \\
+        24 & ZFP & 143.1 & 45.7 & 2274.03 & 34.77 & $8.04\times 10^{-15}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+El patrón del caso de objetivo único es claro. Blosc ahorra entre 77.8\% y 93.5\% de memoria
+frente a la referencia, y el ahorro aumenta con el número de qubits. La penalización temporal
+permanece relativamente estable, entre $4.22\times$ y $4.85\times$. ZFP también reduce la
+memoria, pero solo entre 36.4\% y 45.7\%, y lo hace con un costo temporal muy superior, entre
+$32.27\times$ y $37.78\times$. Además, el error máximo absoluto de ZFP se mantiene entre
+$8.04\times10^{-15}$ y $1.61\times10^{-14}$, es decir, en un rango muy pequeño. Sin embargo,
+incluso admitiendo ese error, ZFP no supera a Blosc ni en memoria ni en tiempo. Esto indica
+que, para Grover con objetivo único, la compresión sin pérdida ofrece la relación más
+favorable entre capacidad de ahorro y costo adicional.
+
+\subsubsection{Multiobjetivo}
+
+La Tabla~\ref{tab:grover-multi-results} reporta los resultados del caso multiobjetivo. Aunque
+la presencia de varios estados marcados reduce el número de iteraciones de Grover y con ello
+el tiempo absoluto del circuito, el patrón relativo entre estrategias permanece muy próximo al
+observado en el caso de objetivo único.
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Grover multiobjetivo con tres estados marcados}
+    \label{tab:grover-multi-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 71.6 & 0.0 & 4.46 & 1.00 & 0 \\
+        22 & Blosc & 15.9 & 77.8 & 21.68 & 4.86 & 0 \\
+        22 & ZFP & 45.3 & 36.7 & 170.16 & 38.13 & $1.61\times 10^{-14}$ \\
+        23 & Referencia & 135.6 & 0.0 & 13.77 & 1.00 & 0 \\
+        23 & Blosc & 16.2 & 88.0 & 60.54 & 4.40 & 0 \\
+        23 & ZFP & 78.3 & 42.2 & 468.60 & 34.02 & $1.11\times 10^{-14}$ \\
+        24 & Referencia & 263.7 & 0.0 & 40.53 & 1.00 & 0 \\
+        24 & Blosc & 17.3 & 93.4 & 168.84 & 4.17 & 0 \\
+        24 & ZFP & 143.3 & 45.7 & 1342.57 & 33.12 & $8.04\times 10^{-15}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+La lectura del caso multiobjetivo confirma la conclusión anterior. Blosc conserva un ahorro de
+memoria entre 77.8\% y 93.4\%, prácticamente idéntico al del objetivo único, y mantiene una
+penalización temporal cercana a $4.2\times$--$4.9\times$. ZFP vuelve a situarse en un punto
+intermedio de ahorro espacial, entre 36.7\% y 45.7\%, con sobrecostos temporales que superan
+los $33\times$ en todos los tamaños y errores máximos absolutos nuevamente del orden de
+$10^{-14}$. La diferencia principal frente al caso de objetivo único no es cualitativa, sino
+cuantitativa: la referencia no comprimida requiere menos iteraciones y por ello el tiempo
+absoluto del circuito disminuye. Desde el punto de vista comparativo, el resultado sigue
+siendo el mismo: la pequeña discrepancia numérica admitida por ZFP no se traduce en una
+ventaja práctica frente a Blosc.
+
+\subsubsection{Comparación complementaria con la variante optimizada}
+
+La variante de parametrización reducida descrita en la
+Sección~\ref{subsec:grover_reducido_impl} se evaluó como referencia complementaria para
+estimar el efecto de explotar explícitamente la simetría global de Grover. En esta
+subsección se mantiene el mismo criterio de lectura usado en el resto del capítulo: el ahorro
+de memoria y el tiempo relativo se calculan frente a la referencia no comprimida de la propia
+variante optimizada, para el mismo caso y el mismo número de qubits. En el caso de objetivo
+único, cada fila corresponde al promedio de las tres posiciones evaluadas para ese tamaño:
+$N/8$, $N/2$ y $7N/8$. Dado que el interés aquí es exclusivamente espacial y temporal, la
+tabla omite la columna de error.
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Variante optimizada de Grover con objetivo único}
+    \label{tab:grover-optimized-single}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} \\
+        \hline
+        22 & Referencia & 71.6 & 0.0 & 0.12 & 1.00 \\
+        22 & Blosc & 15.8 & 77.9 & 140.33 & 1159.78 \\
+        22 & ZFP & 38.9 & 45.7 & 1110.10 & 9174.34 \\
+        23 & Referencia & 135.6 & 0.0 & 0.22 & 1.00 \\
+        23 & Blosc & 16.1 & 88.1 & 277.28 & 1249.01 \\
+        23 & ZFP & 64.0 & 52.8 & 3052.17 & 13748.49 \\
+        24 & Referencia & 263.6 & 0.0 & 0.47 & 1.00 \\
+        24 & Blosc & 17.0 & 93.6 & 558.54 & 1189.23 \\
+        24 & ZFP & 113.2 & 57.1 & 4424.57 & 9420.66 \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Variante optimizada de Grover multiobjetivo}
+    \label{tab:grover-optimized-multi}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} \\
+        \hline
+        22 & Referencia & 71.7 & 0.0 & 0.10 & 1.00 \\
+        22 & Blosc & 15.9 & 77.9 & 35.39 & 340.26 \\
+        22 & ZFP & 39.0 & 45.6 & 279.05 & 2683.13 \\
+        23 & Referencia & 135.6 & 0.0 & 0.26 & 1.00 \\
+        23 & Blosc & 16.2 & 88.1 & 483.84 & 1890.01 \\
+        23 & ZFP & 64.1 & 52.8 & 5298.98 & 20699.15 \\
+        24 & Referencia & 263.7 & 0.0 & 0.47 & 1.00 \\
+        24 & Blosc & 17.0 & 93.5 & 551.55 & 1173.51 \\
+        24 & ZFP & 113.1 & 57.1 & 8305.50 & 17671.27 \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+La tendencia cambia de forma importante respecto a la implementación principal. Dentro de la
+variante optimizada, Blosc conserva ahorros muy altos de memoria, entre 77.9\% y 93.6\%, y
+ZFP se sitúa entre 45.6\% y 57.1\%. Sin embargo, la referencia no comprimida de esta variante
+ya ejecuta Grover en unas pocas décimas de segundo, por lo que cualquier compresión introduce
+penalizaciones temporales extremas: entre $340.26\times$ y $1890.01\times$ para Blosc, y entre
+$2683.13\times$ y $20699.15\times$ para ZFP en el caso multiobjetivo. En consecuencia, una vez
+se explota la parametrización reducida de Grover, la compresión del estado deja de ser una
+opción atractiva desde el punto de vista práctico, salvo en escenarios donde la memoria
+disponible imponga una restricción mucho más severa que el tiempo de ejecución.

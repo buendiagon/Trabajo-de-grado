@@ -1,0 +1,24 @@
+\subsection{Flujo de compresión y descompresión}
+
+La compresión propuesta se entiende como un pipeline de etapas reversibles sobre cada bloque. Primero, el bloque en doble precisión se organiza como
+un arreglo contiguo de valores. Luego puede aplicarse una transformación previa sobre la representación binaria de estos datos, por ejemplo una
+variante de \emph{shuffle} o \emph{bitshuffle}, con el objetivo de exponer regularidades entre bytes o planos de bits. Finalmente, el flujo transformado
+se entrega a un compresor sin pérdida de baja latencia.
+
+El proceso inverso ocurre solo cuando el bloque es requerido por una operación. El bloque comprimido se descomprime, se invierte la transformación
+previa y se obtiene nuevamente el arreglo denso de amplitudes listo para ser manipulado por la lógica del simulador. La clave del diseño es que esta
+secuencia solo se ejecuta sobre los bloques activos y no sobre la totalidad del vector.
+
+Para operaciones que afectan amplitudes pertenecientes a un mismo bloque, la actualización es enteramente local. Cuando la operación cruza bloques,
+la arquitectura requiere adquirir simultáneamente los bloques involucrados, descomprimir ambos, ejecutar la actualización y decidir luego cuáles
+mantener temporalmente en caché y cuáles devolver al almacenamiento comprimido. Este es el punto donde el tamaño de la caché y la granularidad de los
+bloques influyen de manera más visible sobre el costo temporal.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una figura del flujo ``adquirir bloque -- descomprimir -- modificar -- marcar como sucio -- recomprimir'' y su variante
+        para operaciones entre bloques distintos.}}
+    \caption{Flujo abstracto de acceso y actualización de bloques comprimidos}
+    \label{fig:simulation-design-flow}
+\end{figure}

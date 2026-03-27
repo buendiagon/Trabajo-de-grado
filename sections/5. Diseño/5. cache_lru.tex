@@ -1,0 +1,23 @@
+\subsection{Caché LRU de bloques descomprimidos}
+
+Para sostener la estrategia anterior se introduce una caché de bloques descomprimidos. Su función es actuar como un conjunto de trabajo temporal
+que almacena los bloques accedidos recientemente. Cuando una operación necesita un bloque, primero consulta la caché. Si el bloque está presente,
+ocurre un acierto y se evita una nueva descompresión. Si el bloque no está presente, ocurre un fallo, el bloque se recupera desde almacenamiento
+comprimido y se incorpora al conjunto de trabajo.
+
+La política de reemplazo adoptada es del tipo \emph{Least Recently Used} (LRU). Bajo esta política, cuando la caché está llena y se necesita espacio
+para un nuevo bloque, se expulsa el bloque cuyo último acceso sea el más antiguo. La elección de LRU es adecuada para este contexto porque muchas
+secuencias de compuertas presentan localidad temporal: un bloque recién usado tiene mayor probabilidad de volver a ser requerido en el corto plazo
+que uno accedido hace muchas operaciones.
+
+Si el bloque expulsado fue modificado, debe recomprimirse antes de abandonar la caché. Si no fue modificado, puede descartarse sin costo de escritura.
+Esta distinción entre bloques limpios y sucios evita recompresiones innecesarias y reduce la sobrecarga total del sistema.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para un diagrama del funcionamiento de la caché LRU, mostrando aciertos, fallos, actualización de uso reciente y expulsión
+        de bloques sucios o limpios.}}
+    \caption{Esquema conceptual de la caché LRU de bloques descomprimidos}
+    \label{fig:simulation-design-lru}
+\end{figure}

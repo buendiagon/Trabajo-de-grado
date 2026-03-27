@@ -1,0 +1,11 @@
+\subsection{Caché LRU de bloques descomprimidos}
+
+El segundo componente clave del desarrollo fue la incorporación de una caché de bloques descomprimidos. Su objetivo es mantener en memoria de trabajo
+los bloques usados recientemente, de modo que múltiples operaciones sucesivas puedan reutilizarlos sin repetir el proceso de descompresión.
+
+La política de reemplazo adoptada es LRU. Cada acceso actualiza la marca de uso reciente del bloque, y cuando la caché se llena se selecciona para
+expulsión el bloque con el acceso más antiguo. Si el bloque expulsado fue modificado, se marca como sucio y se recomprime antes de salir de la caché;
+si no hubo modificaciones, puede descartarse sin costo adicional de escritura.
+
+Desde el punto de vista de la simulación, esta decisión es importante porque muchas secuencias de compuertas reutilizan un subconjunto reducido del
+estado. En tales casos, una caché pequeña pero bien administrada puede reducir de forma significativa la frecuencia de descompresiones y recompresiones. En la realización actual, la caché actúa además como mecanismo de \emph{write-back}: los bloques modificados permanecen como sucios hasta el vaciado, evitando escrituras comprimidas prematuras durante una secuencia corta de operaciones.

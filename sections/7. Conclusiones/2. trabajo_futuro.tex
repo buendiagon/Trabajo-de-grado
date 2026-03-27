@@ -1,0 +1,35 @@
+\subsection{Trabajo futuro}
+
+Una primera línea de continuación consiste en extender la estrategia propuesta a las variantes
+paralelas de TMFQSfullstate basadas en OpenMP y MPI. Esta extensión permitiría estudiar la
+interacción entre compresión, particionamiento del vector de estado, sincronización entre
+hilos o procesos y movimiento de datos entre memorias locales y distribuidas, con el fin de
+determinar si el ahorro observado en la versión actual se mantiene en escenarios de mayor
+escala.
+
+Una segunda línea corresponde al desarrollo de un planificador de parámetros que seleccione de
+forma automática la configuración de compresión más adecuada para cada carga de trabajo. En
+el estado actual, parámetros como el tamaño de bloque, el número de entradas de caché, el
+nivel de compresión, el uso de filtros previos y el número de hilos se fijan antes de la
+ejecución. Un mecanismo adaptativo podría ajustar estas decisiones según el circuito, el
+tamaño del estado, la tasa de aciertos en caché o la compresibilidad observada durante la
+simulación.
+
+Una tercera dirección consiste en incorporar criterios de activación selectiva. Los resultados
+de QFT con alta entropía muestran que comprimir todo el vector de estado no siempre es
+beneficioso. Por ello, resulta pertinente estudiar estrategias híbridas en las que ciertos
+bloques permanezcan densos, otros se compriman y la compresión pueda desactivarse
+temporalmente cuando la redundancia del estado no compense el costo de compresión y
+descompresión.
+
+También es relevante ampliar la campaña experimental a otras familias de algoritmos y estados
+de entrada. Algoritmos variacionales, circuitos aleatorios, simulaciones de sistemas físicos
+con distinta localidad y cargas de trabajo en las que la compresibilidad cambie a lo largo de
+la ejecución permitirían caracterizar con mayor precisión los regímenes en los que la
+estrategia propuesta resulta favorable o desfavorable.
+
+Finalmente, este trabajo puede extenderse mediante la comparación con otras bibliotecas y
+políticas de almacenamiento. La evaluación de compresores sin pérdida alternativos, políticas
+de reemplazo distintas de LRU y entornos con GPU o memoria distribuida permitiría establecer
+si el equilibrio observado con Blosc responde a propiedades generales de la arquitectura
+propuesta o a particularidades de la realización concreta estudiada aquí.

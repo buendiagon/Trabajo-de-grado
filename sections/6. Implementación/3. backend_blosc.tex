@@ -1,0 +1,13 @@
+\subsection{Realización del esquema de almacenamiento comprimido con Blosc}
+
+La implementación realizada adopta Blosc2 como realización concreta de la estrategia abstracta descrita antes. El estado cuántico completo se divide
+en bloques de tamaño configurable, y cada bloque se almacena de forma comprimida. Esta organización permite que la descompresión ocurra sobre una
+unidad local y no sobre el vector completo.
+
+Una ventaja importante de esta elección es que Blosc2 proporciona soporte directo para compresión rápida por bloques, así como filtros previos que
+mejoran la compresibilidad de arreglos numéricos. En el contexto del simulador, esto se traduce en una mejor adecuación al patrón ``descomprimir
+solo lo necesario, modificar localmente y recomprimir cuando corresponda''.
+
+Además, la implementación expone parámetros de configuración relevantes para el experimento: número de estados por bloque, nivel de compresión, número de
+hilos y cantidad de entradas de caché. Estos parámetros permiten ajustar el compromiso entre uso de memoria y costo temporal, y por ello deben ser
+reportados explícitamente cuando se presenten resultados experimentales. En la versión actual del simulador, el esquema comprimido comparte la misma interfaz lógica que la representación no comprimida de referencia, de modo que operaciones como inicialización, lectura de amplitudes, exportación del estado completo y aplicación de compuertas se mantienen invariantes desde el punto de vista del usuario y del algoritmo.

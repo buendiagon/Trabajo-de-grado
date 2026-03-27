@@ -1,0 +1,9 @@
+\subsection{Alcance de la implementación}
+
+La integración se realizó sobre TMFQSfullstate, manteniendo inalterada la interfaz lógica del simulador y concentrando los cambios en la capa de
+almacenamiento del vector de estado. Esta decisión permite que las operaciones de más alto nivel sigan trabajando con amplitudes complejas, compuertas
+y mediciones, mientras que la representación física del estado puede cambiar de densa a comprimida sin afectar la semántica observable del simulador.
+
+En ese contexto, el esquema desarrollado se apoya en tres decisiones concretas. La primera es representar el estado mediante bloques de amplitudes.
+La segunda es emplear Blosc2 como biblioteca de compresión sin pérdida para cada bloque. La tercera es introducir una caché LRU de bloques
+descomprimidos para amortiguar accesos repetidos durante la aplicación de compuertas. En la implementación actual, esta organización convive con una representación no comprimida de referencia y con una variante alterna basada en ZFP, lo que permite contrastar distintas realizaciones sin modificar el nivel algorítmico del simulador.

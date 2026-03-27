@@ -1,6 +1,6 @@
-\subsection{Introducción}
+\subsection{Relación entre estructura del estado y compresibilidad}
 \label{subsec:patrones_intro}
 
 La simulación cuántica de estado completo representa el sistema mediante un vector de amplitudes complejas cuyo tamaño crece como $2^n$ (siendo $n$ el número de qubits). En este contexto, la \textit{compresibilidad} del vector depende fuertemente de los patrones numéricos que generan los algoritmos: simetrías, valores repetidos, regiones con ceros exactos o distribuciones altamente estructuradas tienden a favorecer la compresión; por el contrario, estados densos con amplitudes variadas y poco redundantes tienden a reducir la efectividad de compresores sin pérdida.
 
-En las subsecciones siguientes se describen patrones típicos de varios algoritmos conocidos y su impacto esperado en compresión de vectores de estado.
+En las subsecciones siguientes se describen patrones típicos de varios algoritmos conocidos y su impacto esperado en compresión de vectores de estado. Esta discusión cumple una función interpretativa y de selección de casos de prueba: no constituye por sí misma la validación experimental del trabajo. La contrastación empírica posterior se concentra en Grover y QFT, que representan dos regímenes estructurales suficientemente distintos para evaluar la estrategia propuesta.

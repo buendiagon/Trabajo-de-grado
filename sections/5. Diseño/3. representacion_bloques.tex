@@ -1,0 +1,19 @@
+\subsection{Representación por bloques del vector de estado}
+
+La decisión estructural principal consiste en particionar el vector de estado en bloques independientes de tamaño fijo. Cada bloque agrupa un número
+determinado de estados base consecutivos y almacena sus partes real e imaginaria como un arreglo contiguo de números en punto flotante. Esta
+organización convierte el problema global de compresión del estado completo en una colección de problemas locales sobre subarreglos más pequeños.
+
+La ventaja de esta representación es doble. Por una parte, cada bloque puede comprimirse y descomprimirse sin depender del contenido de los demás,
+lo que facilita actualizaciones localizadas. Por otra, el tamaño del bloque se convierte en un parámetro de diseño que permite balancear dos efectos
+opuestos: bloques más grandes tienden a favorecer el ratio de compresión, mientras que bloques más pequeños reducen el costo de acceso cuando solo
+una fracción del vector es requerida.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.82\linewidth}{\centering
+        Espacio reservado para una figura del vector de estado particionado en bloques, indicando el mapeo entre índices de estados base y bloques
+        comprimidos.}}
+    \caption{Particionamiento abstracto del vector de estado en bloques independientes}
+    \label{fig:simulation-design-blocks}
+\end{figure}

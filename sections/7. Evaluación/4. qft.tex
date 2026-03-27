@@ -1,0 +1,81 @@
+\subsection{Resultados para QFT}
+
+QFT mostró el comportamiento más sensible a la estructura de la entrada. Cuando el estado
+inicial presenta periodicidad, tanto Blosc como ZFP reducen memoria de forma apreciable. En
+cambio, cuando la entrada posee alta entropía y fases aleatorias, la compresión deja de ser
+ventajosa y puede empeorar simultáneamente la memoria y el tiempo de ejecución. Esta
+diferencia convierte a QFT en el caso más ilustrativo para discutir el alcance real del
+esquema propuesto.
+
+\subsubsection{Superposición periódica}
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{QFT con superposición periódica}
+    \label{tab:qft-pattern-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 73.6 & 0.0 & 0.44 & 1.00 & 0 \\
+        22 & Blosc & 35.7 & 51.4 & 1.52 & 3.48 & 0 \\
+        22 & ZFP & 19.0 & 74.2 & 2.52 & 5.75 & $3.79\times 10^{-11}$ \\
+        23 & Referencia & 139.6 & 0.0 & 1.21 & 1.00 & 0 \\
+        23 & Blosc & 34.5 & 75.3 & 3.17 & 2.61 & 0 \\
+        23 & ZFP & 25.4 & 81.8 & 5.68 & 4.68 & $3.79\times 10^{-11}$ \\
+        24 & Referencia & 271.6 & 0.0 & 2.75 & 1.00 & 0 \\
+        24 & Blosc & 92.4 & 66.0 & 6.99 & 2.54 & 0 \\
+        24 & ZFP & 45.6 & 83.2 & 12.10 & 4.41 & $3.79\times 10^{-11}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+En esta familia de entrada, ambas estrategias comprimidas logran ahorros espaciales
+apreciables. Blosc ahorra entre 51.4\% y 75.3\% de memoria y mantiene un costo temporal entre
+$2.54\times$ y $3.48\times$. ZFP amplía ese ahorro hasta el rango 74.2\%--83.2\%, pero eleva
+el tiempo a entre $4.41\times$ y $5.75\times$ la referencia e introduce un error máximo
+absoluto constante del orden de $10^{-11}$. En consecuencia, la compresión es útil en QFT
+cuando la entrada conserva periodicidad, aunque la elección entre Blosc y ZFP depende de si se
+privilegia el mayor ahorro espacial o una combinación más conservadora de tiempo y exactitud.
+
+\subsubsection{Superposición de alta entropía}
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{QFT con superposición de alta entropía}
+    \label{tab:qft-random-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 71.6 & 0.0 & 0.77 & 1.00 & 0 \\
+        22 & Blosc & 85.3 & -19.0 & 9.67 & 12.52 & 0 \\
+        22 & ZFP & 73.1 & -2.1 & 79.52 & 103.01 & $3.53\times 10^{-11}$ \\
+        23 & Referencia & 135.7 & 0.0 & 2.00 & 1.00 & 0 \\
+        23 & Blosc & 152.2 & -12.1 & 20.98 & 10.48 & 0 \\
+        23 & ZFP & 187.6 & -38.2 & 171.47 & 85.65 & $2.82\times 10^{-11}$ \\
+        24 & Referencia & 263.6 & 0.0 & 4.33 & 1.00 & 0 \\
+        24 & Blosc & 392.8 & -49.0 & 44.30 & 10.24 & 0 \\
+        24 & ZFP & 409.8 & -55.5 & 376.40 & 87.03 & $3.79\times 10^{-11}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+La situación se invierte por completo cuando la entrada presenta alta entropía. En este caso,
+ni Blosc ni ZFP ofrecen ventaja frente al almacenamiento no comprimido. El ahorro de memoria
+se vuelve negativo en todos los tamaños: Blosc introduce un sobrecosto espacial entre 12.1\%
+y 49.0\%, mientras que ZFP lo lleva hasta 55.5\%. El deterioro temporal es todavía más
+marcado, con factores entre $10.24\times$ y $12.52\times$ para Blosc y entre $85.65\times$ y
+$103.01\times$ para ZFP. Los errores de ZFP permanecen en un rango pequeño, del orden de
+$10^{-11}$, de modo que el problema no es la exactitud admitida sino la falta de compresibilidad
+del estado. Desde el punto de vista experimental, este es el resultado más importante de QFT:
+cuando el estado carece de regularidad local, la compresión del vector completo deja de ser una
+estrategia útil incluso si se tolera una pequeña discrepancia numérica.

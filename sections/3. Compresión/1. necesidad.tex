@@ -1,4 +1,4 @@
-\subsection{Motivación y contexto de selección}
+\subsection{Necesidad de seleccionar una biblioteca de compresión}
 
 Un simulador tipo Schrödinger puede
 particionar el vector de estado en bloques independientes, mantener una caché de bloques descomprimidos y
@@ -12,6 +12,8 @@ una integración eficiente en una ruta crítica de simulación cuántica. En est
 especialmente las soluciones que trabajen con bloques independientes, permitan incorporar filtros previos sobre
 datos de punto flotante y minimicen la latencia de descompresión cuando solo una fracción del vector de estado
 debe pasar temporalmente a representación densa.
+
+La distinción con respecto al capítulo de estado del arte es deliberada. Allí se revisaron algoritmos, transformaciones y familias de compresión sin pérdida para datos de punto flotante; en esta sección se comparan \emph{realizaciones software concretas} que puedan integrarse en un simulador en C/C++. Por ello aparecen bibliotecas como Blosc2, Zstd, LZ4 y zlib: no todas representan un algoritmo nuevo, pero sí distintos vehículos de implementación para materializar compresión por bloques, filtros reversibles y códecs de baja latencia dentro de la arquitectura del simulador.
 
 \begin{figure}[H]
     \centering

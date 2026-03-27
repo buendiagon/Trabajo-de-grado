@@ -1,0 +1,101 @@
+\section{Derivación de la parametrización reducida de Grover}
+\label{ap:grover_reducido}
+
+Este apéndice resume la derivación de la formulación reducida usada como punto de
+comparación para Grover en la evaluación experimental. El objetivo es mostrar, de
+forma compacta, por qué bajo las hipótesis habituales del algoritmo la dinámica ideal
+puede describirse con solo dos parámetros.
+
+Sea $W\subseteq\{0,\dots,N-1\}$ el conjunto de estados marcados por el oráculo, con
+$M=|W|$. Cuando Grover parte de la superposición uniforme y el oráculo introduce únicamente
+un cambio de fase sobre los estados de $W$, el espacio relevante de evolución puede
+describirse mediante los vectores normalizados
+\[
+\ket{w}=\frac{1}{\sqrt{M}}\sum_{x\in W}\ket{x},
+\qquad
+\ket{r}=\frac{1}{\sqrt{N-M}}\sum_{x\notin W}\ket{x}.
+\]
+El estado inicial uniforme se descompone entonces como
+\[
+\ket{s}
+=
+\frac{1}{\sqrt{N}}\sum_{x=0}^{N-1}\ket{x}
+=
+\sqrt{\frac{M}{N}}\ket{w}+\sqrt{\frac{N-M}{N}}\ket{r}.
+\]
+
+La iteración de Grover está dada por el producto del oráculo $O$ y el operador de difusión
+$D=2\ket{s}\!\bra{s}-I$. El oráculo actúa como
+\[
+O\ket{w}=-\ket{w},
+\qquad
+O\ket{r}=\ket{r},
+\]
+mientras que el operador de difusión refleja el estado respecto a la dirección $\ket{s}$.
+Como ambos operadores preservan el subespacio generado por $\{\ket{w},\ket{r}\}$, cualquier
+estado de la evolución ideal puede escribirse como
+\[
+\ket{\psi_t}=\alpha_t\ket{w}+\beta_t\ket{r}.
+\]
+
+Si se desea recuperar las amplitudes a nivel de estado base, basta definir
+\[
+u_t=\frac{\alpha_t}{\sqrt{M}},
+\qquad
+v_t=\frac{\beta_t}{\sqrt{N-M}},
+\]
+de manera que cada estado marcado tiene amplitud $u_t$ y cada estado no marcado tiene
+amplitud $v_t$. Tras aplicar el oráculo, las amplitudes pasan a ser $-u_t$ sobre $W$ y
+$v_t$ fuera de $W$. El promedio de amplitud en ese punto es
+\[
+\mu_t=\frac{-Mu_t+(N-M)v_t}{N}.
+\]
+
+El operador de difusión actúa componente a componente mediante la transformación
+$x\mapsto 2\mu_t-x$. Por tanto, para un estado marcado se obtiene
+\[
+u_{t+1}=2\mu_t-(-u_t)=2\mu_t+u_t
+=
+\frac{N-2M}{N}u_t+\frac{2(N-M)}{N}v_t,
+\]
+y para un estado no marcado
+\[
+v_{t+1}=2\mu_t-v_t
+=
+-\frac{2M}{N}u_t+\frac{N-2M}{N}v_t.
+\]
+En forma matricial,
+\[
+\begin{bmatrix}
+u_{t+1} \\
+v_{t+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{N-2M}{N} & \frac{2(N-M)}{N} \\
+-\frac{2M}{N} & \frac{N-2M}{N}
+\end{bmatrix}
+\begin{bmatrix}
+u_t \\
+v_t
+\end{bmatrix}.
+\]
+
+La evolución completa queda así reducida a una recurrencia lineal de dimensión dos. En
+consecuencia, si el objetivo es seguir la dinámica ideal de Grover bajo estas hipótesis, cada
+iteración puede resolverse actualizando solo los parámetros $u_t$ y $v_t$, en lugar de
+aplicar el oráculo y la difusión sobre las $N$ amplitudes del vector de estado. La
+reconstrucción explícita del vector completo solo es necesaria cuando se requiere materializar
+las amplitudes individuales:
+\[
+a_x^{(t)}=
+\begin{cases}
+u_t, & x\in W,\\
+v_t, & x\notin W.
+\end{cases}
+\]
+
+Esta reducción depende de que la preparación inicial, el oráculo y la dinámica posterior
+preserven la igualdad de amplitud dentro de las clases marcada y no marcada. Por ello, se
+trata de una optimización específica para Grover y no de un sustituto de un esquema general de
+simulación o almacenamiento.

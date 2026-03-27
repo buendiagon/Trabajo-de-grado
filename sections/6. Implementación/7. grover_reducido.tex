@@ -1,0 +1,35 @@
+\subsection{Optimización específica para Grover mediante parametrización reducida}
+\label{subsec:grover_reducido_impl}
+
+Además del esquema general basado en bloques, se incorporó una variante especializada para las
+familias de Grover consideradas en la evaluación. Esta variante aprovecha que, con
+preparación uniforme y un conjunto fijo de estados marcados, la evolución ideal conserva dos
+clases de amplitud: una común a los estados marcados y otra común a los estados no marcados.
+
+En lugar de materializar el vector completo de tamaño $N$, la simulación mantiene únicamente
+las amplitudes representativas de ambas clases, denotadas $u_t$ y $v_t$, junto con el valor
+de $M$, número de estados marcados. La actualización de una iteración completa de Grover se
+reduce entonces a la recurrencia
+\[
+\begin{bmatrix}
+u_{t+1} \\
+v_{t+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{N-2M}{N} & \frac{2(N-M)}{N} \\
+-\frac{2M}{N} & \frac{N-2M}{N}
+\end{bmatrix}
+\begin{bmatrix}
+u_t \\
+v_t
+\end{bmatrix},
+\]
+equivalente a una actualización de dimensión constante determinada únicamente por $N$ y $M$.
+La derivación de esta expresión se detalla en el Apéndice~\ref{ap:grover_reducido}.
+
+Esta optimización no reemplaza el esquema comprimido general ni constituye una alternativa general de
+almacenamiento para otros circuitos. Su validez depende de que el algoritmo preserve la
+simetría entre estados marcados y no marcados; por esa razón se utilizó como comparación
+complementaria en Grover, donde permite estimar el beneficio adicional que puede obtenerse al
+explotar directamente la estructura matemática del circuito.

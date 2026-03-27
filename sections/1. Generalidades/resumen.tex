@@ -1,6 +1,6 @@
 \section*{Resumen}
 
-\textbf{Título:} \tit\footnote{Trabajo de Investigación}
+\textbf{Título:} \tit\footnote{Trabajo de grado}
 
 \textbf{Autores:} \nam\footnote{\fac.\ \esc.\\ Director: \tdir\ \dir, Codirector: \tcdir\ \cdir }
 
@@ -10,13 +10,13 @@
 
 La simulación de sistemas cuánticos en hardware clásico enfrenta una limitación severa debido al crecimiento exponencial en la memoria requerida. A medida que aumenta el número de qubits, la cantidad de datos a almacenar supera rápidamente las capacidades de las computadoras convencionales y supercomputadoras. Esta restricción impide la exploración de algoritmos cuánticos avanzados y dificulta la validación de experimentos en entornos clásicos antes de su ejecución en hardware cuántico. Por ello, es fundamental desarrollar estrategias eficientes de gestión de memoria que permitan extender el alcance de estas simulaciones sin comprometer la exactitud numérica de los cálculos.
 A pesar de los avances en simuladores cuánticos y técnicas de optimización, la gestión de memoria sigue siendo un cuello de botella significativo. En particular, muchas soluciones actuales sacrifican exactitud a cambio de eficiencia, lo que limita su aplicabilidad en contextos donde la precisión es fundamental. Por ello, es necesario explorar estrategias que reduzcan el consumo de memoria sin comprometer la corrección de los resultados.
-Este trabajo propone el diseño e implementación de una estrategia de compresión de memoria sin pérdida de precisión en simuladores cuánticos, con el objetivo de encontrar un balance óptimo entre uso de memoria, rendimiento y exactitud numérica. Al final, se espera evaluar la viabilidad de la propuesta y compararla con otros enfoques existentes mediante métricas de memoria, tiempo y error respecto a una ejecución densa de referencia.
+Este trabajo diseñó e implementó una estrategia de compresión de memoria sin pérdida de precisión para simuladores cuánticos tipo Schrödinger. La estrategia se integró en TMFQSfullstate mediante particionamiento por bloques, descompresión selectiva, caché LRU de bloques activos y uso de Blosc2 como biblioteca de compresión. La evaluación experimental, realizada sobre Grover y QFT entre 22 y 24 qubits, mostró que la utilidad de la compresión depende de la estructura del estado: en cargas con alta regularidad se obtuvieron ahorros sustanciales de memoria preservando igualdad exacta frente a la referencia no comprimida, mientras que en estados de alta entropía la compresión dejó de ser conveniente. En conjunto, los resultados establecen que la compresión sin pérdida es una alternativa viable cuando la memoria es la restricción dominante y el estado conserva redundancia explotable.
 
 \newpage
 
 \section*{Abstract}
 
-\textbf{Title:} {Optimization of memory management in quantum simulators through data\\ compression without loss of precision}\footnote{Research Work}
+\textbf{Title:} {Optimization of memory management in quantum simulators through data\\ compression without loss of precision}\footnote{Degree Thesis}
 
 \textbf{Authors:} \nam\footnote{Faculty of Physics-Mechanics Engineering. School of Systems Engineering and Computer
 Science.\\ Advisor: \tdir\ \dir, Co-Advisor: \tcdir\ \cdir }
@@ -27,6 +27,6 @@ Science.\\ Advisor: \tdir\ \dir, Co-Advisor: \tcdir\ \cdir }
 
 The simulation of quantum systems on classical hardware faces a severe limitation due to the exponential growth in memory requirements. As the number of qubits increases, the amount of data to be stored quickly exceeds the capabilities of conventional computers and supercomputers. This restriction hinders the exploration of advanced quantum algorithms and complicates the validation of experiments in classical environments before their execution on quantum hardware. Therefore, it is crucial to develop efficient memory management strategies that extend the scope of these simulations without compromising numerical exactness.
 Despite advances in quantum simulators and optimization techniques, memory management remains a significant bottleneck. In particular, many current solutions trade accuracy for efficiency, limiting their applicability in contexts where exact results are crucial. Therefore, it is necessary to explore strategies that reduce memory consumption without compromising the correctness of the simulation.
-This work proposes the design and implementation of a lossless memory compression strategy for quantum simulators, aiming to find an optimal balance between memory usage, performance, and numerical exactness. Ultimately, the feasibility of the proposal will be evaluated and compared with existing approaches using memory, runtime, and error metrics against a dense reference execution.
+This work designed and implemented a lossless memory-compression strategy for Schrödinger-style quantum simulators. The strategy was integrated into TMFQSfullstate through block partitioning, selective decompression, an LRU cache of active blocks, and Blosc2 as the compression library. The experimental campaign, conducted on Grover and QFT circuits from 22 to 24 qubits, showed that compression usefulness depends on state structure: highly regular workloads achieved substantial memory savings while preserving exact equality against the uncompressed reference, whereas high-entropy states made compression impractical. Overall, the results establish lossless compression as a viable alternative when memory is the dominant constraint and the simulated state preserves exploitable redundancy.
 
 \newpage

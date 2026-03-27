@@ -24,20 +24,22 @@
   title     = {Amplitude-Aware Lossy Compression for Quantum Circuit Simulation},
   booktitle = {Proceedings of the 4th International Workshop on Data Reduction for Big Scientific Data (DRBSD-4) at SC18},
   year      = {2018},
-  publisher = {IEEE}
+  publisher = {IEEE},
+  url       = {https://sc18.supercomputing.org/proceedings/workshops/workshop_files/ws_drbsd112s1-file1.pdf}
 }
 
 @misc{song2023mera,
-  author       = {Song, Yuhong and Li, Zicheng and Wu, Jian},
+  author       = {Song, Yuhong and Sha, Edwin Hsing-Mean and Xu, Longshan and Zhuge, Qingfeng and Shao, Zili},
   title        = {Mera: Memory Reduction and Acceleration for Quantum Circuit Simulation via Redundancy Exploration},
-  year         = {2023},
+  year         = {2024},
   archivePrefix= {arXiv},
   eprint       = {2411.15332},
   primaryClass = {quant-ph},
+  doi          = {10.48550/arXiv.2411.15332},
   url          = {https://arxiv.org/abs/2411.15332}
 }
 
-@misc{diaz2024software,
+@article{diaz2024software,
   author       = {Díaz, Gilberto and Steffenel, Luiz Angelo and Barrios, Carlos Jaime and Couturier, Jean-François},
   title        = {How to Build a Software Quantum Simulator},
   year         = {2024},
@@ -100,7 +102,7 @@
 @misc{Pednault2017,
   title = {Pareto-Efficient Quantum Circuit Simulation Using Tensor Contraction Deferral},
   author = {Edwin Pednault and John A. Gunnels and Giacomo Nannicini and Lior Horesh and Thomas Magerlein and Edgar Solomonik and Erik W. Draeger and Eric T. Holland and Robert Wisnieff},
-  year={2020},
+  year={2017},
   eprint={1710.05867},
   archivePrefix={arXiv},
   primaryClass={quant-ph},
@@ -181,14 +183,14 @@
   year    = {2024}
 }
 
-@misc{Li2023,
-  author       = {Shaowen Li and Yusuke Kimura and Hiroyuki Sato and Junwei Yu and Masahiro Fujita},
-  title        = {Parallelizing quantum simulation with decision diagrams},
-  year         = {2023},
-  archivePrefix= {arXiv},
-  eprint       = {2312.01570},
-  primaryClass = {quant-ph},
-  url          = {https://arxiv.org/abs/2312.01570},
+@article{Li2023,
+  author  = {Li, Shaowen and Kimura, Yusuke and Sato, Hiroyuki and Yu, Junwei and Fujita, Masahiro},
+  title   = {Parallelizing Quantum Simulation With Decision Diagrams},
+  journal = {IEEE Transactions on Quantum Engineering},
+  year    = {2024},
+  volume  = {5},
+  pages   = {1--14},
+  url     = {https://tqe.ieee.org/2024/02/09/parallelizing-quantum-simulation-with-decision-diagrams/}
 }
 
 @misc{Chen2018,
@@ -222,6 +224,18 @@
   archivePrefix= {arXiv},
   eprint       = {quant-ph/0403114},
   url          = {https://arxiv.org/abs/quant-ph/0403114},
+}
+
+@article{Viamontes2003,
+  author  = {Viamontes, George F. and Markov, Igor L. and Hayes, John P.},
+  title   = {Improving Gate-Level Simulation of Quantum Circuits},
+  journal = {Quantum Information Processing},
+  year    = {2003},
+  volume  = {2},
+  number  = {5},
+  pages   = {347--380},
+  doi     = {10.1023/B:QINP.0000022725.70000.4a},
+  url     = {https://deepblue.lib.umich.edu/handle/2027.42/45525}
 }
 
 @inproceedings{Miller2006,
@@ -291,17 +305,6 @@
   publisher = {Nature Publishing Group}
 }
 
-@misc{zhang2024breakmemory,
-  title     = {Overcoming Memory Constraints in Quantum Circuit Simulation with a High-Fidelity Compression Framework},
-  author    = {Zhang, Boyuan and Fang, Bo and Ye, Fanjiang and Gu, Yida and Tallent, Nathan and Tan, Guangming and Tao, Dingwen},
-  year={2024},
-  eprint={2410.14088},
-  archivePrefix={arXiv},
-  primaryClass={cs.DC},
-  url={https://arxiv.org/abs/2410.14088},
-}
-
-
 @article{burtscher2009fpc,
 author  = {Burtscher, Martin and Ratanaworabhan, Paruj},
 title   = {FPC: A High-Speed Compressor for Double-Precision Floating-Point Data},
@@ -345,15 +348,6 @@ eprint        = {2506.18062},
 primaryClass  = {cs.DB},
 doi           = {10.48550/arXiv.2506.18062},
 url           = {https://arxiv.org/abs/2506.18062}
-}
-
-@inproceedings{Wu2019FullStateCompression,
-  author    = {Wu, Xin-Chuan and Di, Sheng and Dasgupta, Emma Maitreyee and Cappello, Franck and Finkel, Hal and Alexeev, Yuri and Chong, Frederic T.},
-  title     = {Full-State Quantum Circuit Simulation by Using Data Compression},
-  year      = {2019},
-  note      = {arXiv:1911.04034 (versi\'on revisada en 2020)},
-  url       = {https://arxiv.org/pdf/1911.04034},
-  urldate   = {2026-01-20}
 }
 
 @online{LZ4Repo,
@@ -404,136 +398,124 @@ url           = {https://arxiv.org/abs/2506.18062}
   urldate   = {2026-01-20}
 }
 
-@online{StarRocksCompression,
-  author    = {{StarRocks Documentation}},
-  title     = {Data compression},
-  year      = {n.d.},
-  url       = {https://docs.starrocks.io/docs/table_design/data_compression/},
-  urldate   = {2026-01-20}
-}
-
-@online{MaskRay2025Benchmark,
-  author    = {{MaskRay}},
-  title     = {Benchmarking compression programs},
-  year      = {2025},
-  month     = aug,
-  day       = {31},
-  url       = {https://maskray.me/blog/2025-08-31-benchmarking-compression-programs},
-  urldate   = {2026-01-20}
-}
-
-@online{UChicagoQuantumCompression2020,
-  author    = {{Department of Computer Science, University of Chicago}},
-  title     = {EPiQC Researchers Simulate 61-Bit Quantum Computer With Data Compression},
-  year      = {2020},
-  month     = jan,
-  day       = {13},
-  url       = {https://cs.uchicago.edu/news/quantum-compression/},
-  urldate   = {2026-01-20}
-}
-
-@online{RedditZFSZstdVsLz4,
-  author    = {{r/zfs}},
-  title     = {zstd has a worse compression ratio than lz4. Why?},
-  year      = {2024},
-  url       = {https://www.reddit.com/r/zfs/comments/1ajwyis/zstd_has_a_worse_compression_ratio_than_lz4_why/},
-  urldate   = {2026-01-20}
-}
-
 @misc{tmfqs_repo,
-  title        = {TMFQSfullstate: Prototype Quantum Computing Simulator (full state vector)},
-  author       = {D\'iaz Toro, Gilberto Javier},
-  year         = {2024},
-  howpublished = {GitHub repository}
-}
-
-@article{diaz_preprint_buildsim,
-  title   = {How to Build a Software Quantum Simulator},
-  author  = {D{\'i}az, G. J.},
-  year    = {2024},
-  journal = {Preprints.org},
-  note    = {Incluye escenarios full-state con OpenMP, MPI y compresi\'on}
+  author       = {{Gilberto D{\'i}az} and {Jorge Saul} and {Daniel Gonz{\'a}lez Buend{\'i}a} and {Javier Sarmiento}},
+  title        = {buendiagon/TMFQSfullstate: v1.0.0},
+  year         = {2026},
+  howpublished = {Zenodo software release},
+  version      = {v1.0.0},
+  doi          = {10.5281/zenodo.19268085},
+  url          = {https://doi.org/10.5281/zenodo.19268085},
+  note         = {Source code archive of the TMFQSfullstate simulator}
 }
 
 @article{diaz_mdpi_mmss,
-  title   = {Memory Management Strategies for Software Quantum State Simulation},
-  author  = {D{\'i}az, G.},
+  title   = {Memory Management Strategies for Software Quantum Simulators},
+  author  = {D{\'i}az, Gilberto and Steffenel, Luiz and Barrios, Carlos and Couturier, Jean},
   year    = {2025},
-  journal = {MDPI},
+  journal = {Quantum Reports},
   volume  = {7},
   number  = {3},
   pages   = {41},
-  note    = {Describe estrategias de memoria y referencia al prototipo TMFQS}
-}
-
-@misc{quest_doc,
-  title        = {The Quantum Exact Simulation Toolkit (QuEST) Documentation},
-  howpublished = {Project documentation website}
+  doi     = {10.3390/quantum7030041},
+  url     = {https://www.mdpi.com/2624-960X/7/3/41}
 }
 
 @misc{quest_repo,
+  author       = {{QuEST-Kit contributors}},
   title        = {QuEST: Quantum Exact Simulation Toolkit},
-  howpublished = {GitHub repository}
+  howpublished = {GitHub repository},
+  url          = {https://github.com/QuEST-Kit/QuEST},
+  urldate      = {2026-03-27}
 }
 
 @misc{intelqs_doc,
+  author       = {{Intel-QS project}},
   title        = {Intel Quantum Simulator (Intel-QS) Documentation},
-  howpublished = {ReadTheDocs}
+  howpublished = {ReadTheDocs},
+  url          = {https://intel-qs.readthedocs.io/en/docs/getting-started.html},
+  urldate      = {2026-03-27}
 }
 
 @misc{qsim_repo,
+  author       = {{quantumlib contributors}},
   title        = {qsim: Fast C++ and Python library for state-vector simulation of quantum circuits},
-  howpublished = {GitHub repository}
+  howpublished = {GitHub repository},
+  url          = {https://github.com/quantumlib/qsim},
+  urldate      = {2026-03-27}
 }
 
 @misc{qsim_cirq,
-  title        = {qsim Cirq Interface Documentation},
-  howpublished = {Quantum AI documentation}
+  author       = {{Google Quantum AI}},
+  title        = {qsimcirq Python Reference},
+  howpublished = {Official documentation},
+  url          = {https://quantumai.google/reference/python/qsimcirq},
+  urldate      = {2026-03-27}
+}
+
+@misc{qiskit_aer_doc,
+  author       = {{Qiskit Development Team}},
+  title        = {Qiskit Aer Documentation},
+  howpublished = {Official documentation},
+  year         = {2025},
+  url          = {https://qiskit.github.io/qiskit-aer/},
+  urldate      = {2026-03-27}
 }
 
 @article{qpp_paper,
   title   = {Quantum++: A modern C++ quantum computing library},
   author  = {Gheorghiu, Vlad},
   year    = {2018},
-  journal = {PLOS ONE}
+  journal = {PLOS ONE},
+  volume  = {13},
+  number  = {12},
+  pages   = {e0208073},
+  doi     = {10.1371/journal.pone.0208073},
+  url     = {https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208073}
 }
 
-@misc{pennylane_grover,
-  author       = {{PennyLane}},
-  title        = {Grover's Algorithm | PennyLane Demos},
-  howpublished = {Web tutorial},
-  year         = {2023},
-  note         = {Accedido: 2026-01-26},
-  url          = {https://pennylane.ai/qml/demos/tutorial_grovers_algorithm}
+@inproceedings{Grover1996,
+  author    = {Grover, Lov K.},
+  title     = {A Fast Quantum Mechanical Algorithm for Database Search},
+  booktitle = {Proceedings of the Twenty-Eighth Annual ACM Symposium on Theory of Computing},
+  pages     = {212--219},
+  year      = {1996},
+  doi       = {10.1145/237814.237866},
+  url       = {https://dl.acm.org/doi/10.1145/237814.237866}
 }
 
-@inproceedings{wu2018_sc18_aalc,
-  author       = {Wu, Xin-Chuan and Di, Sheng and others},
-  title        = {Amplitude-Aware Lossy Compression for Quantum Circuit Simulation},
-  booktitle    = {SC18 Workshops (DRBSD)},
-  year         = {2018},
-  note         = {Accedido: 2026-01-26},
-  url          = {https://sc18.supercomputing.org/proceedings/workshops/workshop_files/ws_drbsd112s1-file1.pdf}
+@article{Simon1997,
+  author  = {Simon, Daniel R.},
+  title   = {On the Power of Quantum Computation},
+  journal = {SIAM Journal on Computing},
+  volume  = {26},
+  number  = {5},
+  pages   = {1474--1483},
+  year    = {1997},
+  doi     = {10.1137/S0097539796298637},
+  url     = {https://doi.org/10.1137/S0097539796298637}
 }
 
-@article{wu2019_fullstate,
-  author       = {Wu, Xin-Chuan and Di, Sheng and Dasgupta, Emma Maitreyee and Cappello, Franck and Finkel, Hal and Alexeev, Yuri and Chong, Frederic T.},
-  title        = {Full-State Quantum Circuit Simulation by Using Data Compression},
-  journal      = {arXiv},
-  year         = {2019},
-  eprint       = {1911.04034},
-  archivePrefix= {arXiv},
-  primaryClass = {quant-ph},
-  note         = {Accedido: 2026-01-26},
-  url          = {https://arxiv.org/abs/1911.04034}
+@article{DeutschJozsa1992,
+  author  = {Deutsch, David and Jozsa, Richard},
+  title   = {Rapid Solution of Problems by Quantum Computation},
+  journal = {Proceedings of the Royal Society of London. Series A: Mathematical and Physical Sciences},
+  volume  = {439},
+  number  = {1907},
+  pages   = {553--558},
+  year    = {1992},
+  doi     = {10.1098/rspa.1992.0167},
+  url     = {https://doi.org/10.1098/rspa.1992.0167}
 }
 
-@misc{gupta2025_simon,
-  author       = {Gupta, Nagendra},
-  title        = {Simon's Algorithm: Cracking the Hidden Code},
-  howpublished = {Medium (The Quantum Ladder)},
-  year         = {2025},
-  month        = dec,
-  note         = {Accedido: 2026-01-26},
-  url          = {https://medium.com/the-quantum-ladder/simons-algorithm-cracking-the-hidden-code-f55c2d9c293e}
+@article{Szablowski2021,
+  author  = {Szab{\l}owski, Pawe{\l} J.},
+  title   = {Understanding Mathematics of Grover's Algorithm},
+  journal = {Quantum Information Processing},
+  volume  = {20},
+  number  = {5},
+  pages   = {182},
+  year    = {2021},
+  doi     = {10.1007/s11128-021-03125-w},
+  url     = {https://doi.org/10.1007/s11128-021-03125-w}
 }

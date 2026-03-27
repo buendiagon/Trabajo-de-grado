@@ -1,0 +1,42 @@
+\subsection{Comparación global de estrategias}
+
+La lectura conjunta de Grover y QFT permite identificar dos tendencias generales dentro de la
+campaña experimental realizada. La primera es que la compresión resulta útil solo cuando el
+estado conserva suficiente regularidad estructural. La segunda es que, dentro de ese régimen
+favorable, Blosc ofrece la relación más equilibrada entre ahorro de memoria y sobrecarga
+temporal, mientras que ZFP solo resulta competitivo en escenarios específicos y a costa de
+introducir un error numérico pequeño pero no nulo.
+
+\begin{table}[H]
+    \centering
+    \small
+    \caption{Síntesis comparativa frente al almacenamiento no comprimido}
+    \label{tab:summary-results}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3.3cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{2cm}}
+        \hline
+        \textbf{Carga de trabajo} & \textbf{Blosc: ahorro (\%)} & \textbf{Blosc: tiempo (x)} & \textbf{ZFP: ahorro (\%)} & \textbf{ZFP: tiempo (x)} & \textbf{ZFP: error} \\
+        \hline
+        Grover, objetivo único & 77.8 a 93.5 & 4.22 a 4.85 & 36.4 a 45.7 & 32.27 a 37.78 & $8.04\times10^{-15}$ a $1.61\times10^{-14}$ \\
+        Grover, multiobjetivo & 77.8 a 93.4 & 4.17 a 4.86 & 36.7 a 45.7 & 33.12 a 38.13 & $8.04\times10^{-15}$ a $1.61\times10^{-14}$ \\
+        QFT, superposición periódica & 51.4 a 75.3 & 2.54 a 3.48 & 74.2 a 83.2 & 4.41 a 5.75 & $3.79\times10^{-11}$ \\
+        QFT, alta entropía & -49.0 a -12.1 & 10.24 a 12.52 & -55.5 a -2.1 & 85.65 a 103.01 & $2.82\times10^{-11}$ a $3.79\times10^{-11}$ \\
+        \hline
+    \end{tabular}
+\end{table}
+
+La evidencia experimental muestra que Grover constituye un escenario ampliamente favorable
+para la compresión sin pérdida. En este circuito, Blosc ahorra más de 77\% de memoria en todos
+los tamaños y supera 93\% en 24 qubits, con un costo temporal cercano a $4\times$. ZFP
+introduce errores máximos absolutos del orden de $10^{-14}$, pero aun con esa tolerancia
+reduce menos memoria y exige sobrecostos temporales superiores a $30\times$, por lo que su
+ventaja práctica resulta claramente inferior dentro de esta campaña.
+
+QFT obliga a matizar esa lectura. Cuando la entrada es periódica, ambos compresores siguen
+siendo útiles: Blosc aporta una mejor relación entre ahorro y tiempo, mientras que ZFP logra
+el mayor ahorro espacial a costa de errores del orden de $10^{-11}$ y de una penalización
+temporal mayor. Sin embargo, cuando la entrada presenta alta entropía, la compresión fracasa
+como estrategia general: el ahorro de memoria se vuelve negativo y el tiempo de ejecución crece
+de forma muy pronunciada incluso en ZFP, pese a que el error admitido sigue siendo pequeño. En
+este sentido, la evaluación delimita con claridad que la conveniencia de comprimir el vector de
+estado no depende solo del circuito, sino de la estructura concreta del estado que debe
+representarse.

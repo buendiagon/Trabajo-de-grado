@@ -1,10 +1,10 @@
 \subsection{Matriz de evaluación ponderada}
 
-Se aplicó una matriz de decisión ponderada para evaluar cada alternativa según los criterios de la tabla \ref{tab:criterios_sim}. La calificación se asignó en una escala discreta de 1 a 5, donde 5 indica cumplimiento excelente del criterio y 1 un cumplimiento deficiente para los objetivos de integración e instrumentación de compresión sin pérdida.
+Se aplicó una matriz de decisión ponderada para evaluar cada alternativa según los criterios de la tabla \ref{tab:criterios_sim}. La calificación se asignó en una escala discreta de 1 a 5, donde 5 indica cumplimiento excelente del criterio y 1 un cumplimiento deficiente para los objetivos de integración e instrumentación de compresión sin pérdida. Cada puntaje se definió a partir de la documentación técnica disponible, de las publicaciones asociadas a cada simulador y de la estructura de integración descrita para el vector de estado, de modo que la matriz funcione como un mecanismo de decisión trazable y no como una preferencia ad hoc.
 
 \begin{table}[H]
 \centering
-\caption{\\Evaluación de alternativas (escala 1--5) y total ponderado} \label{tab:evaluacion_sim}
+\caption{Evaluación de alternativas (escala 1--5) y total ponderado} \label{tab:evaluacion_sim}
 \begin{tabular}{lcccccc}
 \hline
 \multicolumn{1}{c}{\textbf{Criterio}} &
@@ -29,4 +29,4 @@ C7 & 0.10 & 4 & 5 & 5 & 4 & 3 \\
 \end{tabular}
 \end{table}
 
-Los resultados muestran que, aunque QuEST, Intel-QS y qsim ofrecen excelente cobertura funcional y paralelismo, la elección para este trabajo debe priorizar el costo de modificación del almacenamiento del vector de estado y la instrumentación cercana a rutas críticas. Bajo ese objetivo, TMFQSfullstate obtiene el mayor puntaje global, principalmente por C2, C3 y C5.
+Los resultados muestran que, aunque QuEST, Intel-QS y qsim ofrecen excelente cobertura funcional y paralelismo, la decisión de este trabajo prioriza la capacidad de intervención experimental sobre el almacenamiento del vector de estado y la instrumentación cercana a rutas críticas. Bajo ese objetivo, TMFQSfullstate obtiene el mayor puntaje global, principalmente por C2, C3 y C5.

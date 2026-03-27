@@ -11,7 +11,11 @@
 % \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
 
-\usepackage{hyperref}
+\usepackage[
+    plainpages=false,
+    pdfpagelabels,
+    hyperfootnotes=false
+]{hyperref}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -231,6 +235,6 @@
 }
 
 
-\newcommand*{\glosario}[2][]{\noindent \textbf{{#1}}: {#2} \\}
+\newcommand*{\glosario}[2][]{\noindent \textbf{{#1}}: {#2}\par}
 
 \newcommand*{\citeautoryear}[1]{\citeauthor{#1} \citeyear{#1}}

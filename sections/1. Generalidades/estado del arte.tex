@@ -1,6 +1,6 @@
-\section{Estado del Arte}
+\section{Estado del arte}
 
-\subsection{\normalsize Simuladores Cuánticos}
+\subsection{\normalsize Simuladores cuánticos}
 La simulación clásica de circuitos cuánticos es esencial para el desarrollo y
 validación de algoritmos cuánticos. Sin embargo, el principal desafío radica
 en la representación del estado cuántico, cuyo tamaño crece exponencialmente con
@@ -18,20 +18,24 @@ exponencialmente, restringiendo su aplicabilidad a ciertos algoritmos.
 A medida que se buscaban métodos más generales, surgió la simulación tipo
 \textit{Schrödinger}, que almacena el vector de estado completo y lo actualiza
 en cada operación cuántica. Este enfoque, empleado en simuladores como QuEST y
-Qiskit Aer \cite{Li2023}, garantiza alta precisión y permite simular cualquier
+Qiskit Aer \cite{Jones2019, qiskit_aer_doc}, garantiza alta precisión y permite simular cualquier
 circuito cuántico. Su desventaja principal es la extrema demanda de memoria, la
-cual crece exponencialmente con el número de qubits, alcanzando 0.5 petabytes
-para 45 qubits y varios exabytes para 50 qubits \cite{Pednault2017}.
+cual crece exponencialmente con el número de qubits: una simulación de 45 qubits
+ya ha requerido 0.5 petabytes de memoria \cite{Haner2017}, y al extender esta
+representación de doble precisión a 50 qubits el costo pasa al orden de decenas de
+petabytes.
 
 Para mitigar el problema de memoria, se desarrollaron métodos basados en
-partición del circuito y caminos de Feynman. Por ejemplo, Google e IBM
-utilizaron esta técnica para simular circuitos de hasta 56 qubits con
-profundidad limitada \cite{Chen2018}. Sin embargo, aunque reducen el
+partición del circuito y caminos de Feynman. Por ejemplo, Chen y cols.\
+presentaron un algoritmo distribuido capaz
+de calcular amplitudes de salida y simular circuitos universales de hasta
+$12\times12$ qubits con profundidad moderada sin materializar el estado completo
+\cite{Chen2018}. Sin embargo, aunque reducen el
 almacenamiento requerido, estos métodos incrementan la complejidad computacional,
 ya que el número de caminos crece exponencialmente con la profundidad del
 circuito.
 
-\subsection{\normalsize Compresión de Memoria con Pérdida de Precisión}
+\subsection{\normalsize Compresión de memoria con pérdida de precisión}
 Dado que la representación exacta de estados cuánticos es ineficiente en términos
 de memoria, se han explorado técnicas de compresión con pérdida de precisión. Estos
 enfoques sacrifican una pequeña cantidad de fidelidad numérica a cambio de una
@@ -51,7 +55,7 @@ En un esfuerzo por maximizar la escala de la simulación cuántica de estado
 completo, \textcite{zhang2024bmqsim} presentaron \emph{BMQSim}, un marco que
 extiende \emph{SV-Sim} mediante el uso de \textbf{compresores con pérdida de
 precisión y control de error punto a punto} ejecutados directamente en GPU (por
-ejemplo, variantes de la familia SZ/cuSZ)\cite{zhang2024breakmemory}. Su diseño
+ejemplo, variantes de la familia SZ/cuSZ)\cite{zhang2024bmqsim}. Su diseño
 combina:
 \begin{itemize}
     \item Una estrategia de \textit{circuit partitioning} que disminuye la
@@ -97,7 +101,7 @@ distribuido} resulta más fiable y escalable que la \textit{poda de estados de
 baja probabilidad}, la cual presenta descensos de fidelidad y sobrecarga adicional
 que la hacen desaconsejable.
 
-\subsection{\normalsize{Compresión de Memoria sin Pérdida de Precisión}}
+\subsection{\normalsize{Compresión de memoria sin pérdida de precisión}}
 La simulación cuántica eficiente requiere reducir el consumo de memoria sin
 comprometer la fidelidad del estado cuántico. Para ello, se han desarrollado
 técnicas de compresión sin pérdida de precisión que buscan representar estados
@@ -105,7 +109,7 @@ y operadores cuánticos de manera más compacta sin alterar sus valores.
 
 Uno de los primeros enfoques en esta dirección fue el uso de diagramas de decisión
 cuánticos (\textit{Quantum Information Decision Diagrams}, QuIDD),
-introducidos por \textcite{Viamontes2005}. Este método permite representar
+introducidos por \textcite{Viamontes2003}. Este método permite representar
 vectores de estado y operadores unitarios aprovechando redundancias
 estructurales en sus coeficientes, lo que permite una representación más eficiente
 en memoria. Su ventaja radica en que, para circuitos con alta redundancia, el
@@ -144,7 +148,7 @@ a la exploración de otros métodos para optimizar el uso de memoria.
 
 \subsection{\normalsize{Algoritmos de compresión sin pérdida de precisión}}
 
-En simulaciones científicas y cuánticas es común manejar vectores de estado representados como grandes arreglos de números de punto flotante. Cuando estos datos carecen de correlación temporal o patrones estructurales (es decir, presentan alta entropía o \emph{aleatoriedad}), la compresión sin pérdida se vuelve especialmente desafiante. Muchos algoritmos de compresión de punto flotante aprovechan transiciones suaves o redundancias entre valores consecutivos; por ejemplo, técnicas de serie temporal almacenan solo los bits que difieren entre un valor y el siguiente, explotando que a menudo los valores sucesivos comparten prefijos de bits iguales. Sin embargo, en datos altamente aleatorios, estas suposiciones se rompen y tales métodos tienden a no lograr compresión significativa. Por lo tanto, es crucial identificar y seleccionar algoritmos de compresión sin pérdida que sean efectivos para datos de punto flotante con estas características. A continuación, se describen los principales algoritmos que han sido concebidos para este tipo de datos, analizando su funcionamiento, rendimiento y pertinencia para ser implementados y evaluados en el contexto de este trabajo de grado, con el fin de encontrar un balance óptimo entre el ahorro de memoria y la eficiencia computacional.
+En simulaciones científicas y cuánticas es común manejar vectores de estado representados como grandes arreglos de números de punto flotante. Cuando estos datos carecen de correlación temporal o patrones estructurales (es decir, presentan alta entropía o \emph{aleatoriedad}), la compresión sin pérdida se vuelve especialmente desafiante. Muchos algoritmos de compresión de punto flotante aprovechan transiciones suaves o redundancias entre valores consecutivos; por ejemplo, técnicas de serie temporal almacenan solo los bits que difieren entre un valor y el siguiente, explotando que a menudo los valores sucesivos comparten prefijos de bits iguales. Sin embargo, en datos altamente aleatorios, estas suposiciones se rompen y tales métodos tienden a no lograr compresión significativa. Por ello, conviene distinguir entre el nivel \emph{algorítmico}, donde se ubican predictores, transformaciones y códecs, y el nivel de \emph{realización software}, donde dichos mecanismos aparecen empaquetados en bibliotecas utilizables desde un simulador en C/C++. A continuación, se describen los principales algoritmos concebidos para este tipo de datos; la sección de selección posterior traduce este panorama conceptual a alternativas concretas de integración.
 
 \subsubsection{FPC (Burtscher \& Ratanaworabhan)}
 
@@ -156,11 +160,11 @@ Esta estrategia implica que, si el valor predicho es cercano al real, la diferen
 
 \textit{FPZIP}\cite{lindstrom2006fpzip} es un compresor de propósito específico para arreglos de punto flotante. Su enfoque se basa en la \emph{predicción adaptativa} y la \emph{codificación entrópica} eficiente para lograr compresión sin pérdida en múltiples contextos (mallas no estructuradas, volúmenes 3D, imágenes, etc.). Internamente, FPZIP aplica esquemas de predicción multidimensional (por ejemplo, predictores que aprovechan la continuidad espacial de los datos científicos) y luego comprime únicamente el error de predicción. A diferencia de métodos que cuantizan los flotantes a enteros, FPZIP opera directamente sobre las representaciones IEEE 754, manteniendo exactitud bit a bit.
 
-Su arquitectura soporta predictores ajustables al tipo de datos: por ejemplo, en un campo volumétrico 3D puede usar un predictor basado en valores vecinos, mientras que en una serie temporal podría usar extrapolación simple. Tras la predicción, FPZIP emplea un modelo de codificación entrópica optimizado para velocidad, que comprime los residuos de manera eficaz. Esta combinación le permite alcanzar tasas de compresión y velocidades competitivas, acelerando la E/S de simulaciones científicas al reducir el volumen de datos sin sacrificar precisión. En contextos de datos altamente aleatorios, donde las predicciones en su mayoría fallan, FPZIP tiende a comportarse como un compresor genérico pero con ventajas sutiles: incluso en ausencia de correlación temporal, puede explotar patrones locales dentro de la representación en coma flotante (p. ej., regularidades en campos de exponentes o signos comunes) que los algoritmos genéricos pasan por alto al tratar los datos solo como bytes crudos. Para vectores de estado cuántico, si bien los amplitudes pueden lucir aleatorios, FPZIP podría aprovechar distribuciones no uniformes de ciertos bits (por ejemplo, exponentes repetidos), logrando compresiones modestas con un rendimiento robusto.
+Su arquitectura soporta predictores ajustables al tipo de datos: por ejemplo, en un campo volumétrico 3D puede usar un predictor basado en valores vecinos, mientras que en una serie temporal podría usar extrapolación simple. Tras la predicción, FPZIP emplea un modelo de codificación entrópica optimizado para velocidad, que comprime los residuos de manera eficaz. Esta combinación le permite alcanzar tasas de compresión y velocidades competitivas, acelerando la E/S de simulaciones científicas al reducir el volumen de datos sin sacrificar precisión. En contextos de datos altamente aleatorios, donde las predicciones en su mayoría fallan, FPZIP tiende a comportarse como un compresor genérico pero con ventajas sutiles: incluso en ausencia de correlación temporal, puede explotar patrones locales dentro de la representación en coma flotante (p. ej., regularidades en campos de exponentes o signos comunes) que los algoritmos genéricos pasan por alto al tratar los datos solo como bytes crudos. Para vectores de estado cuántico, si bien las amplitudes pueden parecer aleatorias, FPZIP podría aprovechar distribuciones no uniformes de ciertos bits, por ejemplo exponentes repetidos, logrando compresiones modestas con un rendimiento robusto.
 
 \subsubsection{Filtro Bitshuffle con LZ4 (Masui et al.)}
 
-Una estrategia distinta para afrontar datos de punto flotante sin patrones evidentes es emplear transformaciones previas que revelen posibles regularidades a nivel de bits. \textit{Bitshuffle}\cite{masui2015bitshuffle} es un algoritmo de preprocesamiento sin pérdida que extiende el filtro \emph{byte-shuffle} al nivel de \emph{bit}. En lugar de reordenar solo los bytes de cada número (como hace el filtro \emph{shuffle} de HDF5), Bitshuffle realiza una \emph{transposición bit a bit} de una matriz de valores: considera la representación binaria de $N$ números de $m$ bits (por ejemplo, $m{=}32$ para flotantes en simple precisión) como una matriz de $N\times m$, y reorganiza la data tomando columnas de bits completas. Tras esta permuta, aplica una compresión LZ (usualmente LZ4) sobre la secuencia resultante.
+Una estrategia distinta para afrontar datos de punto flotante sin patrones evidentes es emplear transformaciones previas que revelen posibles regularidades a nivel de bits. \textit{Bitshuffle}\cite{masui2015bitshuffle} es un algoritmo de preprocesamiento sin pérdida que extiende el filtro \emph{byte-shuffle} al nivel de \emph{bit}. En lugar de reordenar solo los bytes de cada número, Bitshuffle realiza una \emph{transposición bit a bit} de una matriz de valores: considera la representación binaria de $N$ números de $m$ bits (por ejemplo, $m{=}32$ para flotantes en simple precisión) como una matriz de $N\times m$, y reorganiza los datos tomando columnas de bits completas. Tras esta permuta, aplica una compresión LZ, usualmente LZ4, sobre la secuencia resultante.
 
 El fundamento es que, incluso si los valores originales parecen aleatorios, puede haber \emph{correlaciones ocultas} dentro de ciertos planos de bits. Por ejemplo, en datos científicos muchos valores comparten el mismo exponente o presentan bits altos similares, lo que tras Bitshuffle se manifiesta como secuencias repetitivas (\emph{runs} de ceros o unos) más fáciles de comprimir mediante LZ4. A diferencia de métodos predictivos, Bitshuffle no asume continuidad entre elementos adyacentes; su efectividad radica en convertir cualquier correlación intra-byte (dentro de la representación binaria de cada valor) en redundancias horizontales a lo largo de la secuencia transformada. En datos de alta entropía pura (bits totalmente aleatorios), Bitshuffle no puede crear patrones donde no los hay; con todo, en vectores de estado cuántico puede explotar pequeñas irregularidades: si los qubits están normalizados, muchos amplitudes comparten signos o exponentes comunes, generando columnas de bits constantes que LZ4 comprime muy bien. En la práctica, Bitshuffle+LZ4 logra relaciones de compresión superiores a compresores genéricos en escenarios científicos sin reducción de precisión, a la vez que mantiene velocidades de descompresión del orden de gigabytes por segundo por núcleo.
 
@@ -168,9 +172,9 @@ El fundamento es que, incluso si los valores originales parecen aleatorios, pued
 
 Una innovación reciente en compresión de flotantes es la \textit{Transformación de Datos Tipados} (TDT)\cite{jamalidinan2025tdt}, concebida para cerrar la brecha entre compresores genéricos y especializados en punto flotante. TDT no es un compresor en sí, sino una etapa de \emph{preprocesamiento} adaptable que reorganiza los bytes de los datos antes de aplicar un compresor convencional (p. ej., Zstd o LZ4). La idea clave es agrupar y separar los bytes según su \emph{nivel de entropía} y patrones estadísticos, en lugar de tratarlos uniformemente. En una representación IEEE 754, distintos campos (signo, exponente, mantisa) pueden poseer distribuciones diferentes; por ejemplo, en muchas series científicas los bytes de exponente tienden a repetirse más que los bytes de mantisa. TDT analiza el conjunto de datos (en bloques) extrayendo características estadísticas de cada posición de byte (entropía media, desviación, frecuencias de valores) y aplica \emph{clustering} para decidir cuáles bytes se comportan de forma similar. Luego \emph{reordena} la matriz de datos colocando juntos los bytes de comportamientos afines y separando los de entropía distinta. Esto produce flujos de datos más homogéneos que, al ser alimentados a un compresor genérico, permiten una codificación más eficiente.
 
-Importante: TDT no altera ningún bit de la información (es totalmente reversible), solo cambia su disposición para exponer patrones que antes estaban enmascarados. En el contexto de vectores de estado cuántico —que suelen ser casos límite de alta aleatoriedad— TDT buscaría, por ejemplo, si ciertos bytes de mantisa comparten distribuciones o si el byte de exponente tiene menor entropía debido a normalizaciones. Incluso si los datos son mayormente aleatorios, esta técnica puede detectar \emph{no uniformidades} sutiles entre componentes y agruparlas para facilitar su compresión. Resulta particularmente atractiva como capa previa porque ofrece un equilibrio: en \emph{datasets} de baja entropía conserva beneficios de modelos flotantes (predicciones locales), y en \emph{datasets} de alta entropía se comporta como un reordenamiento que potencia a los compresores genéricos, habilitando ganancias modestas de compresión y mejoras de rendimiento en los \emph{throughputs} de compresión y descompresión.
+TDT no altera ningún bit de la información; se trata de una transformación reversible cuya utilidad consiste en exponer patrones que antes estaban enmascarados por la disposición original de los datos. En el contexto de vectores de estado cuántico, donde la aleatoriedad aparente puede ser alta, esta técnica buscaría si ciertos bytes de mantisa comparten distribuciones o si el byte de exponente presenta menor entropía debido a normalizaciones. Incluso cuando los datos son mayormente aleatorios, el método puede detectar no uniformidades sutiles entre componentes y reagruparlas para facilitar la compresión. Por ello, resulta una alternativa interesante como capa previa: en conjuntos de baja entropía conserva ventajas de los modelos para punto flotante y, en conjuntos de alta entropía, actúa como un reordenamiento que puede mejorar de forma moderada el rendimiento de compresión y descompresión.
 
-\subsection{\normalsize{Otros Métodos de Optimización de Memoria}}
+\subsection{\normalsize{Otros métodos de optimización de memoria}}
 Además de la compresión sin pérdida, se han desarrollado enfoques alternativos
 para reducir el consumo de memoria en simuladores cuánticos, incluyendo
 técnicas basadas en redes tensoriales, poda de estados y optimización HPC.
@@ -201,12 +205,10 @@ de supercomputación.
 
 Finalmente, como se analizó previamente, la tesis doctoral de \textcite{DiazToro2025}
 introduce técnicas de compresión con pérdida de precisión en esquemas distribuidos
-de simulación cuántica. Si bien su propuesta constituye un hito en la
-reducción del consumo de memoria mediante bibliotecas como ZFP y SZ, el presente
-trabajo se orienta en una dirección distinta: se retoman fundamentos como el
-uso de vectores de estado y paralelismo distribuido con \emph{MPI}, pero se
-propone como contribución original la exploración de técnicas de compresión
-\textbf{sin pérdida de precisión}. Esta línea de trabajo, no abordada en dicha
-tesis, busca preservar la fidelidad numérica total durante la simulación, evaluando
-el impacto empírico de algoritmos de compresión científica sin pérdida en el contexto
-de computación cuántica.
+de simulación cuántica. Este antecedente resulta especialmente relevante porque
+consolida el uso de bibliotecas científicas de compresión, vectores de estado y
+paralelismo distribuido con \emph{MPI} como una línea válida para reducir consumo
+de memoria en simulación cuántica. Al mismo tiempo, deja visible un espacio de
+estudio complementario: evaluar hasta qué punto técnicas de compresión
+\textbf{sin pérdida de precisión} pueden aportar reducciones útiles de memoria sin
+introducir discrepancias numéricas en el estado simulado.

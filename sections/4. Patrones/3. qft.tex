@@ -1,4 +1,4 @@
-\subsection{Transformada Cuántica de Fourier: patrones de fase y baja redundancia}
+\subsection{Transformada cuántica de Fourier: variación de fase y baja redundancia}
 \label{subsec:patrones_qft}
 
 La Transformada Cuántica de Fourier (QFT) aplicada a un estado base $\ket{k}$ produce una superposición con magnitudes uniformes pero fases dependientes del índice. En su forma ideal, la amplitud de cada componente $\ket{x}$ puede expresarse como:
@@ -7,4 +7,4 @@ a_x = \frac{1}{\sqrt{N}} e^{\frac{2\pi i k x}{N}},
 \]
 lo cual implica que, aunque la magnitud sea constante, las partes real e imaginaria varían de forma oscilatoria con $x$.
 
-Desde la perspectiva de almacenamiento, este comportamiento tiende a generar arreglos \textit{densos} donde la mayoría de entradas son no nulas y muchas de ellas difieren entre sí. En consecuencia, la redundancia directa (por repetición exacta) suele ser baja para compresión estrictamente sin pérdida. En un estudio de integración de compresión en simulación cuántica se observa que, a medida que avanza un circuito QFT, el ratio de compresión puede caer desde valores altos en etapas iniciales hasta valores cercanos a 1 (poca o nula compresión efectiva) en etapas finales \cite{wu2018_sc18_aalc}. Este comportamiento ilustra que los estados generados por QFT pueden ser un caso exigente para compresión sin pérdida, especialmente cuando el circuito densifica el vector de estado.
+Desde la perspectiva de almacenamiento, este comportamiento tiende a generar arreglos \textit{densos} donde la mayoría de entradas son no nulas y muchas de ellas difieren entre sí. En consecuencia, la redundancia directa (por repetición exacta) suele ser baja para compresión estrictamente sin pérdida. En un estudio de integración de compresión en simulación cuántica se observa que, a medida que avanza un circuito QFT, el ratio de compresión puede caer desde valores altos en etapas iniciales hasta valores cercanos a 1 (poca o nula compresión efectiva) en etapas finales \cite{wu2018amplitude}. Este comportamiento ilustra que los estados generados por QFT pueden ser un caso exigente para compresión sin pérdida, especialmente cuando el circuito densifica el vector de estado.

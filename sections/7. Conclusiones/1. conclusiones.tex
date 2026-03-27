@@ -1,0 +1,46 @@
+\subsection{Conclusiones}
+
+Este trabajo abordó el problema del crecimiento exponencial de memoria en simuladores
+cuánticos tipo Schr\"odinger mediante el diseño e integración de una estrategia de
+almacenamiento comprimido sin pérdida de precisión. La estrategia se materializó en una
+arquitectura basada en particionamiento por bloques, descompresión selectiva, caché LRU de
+bloques activos e integración de Blosc2 en la capa de almacenamiento de TMFQSfullstate. Con
+ello fue posible modificar la representación física del vector de estado sin alterar la
+semántica observable del simulador ni la exactitud numérica de las amplitudes.
+
+Los resultados experimentales muestran que la utilidad de la compresión depende de la
+estructura efectiva del estado cuántico. En los casos de Grover, caracterizados por una alta
+regularidad, la estrategia basada en Blosc produjo ahorros de memoria entre 77.8\% y 93.5\%
+en el rango evaluado de 22 a 24 qubits, con una penalización temporal relativamente estable,
+del orden de $4\times$ respecto a la referencia no comprimida. En QFT con superposición
+periódica también se obtuvieron reducciones apreciables de memoria, aunque menores que en
+Grover y con una relación memoria--tiempo más sensible a la estructura de la entrada. En
+cambio, para QFT con superposición de alta entropía la compresión dejó de ser conveniente:
+el ahorro de memoria se volvió negativo y el tiempo de ejecución aumentó de forma marcada.
+
+El contraste con ZFP permite delimitar con mayor precisión el aporte específico de la
+estrategia sin pérdida. En Grover, ZFP introdujo errores máximos absolutos del orden de
+$10^{-14}$, pero aun así redujo menos memoria y exigió sobrecostos temporales muy superiores a
+los de Blosc. En QFT con entrada periódica, ZFP sí logró mayores ahorros espaciales, aunque al
+precio de errores del orden de $10^{-11}$ y de una penalización temporal más alta. En QFT con
+alta entropía, ni siquiera la admisión de esa pequeña discrepancia numérica bastó para volver
+útil la compresión: el ahorro de memoria se volvió negativo y el tiempo de ejecución aumentó
+de forma muy marcada. En contraste, Blosc preservó igualdad exacta frente a la referencia no
+comprimida en todos los experimentos reportados y ofreció el mejor equilibrio entre ahorro de
+memoria y sobrecarga temporal cuando el estado conservó patrones favorables para la
+compresión.
+
+Desde la perspectiva de los objetivos del trabajo, la evaluación confirmó que la compresión
+sin pérdida puede desplazar el límite práctico de memoria sin introducir discrepancias en el
+estado simulado, siempre que la carga de trabajo conserve suficiente regularidad estructural.
+También mostró que la compresión no constituye una solución universal: su conveniencia está
+condicionada por la compresibilidad del estado y por el patrón de acceso inducido por el
+circuito. Esta conclusión se refuerza con la variante de parametrización reducida para
+Grover, donde la explotación directa de la estructura matemática del algoritmo supera de
+forma amplia a cualquier estrategia general de compresión sobre el vector completo.
+
+En conjunto, la evidencia obtenida muestra que la compresión sin pérdida no reemplaza a las
+optimizaciones algorítmicas específicas ni constituye una solución universal para cualquier
+circuito. Su aporte es más preciso y, por ello, más útil: ampliar el rango de simulaciones
+posibles en entornos donde la memoria es la restricción dominante, siempre que el estado
+cuántico conserve redundancia explotable y se requiera preservar exactamente las amplitudes.

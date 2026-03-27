@@ -1,8 +1,16 @@
-\subsection{Búsqueda de Grover: amplitudes uniformes y estados de baja entropía}
+\subsection{Búsqueda de Grover: uniformidad y baja entropía}
 \label{subsec:patrones_grover}
 
-Grover inicia preparando una superposición uniforme sobre $N=2^n$ estados base, usualmente aplicando compuertas de Hadamard a cada qubit. En esa preparación ideal, todas las amplitudes tienen el mismo valor (magnitud constante), por lo que el vector de estado queda compuesto por un único valor repetido $N$ veces, un caso altamente favorable para compresión sin pérdida \cite{pennylane_grover}.
+Grover inicia preparando una superposición uniforme sobre $N=2^n$ estados base, usualmente aplicando compuertas de Hadamard a cada qubit. En esa preparación ideal, todas las amplitudes tienen el mismo valor (magnitud constante), por lo que el vector de estado queda compuesto por un único valor repetido $N$ veces, un caso altamente favorable para compresión sin pérdida \cite{Grover1996, Szablowski2021}.
 
 Tras cada iteración (oráculo + difusión), la estructura permanece altamente regular: cuando existe un único elemento marcado, el vector puede describirse con dos categorías principales de amplitud (una asociada al estado marcado y otra común al resto de estados no marcados). Esta simetría reduce el número de valores distintos en el vector, lo cual incrementa la redundancia explotable por compresión.
 
-De manera empírica, se ha reportado que la compresión permite escalar simulaciones de Grover significativamente más allá de lo que permitiría almacenar el vector sin comprimir. Por ejemplo, Wu y cols.\ muestran una reducción drástica del requerimiento de memoria para una simulación de Grover de 61 qubits al combinar técnicas de compresión con ejecución en supercomputación \cite{wu2019_fullstate}.
+La misma simetría admite una reducción más fuerte cuando el objetivo es simular únicamente la evolución ideal de Grover con un conjunto fijo de estados marcados. Si $W$ denota el conjunto de estados objetivo y $M=|W|$, el estado puede expresarse en el subespacio generado por
+\[
+\ket{w}=\frac{1}{\sqrt{M}}\sum_{x\in W}\ket{x},
+\qquad
+\ket{r}=\frac{1}{\sqrt{N-M}}\sum_{x\notin W}\ket{x},
+\]
+de modo que en cada iteración basta actualizar dos parámetros globales en lugar de las $N$ amplitudes individuales. Esta observación no sustituye una estrategia general de almacenamiento, pero sí muestra que la estructura algorítmica de Grover permite optimizaciones adicionales cuando se preserva la igualdad de amplitud dentro de las clases marcada y no marcada. La derivación correspondiente se presenta en el Apéndice~\ref{ap:grover_reducido}.
+
+De manera empírica, se ha reportado que la compresión permite escalar simulaciones de Grover significativamente más allá de lo que permitiría almacenar el vector sin comprimir. Por ejemplo, Wu y cols.\ muestran una reducción drástica del requerimiento de memoria para una simulación de Grover de 61 qubits al combinar técnicas de compresión con ejecución en supercomputación \cite{wu2019full}.
