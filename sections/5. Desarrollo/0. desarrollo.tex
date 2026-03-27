@@ -8,10 +8,8 @@ represente como un vector de amplitudes complejas en doble precisión.
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para un diagrama general de la arquitectura propuesta, con capas de simulación lógica, almacenamiento del vector de estado,
-        gestión de compresión y orquestación de accesos.}}
     \caption{Arquitectura abstracta para integración de compresión sin pérdida en simuladores tipo Schrödinger}
+    \includegraphics[width=0.5\linewidth]{images/simulation-design-architecture}
     \label{fig:simulation-design-architecture}
 \end{figure}
 
@@ -39,10 +37,8 @@ una fracción del vector es requerida.
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para una figura del vector de estado particionado en bloques, indicando el mapeo entre índices de estados base y bloques
-        comprimidos.}}
     \caption{Particionamiento abstracto del vector de estado en bloques independientes}
+    \includegraphics[width=1\linewidth]{images/simulation-design-blocks}
     \label{fig:simulation-design-blocks}
 \end{figure}
 
@@ -79,10 +75,8 @@ Esta distinción entre bloques limpios y sucios evita recompresiones innecesaria
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para un diagrama del funcionamiento de la caché LRU, mostrando aciertos, fallos, actualización de uso reciente y expulsión
-        de bloques sucios o limpios.}}
     \caption{Esquema conceptual de la caché LRU de bloques descomprimidos}
+    \includegraphics[height=0.6\textheight]{images/simulation-design-lru}
     \label{fig:simulation-design-lru}
 \end{figure}
 
