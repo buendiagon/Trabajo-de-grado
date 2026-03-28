@@ -13,12 +13,3 @@ Para operaciones que afectan amplitudes pertenecientes a un mismo bloque, la act
 la arquitectura requiere adquirir simultáneamente los bloques involucrados, descomprimir ambos, ejecutar la actualización y decidir luego cuáles
 mantener temporalmente en caché y cuáles devolver al almacenamiento comprimido. Este es el punto donde el tamaño de la caché y la granularidad de los
 bloques influyen de manera más visible sobre el costo temporal.
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para una figura del flujo ``adquirir bloque -- descomprimir -- modificar -- marcar como sucio -- recomprimir'' y su variante
-        para operaciones entre bloques distintos.}}
-    \caption{Flujo abstracto de acceso y actualización de bloques comprimidos}
-    \label{fig:simulation-design-flow}
-\end{figure}

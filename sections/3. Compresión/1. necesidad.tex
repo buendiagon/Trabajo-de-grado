@@ -14,12 +14,3 @@ datos de punto flotante y minimicen la latencia de descompresión cuando solo un
 debe pasar temporalmente a representación densa.
 
 La distinción con respecto al capítulo de estado del arte es deliberada. Allí se revisaron algoritmos, transformaciones y familias de compresión sin pérdida para datos de punto flotante; en esta sección se comparan \emph{realizaciones software concretas} que puedan integrarse en un simulador en C/C++. Por ello aparecen bibliotecas como Blosc2, Zstd, LZ4 y zlib: no todas representan un algoritmo nuevo, pero sí distintos vehículos de implementación para materializar compresión por bloques, filtros reversibles y códecs de baja latencia dentro de la arquitectura del simulador.
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.82\linewidth}{\centering
-        Espacio reservado para una figura comparando el flujo general de almacenamiento denso frente a almacenamiento
-        por bloques comprimidos.}}
-    \caption{Contraste conceptual entre almacenamiento denso y almacenamiento por bloques comprimidos}
-    \label{fig:compression-context-placeholder}
-\end{figure}
