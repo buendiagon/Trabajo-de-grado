@@ -14,9 +14,23 @@ evidente la necesidad de mantener al menos dos bloques activos y explica por qu�
 
 \begin{figure}[H]
     \centering
-    \caption{Secuencia operativa del esquema basado en Blosc}
-    \includegraphics[width=0.6\textwidth]{images/development-workflow.png}
-    \label{fig:development-workflow}
+    \caption{Flujo de ejecución para compuertas locales sobre un único bloque}
+    \includegraphics[width=1\textwidth]{images/development-workflow-a.png}
+    \label{fig:development-workflow-a}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Flujo de ejecución para compuertas que operan entre bloques}
+    \includegraphics[width=1\textwidth]{images/development-workflow-b.png}
+    \label{fig:development-workflow-b}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Flujo de persistencia diferida y escritura en backend comprimido}
+    \includegraphics[width=1\textwidth]{images/development-workflow-c.png}
+    \label{fig:development-workflow-c}
 \end{figure}
 
 La misma infraestructura permite exportar el vector completo de amplitudes una vez finaliza la ejecución del circuito. Esta capacidad resulta esencial para la validación del trabajo, ya que permite contrastar la representación comprimida frente a la referencia no comprimida sobre exactamente la misma instancia experimental y verificar si la igualdad de amplitudes se preserva o, en el caso con pérdida, cuantificar la discrepancia introducida.
