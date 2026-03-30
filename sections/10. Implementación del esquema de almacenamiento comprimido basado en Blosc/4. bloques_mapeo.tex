@@ -1,0 +1,22 @@
+\subsection{Disposición en bloques y mapeo del vector de estado}
+
+La partición del vector de estado se materializó mediante la clase
+\texttt{ChunkLayout}, encargada de establecer la correspondencia entre índices lógicos
+del arreglo de amplitudes y bloques físicos del backend comprimido. A través de esta
+clase se determina cuántos bloques componen el vector, cuántos estados almacena cada
+uno y cuál es la referencia local de una amplitud dentro del bloque al que pertenece.
+
+Este mapeo cumple una función central dentro de la implementación. Por una parte,
+encapsula la granularidad del almacenamiento, evitando que otras partes del sistema
+deban reconstruir manualmente la relación entre estados y bloques. Por otra, asegura un
+tratamiento homogéneo tanto para bloques completos como para el bloque final, cuya
+cantidad efectiva de amplitudes puede diferir del tamaño nominal cuando el número total
+de estados no es múltiplo exacto del tamaño de bloque.
+
+En términos operativos, el backend no trabaja con el vector completo como un único
+buffer comprimido, sino con una secuencia indexada de fragmentos. Cada consulta o
+modificación sobre una amplitud pasa primero por \texttt{ChunkLayout}, que resuelve el
+bloque correspondiente y la posición local del estado dentro de él. Gracias a esta
+mediación, el backend puede trabajar sobre una secuencia de fragmentos indexados y no
+sobre un arreglo monolítico, lo que simplifica la recuperación localizada y la escritura
+posterior de los datos.

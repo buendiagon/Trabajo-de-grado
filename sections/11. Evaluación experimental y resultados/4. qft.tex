@@ -1,0 +1,96 @@
+\subsection{Resultados para QFT}
+
+% A diferencia de Grover, QFT mostró un comportamiento fuertemente dependiente de la estructura
+% del estado de entrada. Esta subsección es particularmente importante porque permite delimitar
+% el alcance real del esquema propuesto: cuando la entrada conserva regularidades, la
+% compresión puede ser útil; cuando predomina una estructura de alta entropía, esa utilidad
+% desaparece e incluso puede invertirse. Por ello, QFT constituye el caso más ilustrativo para
+% discutir las condiciones bajo las cuales la compresión del vector de estado resulta
+% conveniente.
+
+\subsubsection{Superposición periódica}
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{QFT con superposición periódica}
+    \label{tab:qft-pattern-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 73.6 & 0.0 & 0.44 & 1.00 & 0 \\
+        22 & Blosc & 35.7 & 51.4 & 1.52 & 3.48 & 0 \\
+        22 & ZFP & 19.0 & 74.2 & 2.52 & 5.75 & $3.79\times 10^{-11}$ \\
+        23 & Referencia & 139.6 & 0.0 & 1.21 & 1.00 & 0 \\
+        23 & Blosc & 34.5 & 75.3 & 3.17 & 2.61 & 0 \\
+        23 & ZFP & 25.4 & 81.8 & 5.68 & 4.68 & $3.79\times 10^{-11}$ \\
+        24 & Referencia & 271.6 & 0.0 & 2.75 & 1.00 & 0 \\
+        24 & Blosc & 92.4 & 66.0 & 6.99 & 2.54 & 0 \\
+        24 & ZFP & 45.6 & 83.2 & 12.10 & 4.41 & $3.79\times 10^{-11}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+% Cuando la entrada presenta periodicidad, ambas estrategias comprimidas logran reducciones de
+% memoria apreciables. Blosc ahorra entre 51.4\% y 75.3\% y mantiene un costo temporal entre
+% $2.54\times$ y $3.48\times$ respecto a la referencia. ZFP incrementa aún más el ahorro, hasta
+% el rango 74.2\%--83.2\%, pero lo hace a costa de una penalización temporal mayor, entre
+% $4.41\times$ y $5.75\times$, e introduce un error máximo absoluto constante del orden de
+% $10^{-11}$.
+
+% Estos resultados muestran que, en QFT, la compresión puede ser útil si el estado de entrada
+% conserva una organización suficientemente regular. Sin embargo, también evidencian que la
+% elección entre Blosc y ZFP depende del criterio de optimización dominante. Si se privilegia la
+% exactitud exacta junto con un compromiso más equilibrado entre memoria y tiempo, Blosc resulta
+% más conveniente. Si se prioriza el mayor ahorro espacial y se acepta una pequeña discrepancia
+% numérica, ZFP puede ofrecer una ventaja puntual.
+
+\subsubsection{Superposición de alta entropía}
+
+\begin{table}[H]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{QFT con superposición de alta entropía}
+    \label{tab:qft-random-results}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
+        \hline
+        22 & Referencia & 71.6 & 0.0 & 0.77 & 1.00 & 0 \\
+        22 & Blosc & 85.3 & -19.0 & 9.67 & 12.52 & 0 \\
+        22 & ZFP & 73.1 & -2.1 & 79.52 & 103.01 & $3.53\times 10^{-11}$ \\
+        23 & Referencia & 135.7 & 0.0 & 2.00 & 1.00 & 0 \\
+        23 & Blosc & 152.2 & -12.1 & 20.98 & 10.48 & 0 \\
+        23 & ZFP & 187.6 & -38.2 & 171.47 & 85.65 & $2.82\times 10^{-11}$ \\
+        24 & Referencia & 263.6 & 0.0 & 4.33 & 1.00 & 0 \\
+        24 & Blosc & 392.8 & -49.0 & 44.30 & 10.24 & 0 \\
+        24 & ZFP & 409.8 & -55.5 & 376.40 & 87.03 & $3.79\times 10^{-11}$ \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
+
+% La situación cambia por completo cuando la entrada presenta alta entropía. En este caso, ni
+% Blosc ni ZFP ofrecen una ventaja real frente al almacenamiento no comprimido. El ahorro de
+% memoria se vuelve negativo en todos los tamaños, lo que significa que ambas estrategias
+% consumen más memoria que la referencia. En Blosc, ese sobrecosto espacial oscila entre 12.1\%
+% y 49.0\%; en ZFP, alcanza hasta 55.5\%.
+
+% El deterioro temporal también es pronunciado. Blosc incrementa el tiempo entre
+% $10.24\times$ y $12.52\times$, mientras que ZFP lo lleva a factores entre $85.65\times$ y
+% $103.01\times$. Aunque los errores de ZFP permanecen en un rango pequeño, del orden de
+% $10^{-11}$, el problema central ya no es la precisión admitida, sino la falta de
+% compresibilidad del estado.
+
+% Desde el punto de vista experimental, este es el resultado más importante de QFT. La
+% compresión del vector completo no puede asumirse como una estrategia generalmente beneficiosa:
+% cuando el estado carece de regularidad local o repetición suficiente, la compresión deja de
+% reducir memoria y además introduce sobrecostos temporales elevados. En consecuencia, la
+% utilidad del esquema depende no solo del circuito en abstracto, sino de la estructura
+% concreta del estado que ese circuito debe representar.

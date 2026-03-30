@@ -1,0 +1,20 @@
+\subsection{Compromisos y parámetros de diseño}
+
+La arquitectura propuesta presenta dos ventajas principales. La primera es que permite reducir la huella de memoria sin reconstruir de forma
+permanente el vector completo en su versión densa. La segunda es que introduce parámetros de control claros, como tamaño de bloque, capacidad de
+caché, política de reemplazo y configuración del compresor, que permiten ajustar la relación entre ahorro espacial y costo temporal según el
+patrón de acceso observado.
+
+Estas mismas decisiones definen, sin embargo, un espacio de compromiso. Si los bloques son demasiado grandes, aumenta la compresibilidad
+potencial, pero también el costo de recuperar datos para operaciones locales. Si los bloques son demasiado pequeños, disminuye el costo de acceso,
+pero puede perderse oportunidad de compresión y aumentar la sobrecarga de metadatos. De forma similar, una caché muy reducida incrementa la tasa
+de fallos y el número de descompresiones, mientras que una caché demasiado amplia amortigua accesos a costa de reservar más memoria densa activa.
+
+La arquitectura también hereda una limitación más fundamental: su eficacia depende de la compresibilidad real del estado cuántico generado y del
+patrón de compuertas que lo recorre. Cuando el estado presenta alta regularidad o redundancia, el diseño puede convertir esa estructura en ahorro
+efectivo de memoria. En cambio, cuando el circuito genera amplitudes densas y poco compresibles o induce accesos dispersos sobre muchos bloques
+distintos, la ventaja espacial puede disminuir y la sobrecarga temporal hacerse más visible.
+
+En síntesis, la propuesta delimita una arquitectura de almacenamiento comprimido que no modifica el modelo de simulación de estado completo, pero
+sí transforma la forma en que el vector de amplitudes reside y circula en memoria. Sobre esta base conceptual, el capítulo siguiente presenta la
+materialización concreta de estas decisiones en el esquema de almacenamiento comprimido implementado sobre TMFQSfullstate con apoyo de Blosc2.

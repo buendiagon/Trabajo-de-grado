@@ -1,1 +1,2 @@
 - Siempre que hagas cambios en el texto, recompila el pdf y revisa que no hayan errores o warning, si los hay arreglalos y recompila main.pdf para que este muestre la última versión.
+- Cuando el usuario pida reorganizar la estructura del documento, la jerarquía de carpetas en `sections/` debe reflejar el nivel superior real de la tabla de contenido; no debo dejar secciones numeradas anidadas dentro de `Generalidades` si en el TOC aparecen como secciones principales.

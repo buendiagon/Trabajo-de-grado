@@ -1,0 +1,28 @@
+\subsection{Optimización específica para Grover mediante parametrización reducida}
+\label{subsec:grover_reducido_impl}
+
+Además del backend general basado en bloques comprimidos, el desarrollo incorporó una
+optimización específica para el algoritmo de Grover. Esta variante parte de la
+observación de que, en ciertos escenarios, la evolución del estado puede describirse
+mediante una parametrización reducida asociada a la estructura del algoritmo, sin
+necesidad de operar constantemente sobre el vector completo de amplitudes, 
+su derivación matemática se puede encontrar en el apéndice \ref{ap:grover_reducido}.
+
+Su propósito no fue sustituir la implementación general, sino ofrecer una referencia
+complementaria para contrastar el efecto de una simplificación estructural específica
+frente al almacenamiento comprimido aplicable de manera general. Mientras el backend
+basado en Blosc2 conserva una representación explícita del estado y modifica su forma
+de almacenamiento, la variante reducida aprovecha una regularidad particular de Grover
+y, por tanto, constituye una optimización especializada.
+
+Esta inclusión resulta útil porque permite distinguir entre dos fuentes distintas de mejora:
+por un lado, las obtenidas mediante compresión sin pérdida sobre el vector de estado; por
+otro, las derivadas de una representación más compacta sustentada en la estructura del
+algoritmo. Sus resultados se presentan más adelante como comparación complementaria
+y no como reemplazo de la propuesta principal.
+
+En conjunto, la implementación desarrollada organiza el almacenamiento comprimido
+como una combinación de interfaz, backend, layout de bloques, caché y mecanismos de
+ejecución de compuertas dentro de TMFQSfullstate. Esta estructura permite integrar
+Blosc2 en la ruta de simulación sin modificar el modelo de estado completo y prepara la
+base para la evaluación experimental presentada en el capítulo siguiente.

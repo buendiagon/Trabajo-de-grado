@@ -1,0 +1,15 @@
+\subsection{Objetivos de diseño}
+
+El diseño de la arquitectura se orientó por tres objetivos principales. El primero fue preservar la exactitud numérica de la simulación, de modo
+que la representación comprimida no introdujera diferencias respecto a una ejecución de referencia no comprimida. El segundo consistió en reducir
+la memoria ocupada por el vector de estado sin exigir su reconstrucción completa ante cada operación. El tercero fue mantener una sobrecarga
+temporal razonable, de forma que el ahorro espacial no dependiera de una penalización prohibitiva en tiempo de ejecución.
+
+Estos objetivos implican que la arquitectura debía cumplir dos condiciones simultáneamente. Por un lado, toda transformación aplicada al
+almacenamiento del estado debía ser estrictamente reversible. Por otro, el acceso al vector debía adaptarse al patrón local con que las compuertas
+actúan sobre las amplitudes, evitando tratamientos globales cuando la actualización solo involucra una fracción del arreglo.
+
+Desde esta perspectiva, el diseño no busca sustituir el modelo de simulación de estado completo, sino modificar su representación física en
+memoria. El vector de amplitudes se mantiene como referencia lógica del simulador, pero su materialización pasa a depender de una capa intermedia
+capaz de alternar entre forma comprimida y forma densa según las necesidades de acceso de cada operación. Esta separación entre representación
+lógica y representación física es la base que articula el resto de la propuesta.

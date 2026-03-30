@@ -1,0 +1,30 @@
+\subsection{Acceso, actualización y ejecución de compuertas}
+
+La aplicación de compuertas sobre el backend comprimido se organizó de acuerdo con el
+patrón de acceso que cada operación induce sobre las amplitudes. En términos
+generales, la implementación distingue entre operaciones cuyos pares afectados pueden
+resolverse dentro de un mismo bloque y operaciones que involucran amplitudes
+distribuidas en bloques distintos. Esta distinción permite adaptar la ruta de ejecución al
+tipo de acceso requerido, en lugar de tratar todas las compuertas como si implicaran la
+materialización completa del vector.
+
+Cuando la operación permanece dentro de un bloque, el backend adquiere ese bloque,
+opera sobre su buffer descomprimido y marca el contenido como modificado cuando
+corresponde. Cuando la compuerta involucra amplitudes ubicadas en bloques distintos,
+la ejecución requiere adquirir simultáneamente los bloques implicados y coordinar la
+actualización sobre ambos buffers. Esta lógica se articula a través del propio backend y
+de componentes auxiliares como \texttt{PairKernelExecutor} y
+\texttt{GateApplyEngine}, que separan rutas optimizadas para pares de amplitudes de una
+ruta más general para compuertas de aplicación genérica.
+
+La implementación incluye además un mecanismo de agrupación operativa para delimitar
+el inicio y el cierre de lotes de trabajo. Este permite agrupar operaciones consecutivas y
+diferir ciertas escrituras mientras los bloques implicados permanecen activos. Así se
+reducen recomposiciones innecesarias y se mejora la interacción entre acceso al backend,
+reutilización de buffers y persistencia diferida de datos.
+
+Desde el punto de vista funcional, esta organización hace posible que la lógica del
+simulador siga operando sobre amplitudes complejas y compuertas cuánticas del mismo
+modo que en una versión no comprimida, mientras la capa de almacenamiento resuelve
+de forma interna la recuperación, actualización y escritura de los bloques necesarios para
+cada paso de la simulación.

@@ -1,0 +1,50 @@
+\subsection{Comparación global de estrategias}
+
+% La lectura conjunta de los resultados de Grover y QFT permite extraer dos conclusiones
+% generales. La primera es que la utilidad de la compresión depende de la estructura del estado
+% cuántico y no puede asumirse de manera uniforme para cualquier carga de trabajo. La segunda
+% es que, dentro de los escenarios favorables observados en esta campaña, Blosc ofrece la
+% relación más equilibrada entre ahorro de memoria, tiempo de ejecución y exactitud numérica,
+% mientras que ZFP solo resulta competitivo en casos específicos y a costa de introducir una
+% discrepancia no nula respecto a la referencia.
+
+\begin{table}[H]
+    \centering
+    \small
+    \caption{Síntesis comparativa frente al almacenamiento no comprimido}
+    \label{tab:summary-results}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3.3cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{2cm}}
+        \hline
+        \textbf{Carga de trabajo} & \textbf{Blosc: ahorro (\%)} & \textbf{Blosc: tiempo (x)} & \textbf{ZFP: ahorro (\%)} & \textbf{ZFP: tiempo (x)} & \textbf{ZFP: error} \\
+        \hline
+        Grover, objetivo único & 77.8 a 93.5 & 4.22 a 4.85 & 36.4 a 45.7 & 32.27 a 37.78 & $8.04\times10^{-15}$ a $1.61\times10^{-14}$ \\
+        Grover, multiobjetivo & 77.8 a 93.4 & 4.17 a 4.86 & 36.7 a 45.7 & 33.12 a 38.13 & $8.04\times10^{-15}$ a $1.61\times10^{-14}$ \\
+        QFT, superposición periódica & 51.4 a 75.3 & 2.54 a 3.48 & 74.2 a 83.2 & 4.41 a 5.75 & $3.79\times10^{-11}$ \\
+        QFT, alta entropía & -49.0 a -12.1 & 10.24 a 12.52 & -55.5 a -2.1 & 85.65 a 103.01 & $2.82\times10^{-11}$ a $3.79\times10^{-11}$ \\
+        \hline
+    \end{tabular}
+\end{table}
+
+% Grover constituye el escenario más claramente favorable para la compresión sin pérdida. En
+% ambas variantes evaluadas, Blosc supera el 77\% de ahorro de memoria en todos los tamaños y
+% alcanza más de 93\% en 24 qubits, con un costo temporal cercano a $4\times$. ZFP, aunque
+% mantiene errores máximos absolutos muy pequeños, del orden de $10^{-14}$, reduce menos
+% memoria y exige sobrecostos temporales superiores a $30\times$. En este contexto, la
+% estrategia sin pérdida no solo preserva la exactitud exacta, sino que también ofrece el mejor
+% balance práctico.
+
+% QFT obliga a matizar esa lectura. Cuando la entrada es periódica, tanto Blosc como ZFP
+% resultan útiles, pero con perfiles distintos: Blosc ofrece una combinación más conservadora
+% de tiempo, memoria y exactitud, mientras que ZFP logra el mayor ahorro espacial a costa de
+% una mayor penalización temporal y de errores del orden de $10^{-11}$. Sin embargo, cuando la
+% entrada presenta alta entropía, ambas estrategias dejan de ser ventajosas: el ahorro de
+% memoria se vuelve negativo y el tiempo de ejecución aumenta de forma marcada, incluso en ZFP,
+% a pesar de que el error admitido sigue siendo pequeño.
+
+En conjunto, la evidencia experimental delimita con claridad el alcance de la propuesta. La
+compresión sin pérdida del vector de estado es una alternativa viable cuando la memoria es la
+restricción dominante y el estado conserva regularidades aprovechables. No obstante, sus
+beneficios no son universales: dependen de la estructura concreta del estado y del patrón de
+acceso que induce el circuito. Bajo las condiciones evaluadas, Blosc emerge como la opción
+más robusta entre las estrategias comparadas, mientras que la compresión con pérdida basada
+en ZFP solo ofrece ventajas parciales y situacionales.

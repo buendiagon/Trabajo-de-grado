@@ -1,0 +1,22 @@
+\subsection{Alcance de la implementación}
+
+La implementación se concentró en incorporar un backend de almacenamiento
+comprimido para el vector de estado dentro de TMFQSfullstate, manteniendo el modelo
+de simulación de estado completo y preservando igualdad exacta respecto a la referencia
+no comprimida. El objetivo no fue rediseñar el simulador en su totalidad, sino intervenir
+la capa en la que se representan, recuperan y actualizan las amplitudes durante la
+ejecución.
+
+Bajo este alcance, el desarrollo incluyó tres elementos principales. El primero fue una
+interfaz común para abstraer el almacenamiento del vector de estado y desacoplar el
+registro cuántico de una representación específica. El segundo fue un backend
+comprimido basado en Blosc2, encargado de la persistencia de bloques, la
+descompresión cuando el acceso lo requiere y la escritura de los bloques modificados. El
+tercero fue la integración de una estrategia de acceso y actualización compatible con la
+aplicación de compuertas sobre amplitudes distribuidas en uno o varios bloques.
+
+La implementación buscó, en consecuencia, verificar que la solución propuesta podía
+insertarse en un simulador cuántico real con control suficiente sobre el uso de memoria,
+la sobrecarga temporal y la exactitud numérica. Los resultados de esa evaluación se
+presentan posteriormente; en esta sección interesa describir la organización del
+desarrollo y la forma en que sus componentes cooperan durante la simulación.

@@ -1,0 +1,39 @@
+\subsection{Realización del esquema de almacenamiento comprimido con Blosc}
+
+El punto de entrada del desarrollo es la clase \texttt{QuantumRegister}, que conserva la
+interfaz de uso del registro cuántico y delega las operaciones sobre el vector de estado
+en un backend que satisface la interfaz \texttt{IStateBackend}. Esta abstracción permite
+que el resto del simulador invoque operaciones como inicialización, carga de amplitudes,
+consulta, aplicación de compuertas o agrupación de operaciones sin depender de cómo
+se almacena internamente el estado.
+
+Sobre esa interfaz se implementó \texttt{BloscStateBackend}, que constituye la
+realización concreta del almacenamiento comprimido. Esta clase encapsula la
+configuración del sistema, la cardinalidad del espacio de estados, la disposición de
+bloques, la caché de trabajo, los buffers auxiliares y la relación con el componente de
+compresión. Su responsabilidad principal es traducir operaciones de alto nivel sobre el
+registro a secuencias concretas de adquisición de bloques, descompresión, modificación
+local y escritura de resultados.
+
+La compresión efectiva se delega en \texttt{BloscCodec}, que implementa un wrapper de la API de
+Blosc2 y centraliza operaciones como creación de la estructura comprimida, anexado de
+bloques, recuperación de fragmentos y actualización de contenido persistido. Esta
+encapsulación evita que el resto del backend dependa directamente de llamadas de bajo
+nivel a la biblioteca externa y facilita que la lógica de almacenamiento se mantenga
+separada de la lógica específica del códec.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=\linewidth]{images/diagrama_clases_implementacion.png}
+    \caption{Diagrama de clases de la implementación del backend comprimido basado en Blosc2.}
+    \label{fig:impl_class_diagram}
+\end{figure}
+
+La figura \ref{fig:impl_class_diagram} resume la organización general de esta
+implementación. En ella se observa la relación entre el registro cuántico, la interfaz de
+backend, la realización basada en Blosc, los componentes auxiliares de layout y caché, y
+los mecanismos de ejecución de compuertas.
+
+En conjunto, esta organización permite que la compresión se integre como una
+responsabilidad propia de la capa de almacenamiento, y no como una operación aislada
+externa al flujo del simulador.

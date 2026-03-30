@@ -1,0 +1,34 @@
+\subsection{\normalsize Simuladores cuánticos}
+La simulación clásica de circuitos cuánticos es esencial para el desarrollo y
+validación de algoritmos cuánticos. Sin embargo, el principal desafío radica
+en la representación del estado cuántico, cuyo tamaño crece exponencialmente con
+el número de qubits.
+
+Uno de los primeros enfoques para abordar este problema fue la representación
+mediante \textit{Matrix Product States} (MPS), propuesta por \textcite{Vidal2003}.
+Este método permite representar ciertos estados cuánticos de forma eficiente
+cuando el entrelazamiento es limitado, reduciendo los requisitos de almacenamiento
+y cómputo. Su principal ventaja es la escalabilidad en circuitos con baja
+profundidad, permitiendo simular cientos de qubits. No obstante, su limitación
+radica en que para sistemas altamente entrelazados el costo computacional crece
+exponencialmente, restringiendo su aplicabilidad a ciertos algoritmos.
+
+A medida que se buscaban métodos más generales, surgió la simulación tipo
+\textit{Schrödinger}, que almacena el vector de estado completo y lo actualiza
+en cada operación cuántica. Este enfoque, empleado en simuladores como QuEST y
+Qiskit Aer \cite{Jones2019, qiskit_aer_doc}, garantiza alta precisión y permite simular cualquier
+circuito cuántico. Su desventaja principal es la extrema demanda de memoria, la
+cual crece exponencialmente con el número de qubits: una simulación de 45 qubits
+ya ha requerido 0.5 petabytes de memoria \cite{Haner2017}, y al extender esta
+representación de doble precisión a 50 qubits el costo pasa al orden de decenas de
+petabytes.
+
+Para mitigar el problema de memoria, se desarrollaron métodos basados en
+partición del circuito y caminos de Feynman. Por ejemplo, Chen y cols.\
+presentaron un algoritmo distribuido capaz
+de calcular amplitudes de salida y simular circuitos universales de hasta
+$12\times12$ qubits con profundidad moderada sin materializar el estado completo
+\cite{Chen2018}. Sin embargo, aunque reducen el
+almacenamiento requerido, estos métodos incrementan la complejidad computacional,
+ya que el número de caminos crece exponencialmente con la profundidad del
+circuito.

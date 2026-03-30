@@ -1,0 +1,65 @@
+\subsection{\normalsize Compresión de memoria con pérdida de precisión}
+Dado que la representación exacta de estados cuánticos es ineficiente en términos
+de memoria, se han explorado técnicas de compresión con pérdida de precisión. Estos
+enfoques sacrifican una pequeña cantidad de fidelidad numérica a cambio de una
+reducción significativa en el uso de memoria, permitiendo la simulación de
+circuitos más grandes.
+
+Uno de los primeros enfoques en este ámbito fue el de \textcite{wu2018amplitude, wu2019full},
+quienes introdujeron la compresión adaptativa con error acotado. Utilizando la
+biblioteca SZ, lograron reducir el tamaño del vector de estado hasta en un factor
+de 16, manteniendo fidelidades superiores al 99.9~\%. Su principal ventaja es
+que permite ampliar el número de qubits simulados sin un incremento
+proporcional en los requisitos de memoria. Sin embargo, la compresión y
+descompresión recurrente introduce sobrecarga computacional, afectando la eficiencia
+temporal de la simulación.
+
+En un esfuerzo por maximizar la escala de la simulación cuántica de estado
+completo, \textcite{zhang2024bmqsim} presentaron \emph{BMQSim}, un marco que
+extiende \emph{SV-Sim} mediante el uso de \textbf{compresores con pérdida de
+precisión y control de error punto a punto} ejecutados directamente en GPU (por
+ejemplo, variantes de la familia SZ/cuSZ)\cite{zhang2024bmqsim}. Su diseño
+combina:
+\begin{itemize}
+    \item Una estrategia de \textit{circuit partitioning} que disminuye la
+        frecuencia de (des)compresión.
+
+    \item Un \textit{pipeline} solapado que oculta en gran medida el coste de
+        mover y comprimir datos.
+
+    \item Una gestión de memoria jerárquica (VRAM + SSD mediante GPUDirect~Storage)
+        que asigna dinámicamente espacio a los bloques comprimidos.
+\end{itemize}
+Con estas técnicas, BMQSim reduce el consumo de memoria en más de un orden de magnitud
+y mantiene fidelidades superiores al 99~\% sin penalizar de forma apreciable el
+tiempo de simulación. Su eficacia, sin embargo, está condicionada a la
+disponibilidad de hardware acelerado con GPUs de alto rendimiento y
+unidades NVMe rápidas, lo que puede restringir su adopción en plataformas de menor
+capacidad computacional.
+
+Más recientemente, \textcite{Huffman2024} exploraron la cuantización de
+amplitudes como un mecanismo para reducir la precisión numérica sin afectar la
+fidelidad global del sistema. Demostraron que representaciones con tan solo 7 bits
+por amplitud permiten mantener una fidelidad superior al 99~\%, lo que sugiere que
+la precisión completa de punto flotante puede ser innecesaria en muchas simulaciones.
+Aunque esta técnica ofrece un enfoque simple y eficiente para reducir el uso
+de memoria, su aplicabilidad a circuitos de gran escala aún requiere validación
+empírica.
+
+\textcite{DiazToro2025} propone un esquema de \textbf{vector de estado
+comprimido} que emplea compresores con pérdida de precisión, principalmente
+\emph{ZFP} en modo \emph{fixed-rate}, complementado por \emph{SZ}, para reducir
+la huella de memoria del simulador. El autor reporta reducciones del \textbf{10--20~\%}
+en casos base y, en configuraciones de mayor escala, ahorros que alcanzan hasta
+un \textbf{75~\%} de la memoria requerida. \emph{ZFP} opera sobre bloques independientes
+de $4^{d}$ valores, de modo que la (des)compresión de cada bloque se realiza en
+completo aislamiento del resto; esto permite solapar dichas operaciones con el
+cómputo principal y amortiguar la sobrecarga introducida. Aunque la compresión
+incrementa el tiempo de ejecución, el impacto se compensa al transmitir los
+fragmentos del vector en formato comprimido dentro de una arquitectura
+distribuida basada en \emph{MPI}, reduciendo el volumen de comunicación y
+habilitando simulaciones de hasta $30$ qubits en los experimentos reportados. Finalmente,
+el estudio concluye que esta estrategia de \textit{estado completo comprimido
+distribuido} resulta más fiable y escalable que la \textit{poda de estados de
+baja probabilidad}, la cual presenta descensos de fidelidad y sobrecarga adicional
+que la hacen desaconsejable.

@@ -1,0 +1,44 @@
+\subsection{\normalsize{Compresión de memoria sin pérdida de precisión}}
+La simulación cuántica eficiente requiere reducir el consumo de memoria sin
+comprometer la fidelidad del estado cuántico. Para ello, se han desarrollado
+técnicas de compresión sin pérdida de precisión que buscan representar estados
+y operadores cuánticos de manera más compacta sin alterar sus valores.
+
+Uno de los primeros enfoques en esta dirección fue el uso de diagramas de decisión
+cuánticos (\textit{Quantum Information Decision Diagrams}, QuIDD),
+introducidos por \textcite{Viamontes2003}. Este método permite representar
+vectores de estado y operadores unitarios aprovechando redundancias
+estructurales en sus coeficientes, lo que permite una representación más eficiente
+en memoria. Su ventaja radica en que, para circuitos con alta redundancia, el
+crecimiento en memoria puede reducirse de exponencial a polinomial. Sin embargo,
+su eficacia se limita a circuitos con estructura repetitiva, fallando en casos
+de entrelazamiento complejo.
+
+En un desarrollo posterior, \textcite{Miller2006} propusieron los \textit{Quantum
+Multiple-valued Decision Diagrams} (QMDD), los cuales extienden la
+representación de QuIDD mediante el uso de aristas ponderadas con matrices
+unitarias. Esto permitió manejar de manera más eficiente circuitos reversibles
+y operadores cuánticos de mayor tamaño. Aunque estos diagramas optimizan la
+representación de puertas lógicas y matrices densas, su eficiencia sigue dependiendo
+de la estructura interna del circuito.
+
+Más recientemente, \textcite{Jaques2021} exploraron la esparsidad del estado
+cuántico para almacenar solo las amplitudes no nulas, reduciendo significativamente
+el almacenamiento requerido en algoritmos con exploración limitada del espacio
+de Hilbert. Su enfoque demostró ser altamente eficiente en problemas de
+factorización y aritmética cuántica, pero pierde efectividad en circuitos con alta
+interferencia y entrelazamiento.
+
+En 2023, \textcite{Vinkhuijzen2023} introdujeron los \textit{Local Invertible
+Map Decision Diagrams} (LIMDD), una evolución de los diagramas de decisión que
+incorpora transformaciones locales para mejorar la representación compacta del
+estado cuántico. Esta técnica permite manejar estados estabilizadores y ciertas
+estructuras altamente entrelazadas que eran difíciles de representar con diagramas
+de decisión tradicionales. No obstante, su aplicabilidad sigue limitada a casos
+donde las transformaciones locales puedan ser explotadas para reducir la complejidad
+estructural.
+
+Estos avances en compresión sin pérdida han permitido extender la capacidad de
+simulación de circuitos cuánticos en hardware clásico. Sin embargo, aún
+existen limitaciones en la representación de estados arbitrarios, lo que ha llevado
+a la exploración de otros métodos para optimizar el uso de memoria.

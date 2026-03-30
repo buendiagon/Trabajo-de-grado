@@ -1,0 +1,7 @@
+El desarrollo se apoya en una separación entre la interfaz lógica del registro cuántico y
+el backend responsable del almacenamiento del estado. Esta decisión permite mantener
+una interacción uniforme con el vector de amplitudes y, al mismo tiempo, introducir una
+realización comprimida capaz de administrar particionamiento por bloques, recuperación
+bajo demanda y persistencia de datos modificados. De esta forma, el simulador conserva
+su modelo de ejecución, pero delega en un backend especializado la manera en que las
+amplitudes residen y circulan en memoria.

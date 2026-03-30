@@ -1,0 +1,17 @@
+\subsection{Descompresión selectiva y estrategia de acceso}
+
+Una vez adoptada la representación por bloques, el principio operativo de la arquitectura es que solo deben descomprimirse los bloques necesarios
+para ejecutar una operación. La descompresión selectiva constituye, por tanto, la segunda decisión de diseño y el mecanismo que vincula el ahorro
+de memoria con el patrón real de acceso del simulador.
+
+En un simulador tipo Schrödinger, muchas compuertas actualizan amplitudes cuya relación puede resolverse localmente dentro de una región acotada del
+vector, mientras que otras inducen interacciones entre posiciones que pertenecen a bloques distintos. La arquitectura debe poder manejar ambos
+casos sin perder consistencia. Cuando todas las amplitudes requeridas por la operación se encuentran en un mismo bloque, el acceso es enteramente
+local: el bloque se materializa en memoria densa, se ejecuta la actualización y luego se decide si permanece temporalmente activo o si vuelve a
+almacenamiento comprimido. Cuando la operación involucra amplitudes distribuidas en bloques distintos, la arquitectura debe adquirir
+simultáneamente los bloques necesarios, aplicar la actualización y coordinar su posterior permanencia o escritura diferida.
+
+Este enfoque permite que la compresión actúe de forma compatible con la lógica del simulador. El costo de acceso deja de depender del tamaño total
+del vector y pasa a depender del número de bloques activados por cada compuerta, de la localidad del patrón de acceso y de la frecuencia con la que
+esos mismos bloques vuelven a ser requeridos. En consecuencia, la efectividad de la arquitectura queda directamente vinculada a la estructura del
+estado y al tipo de circuito ejecutado, lo cual resulta coherente con el análisis previo de compresibilidad.

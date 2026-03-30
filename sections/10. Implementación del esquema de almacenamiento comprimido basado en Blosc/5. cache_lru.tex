@@ -1,0 +1,22 @@
+\subsection{Caché LRU de bloques descomprimidos}
+
+La gestión temporal de bloques materializados en memoria se implementó mediante la
+clase \texttt{ChunkCache}, cuya función es conservar un conjunto acotado de bloques
+descomprimidos recientemente utilizados. Su incorporación evita repetir ciclos completos
+de recuperación cuando varias operaciones consecutivas requieren acceder a las mismas
+regiones del vector de estado.
+
+La caché se configura según una capacidad determinada y administra la adquisición de
+bloques mediante una política LRU. Cuando un bloque es requerido, el backend consulta
+primero si ya se encuentra disponible en la caché. Si está presente, se reutiliza
+directamente su buffer descomprimido. Si no está presente, el bloque debe recuperarse
+desde el almacenamiento comprimido y, en caso de que la caché esté llena, expulsar el
+bloque menos recientemente utilizado. Si el bloque expulsado fue modificado desde su
+ingreso a la caché, se recompone su versión comprimida antes de liberar el buffer
+asociado.
+
+La utilidad de esta implementación no se reduce a mejorar el rendimiento. La caché
+establece una forma explícita de administrar la memoria densa temporal del backend y
+determina qué parte del estado permanece materializada entre una compuerta y la
+siguiente. Por ello, su comportamiento influye directamente en la cantidad de
+descompresiones, en la frecuencia de escrituras y en la sobrecarga efectiva del sistema.
