@@ -1,13 +1,22 @@
 \subsection{Necesidad de seleccionar un simulador base}
 
-El núcleo experimental de este trabajo consiste en diseñar e integrar técnicas de compresión \emph{sin pérdida de precisión} sobre la estructura de datos más costosa en simulación cuántica tipo Schrödinger: el vector de estado (amplitudes complejas). Por lo tanto, el simulador seleccionado no es un detalle de implementación, sino una decisión metodológica que condiciona:
+La propuesta de este trabajo no se limita a ejecutar circuitos cuánticos sobre una
+herramienta existente, sino que exige intervenir la representación del vector de estado
+para integrar una estrategia de compresión sin pérdida de precisión y evaluar su efecto
+sobre memoria, tiempo y exactitud numérica. Por esta razón, la selección del simulador
+base constituye una decisión metodológica central, ya que condiciona la viabilidad de
+la integración, el alcance de la instrumentación experimental y el esfuerzo técnico
+requerido para desarrollar la solución.
 
-\begin{itemize}
-    \item la \textbf{viabilidad técnica} de insertar estructuras de almacenamiento comprimidas sin alterar la fidelidad numérica;
-    \item el \textbf{costo de ingeniería} requerido para instrumentar mediciones reproducibles de memoria y tiempo;
-    \item y la \textbf{capacidad de aislar variables} (compresión vs.\ paralelismo vs.\ optimizaciones internas) durante la evaluación experimental.
-\end{itemize}
+En los simuladores cuánticos tipo Schrödinger, el vector de estado es la estructura
+principal del cálculo y, a la vez, la fuente dominante del consumo de memoria. En
+consecuencia, el simulador seleccionado debía permitir una intervención suficientemente
+directa sobre esa representación, sin desplazar el problema hacia restricciones
+derivadas de abstracciones internas difíciles de modificar o de mecanismos poco
+accesibles para observación experimental.
 
-De hecho, dentro de la fase \textit{Diseño} planteada en la metodología, se establece explícitamente que la selección debe basarse en: (i) apertura y modificabilidad del código, (ii) facilidad de integrar arreglos/estructuras personalizadas para el vector de estado, (iii) soporte a optimizaciones de memoria y paralelismo, y (iv) capacidad de instrumentación (medición de memoria y tiempo).
-
-Bajo ese marco, se estudian cinco alternativas representativas por uso y disponibilidad en la comunidad: QuEST, Intel-QS, qsim, Quantum++ y TMFQSfullstate. Para asegurar trazabilidad, la decisión se formaliza con criterios y una matriz de decisión ponderada, de modo que la elección final sea justificable y reproducible.
+Con este propósito se consideraron cinco alternativas representativas dentro del
+ecosistema de simulación cuántica de estado completo: QuEST, Intel-QS, qsim,
+Quantum++ y TMFQSfullstate. La elección se formalizó mediante criterios explícitos y
+una matriz de evaluación ponderada, de modo que la decisión quedara vinculada a los
+objetivos técnicos y experimentales del trabajo.

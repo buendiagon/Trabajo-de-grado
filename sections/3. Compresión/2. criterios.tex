@@ -1,64 +1,59 @@
 \subsection{Criterios de selección}
 
-La selección de bibliotecas de compresión sin pérdida se realizó mediante los criterios de la
-Tabla \ref{tab:criterios_compresion}. Estos criterios recogen propiedades relevantes para la
-compresión de vectores de estado representados como arreglos numéricos de gran tamaño.
+Los criterios de selección se definieron a partir del problema específico de esta tesis:
+comprimir sin pérdida el vector de estado de un simulador tipo Schrödinger sin romper la
+igualdad exacta respecto a la referencia ni introducir una sobrecarga desproporcionada
+en las operaciones de acceso. Por esta razón, se priorizaron criterios relacionados con
+integración, acceso por bloques, costo temporal de recuperación y adecuación a datos
+numéricos homogéneos.
 
-Como condiciones mínimas de inclusión se consideraron la operación sin pérdida, la
-disponibilidad de interfaces utilizables desde C/C++, un licenciamiento compatible con el uso
-académico y la posibilidad de comprimir datos residentes en memoria. Las bibliotecas
+Como condiciones mínimas de inclusión se establecieron las siguientes: operación sin
+pérdida, disponibilidad de interfaz utilizable desde C/C++, licenciamiento compatible con
+uso académico y posibilidad de comprimir datos residentes en memoria. Las bibliotecas
 comparadas satisfacen estas condiciones.
 
 \begin{table}[H]
     \centering
     \small
     \setlength{\tabcolsep}{3pt}
-    \vspace{-2mm}
     \caption{Criterios para la selección de bibliotecas de compresión sin pérdida}
-    \label{tab:criterios_compresion}
-    \begin{tabular}{>{\raggedright\arraybackslash}p{0.7cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{0.56\linewidth}>{\centering\arraybackslash}p{0.9cm}}
+    \label{tab:criterios_bibliotecas}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{0.7cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{0.55\linewidth}>{\centering\arraybackslash}p{0.9cm}}
         \hline
         \multicolumn{1}{l}{} &
         \multicolumn{1}{c}{\textbf{Criterio}} &
-        \multicolumn{1}{c}{\textbf{Explicación}} &
+        \multicolumn{1}{c}{\textbf{Justificación}} &
         \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
 
-        C1 & Efectividad de compresión sobre arreglos numéricos &
-        Se evalúa la capacidad de la biblioteca para reducir el tamaño de arreglos homogéneos de punto flotante,
-        condición central en un simulador basado en vectores de estado. &
+        C1 & Adecuación a compresión por bloques en memoria &
+        Se evalúa si la biblioteca favorece un esquema de datos particionado en bloques independientes, compatible con compresión y descompresión local sin necesidad de reconstruir el arreglo completo en cada operación. Este criterio es central porque la arquitectura propuesta descansa precisamente en ese patrón de acceso. &
         0.25 \\
 
-        C2 & Velocidad de descompresión &
-        La recuperación rápida de datos es importante cuando los valores comprimidos deben reutilizarse durante la
-        simulación. Este criterio mide qué tan favorable es la biblioteca para escenarios sensibles a la latencia
-        de lectura. &
+        C2 & Latencia de descompresión y acceso &
+        Se valora el costo de recuperar datos comprimidos cuando solo una fracción del vector de estado debe pasar temporalmente a representación densa. En un simulador, la descompresión forma parte de la ruta crítica, por lo que la latencia de acceso tiene un peso metodológico mayor que el ratio aislado. &
         0.20 \\
 
-        C3 & Velocidad de compresión &
-        Considera el costo temporal de comprimir los datos, ya que una estrategia útil para el ahorro de memoria no
-        debe introducir una penalización excesiva en el tiempo total de simulación. &
+        C3 & Facilidad de integración e instrumentación en C/C++ &
+        Se considera la claridad de la API, el control sobre buffers y parámetros operativos, y la facilidad de incorporar la biblioteca al simulador manteniendo trazabilidad experimental. Este criterio mide riesgo técnico de integración. &
+        0.20 \\
+
+        C4 & Adecuación a arreglos numéricos homogéneos &
+        Se valora si la biblioteca dispone de mecanismos especialmente útiles para datos científicos en punto flotante, como filtros reversibles o precondicionadores que ayuden a exponer regularidades binarias sin alterar los valores. &
         0.15 \\
 
-        C4 & Facilidad de integración e instrumentación en C/C++ &
-        La biblioteca debe ofrecer una API estable, reutilizable desde el simulador y con suficiente control sobre
-        parámetros operativos, buffers auxiliares y niveles de configuración, reduciendo el riesgo de integración. &
-        0.15 \\
-
-        C5 & Madurez y adopción &
-        Se valora la estabilidad del ecosistema de la biblioteca, la disponibilidad de documentación, la adopción en
-        entornos reales y la probabilidad de mantenimiento a mediano plazo. &
+        C5 & Flexibilidad de configuración &
+        Se considera la posibilidad de ajustar niveles, filtros, códecs o modos de operación para explorar compromisos entre ahorro de memoria y costo temporal sin reestructurar la arquitectura del simulador. &
         0.10 \\
 
-        C6 & Adecuación a datos científicos en punto flotante &
-        Para arreglos numéricos homogéneos, se valora la existencia o integración razonable de mecanismos que mejoren
-        el aprovechamiento de regularidades binarias sin comprometer el carácter sin pérdida de la compresión. &
-        0.15 \\
-
-        \hline
+        C6 & Madurez y estabilidad del ecosistema &
+        Se valora la disponibilidad de documentación, mantenimiento, estabilidad de la biblioteca y adopción suficiente para reducir incertidumbre durante el desarrollo experimental. &
+        0.10 \\ \hline
     \end{tabular}
-    \vspace{-2mm}
 \end{table}
 
-Los pesos priorizan propiedades centrales del problema: ahorro efectivo de memoria sobre
-datos numéricos, bajo costo de acceso, integración práctica y adecuación al contexto
-científico.
+Los pesos asignados priorizan la naturaleza del problema. La mayor importancia recae en
+la adecuación a compresión por bloques en memoria (C1), la latencia de descompresión
+(C2) y la facilidad de integración e instrumentación en C/C++ (C3), porque esos son los
+aspectos que más influyen en la viabilidad de insertar compresión sin pérdida dentro de
+la dinámica del simulador. Los demás criterios complementan la decisión al considerar
+afinidad con datos científicos, flexibilidad operativa y estabilidad del ecosistema.

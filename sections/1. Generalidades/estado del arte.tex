@@ -146,33 +146,118 @@ simulación de circuitos cuánticos en hardware clásico. Sin embargo, aún
 existen limitaciones en la representación de estados arbitrarios, lo que ha llevado
 a la exploración de otros métodos para optimizar el uso de memoria.
 
-\subsection{\normalsize{Algoritmos de compresión sin pérdida de precisión}}
+\subsection{\normalsize{Enfoques de compresión sin pérdida para datos de punto flotante}}
 
-En simulaciones científicas y cuánticas es común manejar vectores de estado representados como grandes arreglos de números de punto flotante. Cuando estos datos carecen de correlación temporal o patrones estructurales (es decir, presentan alta entropía o \emph{aleatoriedad}), la compresión sin pérdida se vuelve especialmente desafiante. Muchos algoritmos de compresión de punto flotante aprovechan transiciones suaves o redundancias entre valores consecutivos; por ejemplo, técnicas de serie temporal almacenan solo los bits que difieren entre un valor y el siguiente, explotando que a menudo los valores sucesivos comparten prefijos de bits iguales. Sin embargo, en datos altamente aleatorios, estas suposiciones se rompen y tales métodos tienden a no lograr compresión significativa. Por ello, conviene distinguir entre el nivel \emph{algorítmico}, donde se ubican predictores, transformaciones y códecs, y el nivel de \emph{realización software}, donde dichos mecanismos aparecen empaquetados en bibliotecas utilizables desde un simulador en C/C++. A continuación, se describen los principales algoritmos concebidos para este tipo de datos; la sección de selección posterior traduce este panorama conceptual a alternativas concretas de integración.
+En simulación científica es frecuente trabajar con arreglos extensos de números de
+punto flotante, cuyo volumen puede convertir el almacenamiento y el movimiento de
+datos en una restricción de desempeño. En este contexto, la compresión sin pérdida
+busca reducir el tamaño de la representación binaria sin alterar ningún bit de la
+información original, de modo que la reconstrucción coincida exactamente con los datos
+de entrada. Esta exigencia es especialmente relevante en escenarios donde los valores
+comprimidos participan posteriormente en nuevas etapas de cálculo o sirven como
+referencia numérica exacta.
+
+A diferencia de la compresión de texto o de datos discretos, la compresión de punto
+flotante presenta dificultades particulares. Muchos arreglos científicos contienen
+redundancias asociadas a continuidad espacial, dependencia temporal o regularidades en
+la representación binaria de signo, exponente y mantisa. Sin embargo, cuando esas
+regularidades son débiles o no siguen una estructura local simple, la compresión se
+vuelve más desafiante. Por esta razón, la literatura ha propuesto distintos enfoques que
+no actúan todos del mismo modo: algunos se basan en predicción, otros en
+transformaciones reversibles de la representación binaria y otros en reorganización
+tipada de los datos antes de aplicar un códec general.
 
 \subsubsection{FPC (Burtscher \& Ratanaworabhan)}
 
-El algoritmo \textit{FPC} (\emph{Floating Point Compressor})\cite{burtscher2009fpc} fue diseñado para la compresión sin pérdida de flujos lineales de datos en doble precisión (64 bits). Internamente, FPC emplea un esquema de \emph{predicción} dual junto con codificación de ceros líderes. Concretamente, mantiene dos predictores (derivados de técnicas FCM/DFCM) almacenados en tablas hash, que generan un valor estimado para el siguiente número en la secuencia. Para cada nuevo valor de entrada, FPC selecciona la predicción que más coincide en sus bits más significativos con el valor real, y calcula el \texttt{XOR} entre el valor real y el predicho. Este \texttt{XOR} resalta únicamente los bits diferentes, convirtiendo los bits coincidentes en \emph{cero}. A continuación, el algoritmo cuenta cuántos bytes iniciales del resultado \texttt{XOR} son cero (ceros líderes) y codifica esa cantidad en 3 bits, junto con 1 bit adicional que indica cuál predictor fue usado. Estos 4 bits de código, seguidos de los \emph{bytes residuales} no nulos (almacenados sin más codificación), forman la salida comprimida.
+\textit{FPC} (\emph{Floating Point Compressor})\cite{burtscher2009fpc} es un algoritmo
+de compresión sin pérdida diseñado para secuencias lineales de valores de punto
+flotante, especialmente en doble precisión. Su principio central consiste en predecir el
+siguiente valor a partir del historial reciente y comprimir únicamente la diferencia entre el
+valor real y el valor estimado.
 
-Esta estrategia implica que, si el valor predicho es cercano al real, la diferencia tendrá muchos ceros líderes y, por tanto, pocos bytes residuales que almacenar. En escenarios de datos altamente aleatorios (donde las predicciones rara vez aciertan), FPC tiende a obtener pocos ceros líderes y la tasa de compresión se aproxima a 1:1 (sin reducción notable). No obstante, su diseño minimiza la penalización en estos casos: los bloques comprimidos incluyen encabezados mínimos y códigos de apenas 4 bits por valor, garantizando sobrecarga reducida y un rendimiento consistente. Así, aunque FPC no logre compresión sustancial en vectores de estado cuántico aleatorios, ofrece una solución de alta velocidad con mínima sobrecarga, capaz de detectar rápidamente si no hay redundancia aprovechable y manejar dichos datos sin degradar el rendimiento.
+Para ello, FPC emplea dos predictores derivados de esquemas tipo FCM/DFCM, cuyos
+resultados se comparan con el dato real mediante una operación \texttt{XOR}. Cuando la
+predicción es cercana, la diferencia resultante presenta una cantidad considerable de
+bytes iniciales nulos, que pueden codificarse de forma compacta. El algoritmo almacena
+entonces un pequeño código de control junto con los bytes residuales no nulos. De esta
+manera, la compresión depende directamente de la capacidad del predictor para anticipar
+la estructura local de la secuencia.
+
+Este enfoque resulta especialmente adecuado cuando existe correlación entre valores
+adyacentes o cuando la evolución del arreglo mantiene cierta regularidad. En cambio, su
+efectividad disminuye cuando los datos no exhiben continuidad local suficiente para que
+la predicción produzca residuos pequeños. Aun así, FPC constituye una referencia
+importante en compresión sin pérdida de punto flotante porque muestra con claridad la
+utilidad y las limitaciones de los esquemas predictivos sobre representaciones IEEE 754.
 
 \subsubsection{FPZIP (Lindstrom \& Isenburg)}
 
-\textit{FPZIP}\cite{lindstrom2006fpzip} es un compresor de propósito específico para arreglos de punto flotante. Su enfoque se basa en la \emph{predicción adaptativa} y la \emph{codificación entrópica} eficiente para lograr compresión sin pérdida en múltiples contextos (mallas no estructuradas, volúmenes 3D, imágenes, etc.). Internamente, FPZIP aplica esquemas de predicción multidimensional (por ejemplo, predictores que aprovechan la continuidad espacial de los datos científicos) y luego comprime únicamente el error de predicción. A diferencia de métodos que cuantizan los flotantes a enteros, FPZIP opera directamente sobre las representaciones IEEE 754, manteniendo exactitud bit a bit.
+\textit{FPZIP}\cite{lindstrom2006fpzip} es un compresor sin pérdida orientado a arreglos
+de punto flotante en contextos científicos. Su diseño parte de la idea de que muchos
+conjuntos de datos numéricos presentan continuidad o dependencia local, de modo que
+pueden describirse con mayor eficiencia a partir de errores de predicción que a partir de
+los valores originales.
 
-Su arquitectura soporta predictores ajustables al tipo de datos: por ejemplo, en un campo volumétrico 3D puede usar un predictor basado en valores vecinos, mientras que en una serie temporal podría usar extrapolación simple. Tras la predicción, FPZIP emplea un modelo de codificación entrópica optimizado para velocidad, que comprime los residuos de manera eficaz. Esta combinación le permite alcanzar tasas de compresión y velocidades competitivas, acelerando la E/S de simulaciones científicas al reducir el volumen de datos sin sacrificar precisión. En contextos de datos altamente aleatorios, donde las predicciones en su mayoría fallan, FPZIP tiende a comportarse como un compresor genérico pero con ventajas sutiles: incluso en ausencia de correlación temporal, puede explotar patrones locales dentro de la representación en coma flotante (p. ej., regularidades en campos de exponentes o signos comunes) que los algoritmos genéricos pasan por alto al tratar los datos solo como bytes crudos. Para vectores de estado cuántico, si bien las amplitudes pueden parecer aleatorias, FPZIP podría aprovechar distribuciones no uniformes de ciertos bits, por ejemplo exponentes repetidos, logrando compresiones modestas con un rendimiento robusto.
+A diferencia de enfoques lineales simples, FPZIP incorpora esquemas de predicción
+adaptados a la estructura de los datos, lo que le permite aplicarse a arreglos de
+distintas dimensionalidades. Tras generar una estimación para cada valor, el algoritmo
+codifica el residuo de predicción mediante un modelo entrópico diseñado para preservar
+exactitud bit a bit sobre la representación en punto flotante. En este sentido, FPZIP no
+requiere cuantización ni aproximación intermedia: la compresión sigue siendo
+estrictamente reversible.
 
-\subsubsection{Filtro Bitshuffle con LZ4 (Masui et al.)}
+La relevancia de FPZIP radica en que explota de manera más
+general la estructura local de arreglos científicos y combina predicción con codificación
+entrópica especializada. Esto lo convierte en un referente importante para datos en los
+que la redundancia no se manifiesta únicamente entre valores consecutivos, sino también
+en relaciones espaciales o estructurales más amplias.
 
-Una estrategia distinta para afrontar datos de punto flotante sin patrones evidentes es emplear transformaciones previas que revelen posibles regularidades a nivel de bits. \textit{Bitshuffle}\cite{masui2015bitshuffle} es un algoritmo de preprocesamiento sin pérdida que extiende el filtro \emph{byte-shuffle} al nivel de \emph{bit}. En lugar de reordenar solo los bytes de cada número, Bitshuffle realiza una \emph{transposición bit a bit} de una matriz de valores: considera la representación binaria de $N$ números de $m$ bits (por ejemplo, $m{=}32$ para flotantes en simple precisión) como una matriz de $N\times m$, y reorganiza los datos tomando columnas de bits completas. Tras esta permuta, aplica una compresión LZ, usualmente LZ4, sobre la secuencia resultante.
+\subsubsection{Bitshuffle con LZ4 (Masui et al.)}
 
-El fundamento es que, incluso si los valores originales parecen aleatorios, puede haber \emph{correlaciones ocultas} dentro de ciertos planos de bits. Por ejemplo, en datos científicos muchos valores comparten el mismo exponente o presentan bits altos similares, lo que tras Bitshuffle se manifiesta como secuencias repetitivas (\emph{runs} de ceros o unos) más fáciles de comprimir mediante LZ4. A diferencia de métodos predictivos, Bitshuffle no asume continuidad entre elementos adyacentes; su efectividad radica en convertir cualquier correlación intra-byte (dentro de la representación binaria de cada valor) en redundancias horizontales a lo largo de la secuencia transformada. En datos de alta entropía pura (bits totalmente aleatorios), Bitshuffle no puede crear patrones donde no los hay; con todo, en vectores de estado cuántico puede explotar pequeñas irregularidades: si los qubits están normalizados, muchos amplitudes comparten signos o exponentes comunes, generando columnas de bits constantes que LZ4 comprime muy bien. En la práctica, Bitshuffle+LZ4 logra relaciones de compresión superiores a compresores genéricos en escenarios científicos sin reducción de precisión, a la vez que mantiene velocidades de descompresión del orden de gigabytes por segundo por núcleo.
+Una estrategia diferente consiste en no predecir los valores, sino transformar su
+disposición binaria para hacer visibles regularidades que no son evidentes en el orden
+original. Bajo esta idea, \textit{Bitshuffle}\cite{masui2015bitshuffle} actúa como un filtro
+reversible que reorganiza los bits de una secuencia de valores de punto flotante antes de
+aplicar un códec de compresión general, usualmente LZ4.
+
+El procedimiento puede entenderse como una transposición bit a bit: si se consideran
+$N$ valores de $m$ bits, sus representaciones binarias forman una matriz de
+$N \times m$, y Bitshuffle reordena los datos agrupando los bits según su posición. Esta
+transformación puede revelar repeticiones o patrones en determinados planos de bits,
+por ejemplo en exponentes o signos, que de otra forma quedarían dispersos entre los
+bytes de cada valor. Una vez realizada la transposición, un códec LZ puede aprovechar
+con mayor eficacia esas secuencias más homogéneas.
+
+Este enfoque no depende de predicciones locales entre valores adyacentes, sino de la
+posibilidad de exponer regularidades internas de la representación binaria. Por ello, su
+interés en compresión científica es doble: por un lado, preserva completamente la
+exactitud; por otro, ofrece una vía distinta para explotar redundancia en datos donde los
+modelos predictivos no siempre resultan adecuados. En la práctica, Bitshuffle suele
+entenderse mejor como una transformación previa al códec que como un compresor
+autosuficiente.
 
 \subsubsection{Transformación de Datos Tipados (TDT)}
 
-Una innovación reciente en compresión de flotantes es la \textit{Transformación de Datos Tipados} (TDT)\cite{jamalidinan2025tdt}, concebida para cerrar la brecha entre compresores genéricos y especializados en punto flotante. TDT no es un compresor en sí, sino una etapa de \emph{preprocesamiento} adaptable que reorganiza los bytes de los datos antes de aplicar un compresor convencional (p. ej., Zstd o LZ4). La idea clave es agrupar y separar los bytes según su \emph{nivel de entropía} y patrones estadísticos, en lugar de tratarlos uniformemente. En una representación IEEE 754, distintos campos (signo, exponente, mantisa) pueden poseer distribuciones diferentes; por ejemplo, en muchas series científicas los bytes de exponente tienden a repetirse más que los bytes de mantisa. TDT analiza el conjunto de datos (en bloques) extrayendo características estadísticas de cada posición de byte (entropía media, desviación, frecuencias de valores) y aplica \emph{clustering} para decidir cuáles bytes se comportan de forma similar. Luego \emph{reordena} la matriz de datos colocando juntos los bytes de comportamientos afines y separando los de entropía distinta. Esto produce flujos de datos más homogéneos que, al ser alimentados a un compresor genérico, permiten una codificación más eficiente.
+La \textit{Transformación de Datos Tipados} (TDT)\cite{jamalidinan2025tdt} representa
+una línea más reciente de trabajo orientada a reorganizar datos de punto flotante antes
+de aplicar compresión generalista. A diferencia de Bitshuffle, que opera sobre una
+transposición fija de bits, TDT busca identificar posiciones de byte con comportamientos
+estadísticos diferentes y reagruparlas para producir flujos más homogéneos.
 
-TDT no altera ningún bit de la información; se trata de una transformación reversible cuya utilidad consiste en exponer patrones que antes estaban enmascarados por la disposición original de los datos. En el contexto de vectores de estado cuántico, donde la aleatoriedad aparente puede ser alta, esta técnica buscaría si ciertos bytes de mantisa comparten distribuciones o si el byte de exponente presenta menor entropía debido a normalizaciones. Incluso cuando los datos son mayormente aleatorios, el método puede detectar no uniformidades sutiles entre componentes y reagruparlas para facilitar la compresión. Por ello, resulta una alternativa interesante como capa previa: en conjuntos de baja entropía conserva ventajas de los modelos para punto flotante y, en conjuntos de alta entropía, actúa como un reordenamiento que puede mejorar de forma moderada el rendimiento de compresión y descompresión.
+La idea central es que, en una representación IEEE 754, no todos los bytes cumplen el
+mismo papel ni presentan el mismo nivel de entropía. Los bytes asociados al exponente,
+al signo o a distintas regiones de la mantisa pueden exhibir distribuciones distintas
+según la naturaleza de los datos. TDT analiza esas diferencias a nivel de bloque y aplica
+una reorganización reversible basada en características estadísticas, de modo que los
+bytes con comportamiento semejante queden contiguos antes de ser entregados a un
+compresor convencional.
+
+Más que un códec independiente, TDT debe entenderse como un preprocesamiento
+tipado orientado a mejorar la eficiencia de compresores generales sobre datos
+numéricos. Su relevancia dentro del estado del arte radica en mostrar que la compresión
+sin pérdida de flotantes no depende únicamente de predicción o de compresión
+entrópica, sino también de la capacidad de reordenar la representación binaria para
+hacer más visible su estructura estadística.
 
 \subsection{\normalsize{Otros métodos de optimización de memoria}}
 Además de la compresión sin pérdida, se han desarrollado enfoques alternativos

@@ -1,17 +1,40 @@
 \subsection{Simuladores considerados}
 
-A continuación, se resumen las herramientas evaluadas, enfatizando sus objetivos y características relevantes para este trabajo.
+Las alternativas evaluadas corresponden a herramientas pertinentes para simulación
+cuántica de estado completo, aunque con énfasis distintos en cuanto a rendimiento,
+portabilidad, facilidad de uso o experimentación.
 
 \begin{itemize}
-    \item \textbf{QuEST (Quantum Exact Simulation Toolkit):} Es un simulador de alto rendimiento para vectores de estado y matrices de densidad, con soporte híbrido de paralelismo que puede incluir multihilo, GPU y ejecución distribuida. Se caracteriza por estar orientado a rendimiento en múltiples arquitecturas de cómputo. \cite{Jones2019, quest_repo}
+    \item \textbf{QuEST (Quantum Exact Simulation Toolkit):} simulador de alto
+    rendimiento orientado a vectores de estado y matrices de densidad, con soporte
+    para ejecución multihilo, distribuida y acelerada por GPU. Su diseño privilegia
+    escalabilidad y desempeño en arquitecturas heterogéneas. \cite{Jones2019, quest_repo}
 
-    \item \textbf{Intel-QS (Intel Quantum Simulator):} Simulador de circuitos optimizado para aprovechar arquitecturas multinúcleo y multinodo; usa representación completa del estado, y está diseñado para escalar mediante paralelismo y distribución. \cite{intelqs_doc}
+    \item \textbf{Intel-QS (Intel Quantum Simulator):} simulador de circuitos cuánticos
+    basado en representación completa del estado, concebido para aprovechar
+    arquitecturas multinúcleo y multinodo. Su enfoque está orientado a entornos HPC y
+    a la eficiencia en ejecución paralela. \cite{intelqs_doc}
 
-    \item \textbf{qsim (Google):} Librería de C++/Python para simulación de vector de estado completo, ampliamente usada en integración con Cirq. En su documentación se describe explícitamente como simulador de estado completo, donde el costo crece proporcionalmente al número de amplitudes $2^n$. \cite{qsim_repo, qsim_cirq}
+    \item \textbf{qsim:} biblioteca de simulación de estado completo integrada al
+    ecosistema de Cirq, optimizada para calcular el estado final de circuitos cuánticos.
+    Su orientación principal está asociada a la ejecución eficiente de circuitos y a su uso
+    como backend de simulación. \cite{qsim_repo, qsim_cirq}
 
-    \item \textbf{Quantum++:} Librería moderna en C++ (enfocada en facilidad de uso y portabilidad) para simulación de procesos cuánticos; se distribuye como librería \emph{header-only} y ofrece ejecución multihilo, siendo útil para prototipado. \cite{qpp_paper}
+    \item \textbf{Quantum++:} biblioteca general en C++ para simulación cuántica,
+    distribuida como librería \emph{header-only} y diseñada con énfasis en portabilidad,
+    facilidad de uso y soporte multihilo. Su arquitectura la hace adecuada para
+    prototipado y experimentación ligera. \cite{qpp_paper}
 
-    \item \textbf{TMFQSfullstate:} Prototipo de simulador implementado en C++ con enfoque explícito en estudiar estrategias de consumo de memoria (representación de estado completo, poda de estados, paralelismo compartido y distribuido, y compresión). En particular, el trabajo metodológico que acompaña este simulador reporta escenarios con OpenMP, MPI y la incorporación de compresión para evaluar huella de memoria. \cite{diaz2024software, diaz_mdpi_mmss, tmfqs_repo}
+    \item \textbf{TMFQSfullstate:} prototipo de simulador desarrollado en C++ con foco
+    en estudiar estrategias de representación y consumo de memoria sobre simulación
+    de estado completo. Su diseño favorece la intervención directa sobre la
+    representación del estado y la exploración de variantes relacionadas con gestión de
+    memoria y paralelismo. \cite{diaz2024software, diaz_mdpi_mmss, tmfqs_repo}
 \end{itemize}
 
-En conjunto, las alternativas cubren desde herramientas HPC maduras (QuEST, Intel-QS, qsim) hasta librerías generales (Quantum++) y un prototipo deliberadamente diseñado para experimentar con estrategias de memoria (TMFQSfullstate).
+En conjunto, las alternativas cubren dos perfiles. Por un lado, QuEST, Intel-QS y qsim
+representan herramientas consolidadas con fuerte orientación a rendimiento y
+ejecución eficiente. Por otro, Quantum++ y TMFQSfullstate ofrecen entornos más
+favorables para intervención directa sobre el código y experimentación sobre la
+representación del estado. Esta distinción es relevante porque la selección debía
+responder al problema específico de integración y evaluación planteado en esta tesis.

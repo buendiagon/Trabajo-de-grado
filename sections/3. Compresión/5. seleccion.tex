@@ -1,13 +1,18 @@
 \subsection{Selección de la biblioteca de compresión}
 
-Con base en la Tabla \ref{tab:evaluacion_compresores}, se selecciona \textbf{Blosc2} como
-biblioteca principal para la implementación del mecanismo de compresión sin pérdida.
+A partir de la matriz de la tabla \ref{tab:evaluacion_bibliotecas}, se selecciona
+\textbf{Blosc2} como biblioteca de compresión sin pérdida para este trabajo.
 
-Zstd y LZ4 presentan ventajas claras como compresores generalistas de alta velocidad, mientras que zlib ofrece una
-base madura y ampliamente difundida. Dentro del conjunto de criterios definidos para este trabajo, Blosc2 obtiene el
-mejor balance entre descompresión rápida, integración en C/C++ y adecuación al tratamiento de datos numéricos.
+La elección se sustenta en que Blosc2 ofrece el entorno más adecuado para materializar
+la arquitectura propuesta de almacenamiento comprimido por bloques. Su diseño está
+alineado con datos binarios y numéricos en memoria, incorpora filtros reversibles útiles
+para arreglos de punto flotante y permite combinar la compresión con una organización
+natural por fragmentos, lo que reduce el esfuerzo de implementación respecto a una
+integración basada únicamente en códecs generales \cite{blosc2_docs}.
 
-En consecuencia, la implementación concreta desarrollada en este trabajo adopta Blosc2 como
-realización de una estrategia general de compresión en memoria para vectores de estado,
-basada en particionamiento, acceso localizado y actualización selectiva de los datos
-comprimidos.
+Además, Blosc2 permite mantener flexibilidad experimental sin cambiar de biblioteca:
+dentro de su marco pueden explorarse distintos filtros, configuraciones y códecs, lo que
+resulta especialmente valioso en una investigación cuyo interés no es solo comprimir, sino
+estudiar el compromiso entre ahorro de memoria, sobrecarga temporal y exactitud
+numérica bajo una arquitectura controlada. En consecuencia, Blosc2 se adopta como la
+opción más consistente con los objetivos técnicos y metodológicos de esta tesis.

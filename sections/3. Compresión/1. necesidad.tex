@@ -1,16 +1,17 @@
 \subsection{Necesidad de seleccionar una biblioteca de compresión}
 
-Un simulador tipo Schrödinger puede
-particionar el vector de estado en bloques independientes, mantener una caché de bloques descomprimidos y
-aplicar una política de descompresión bajo demanda para evitar reconstruir el estado completo en cada operación.
-Sin embargo, para materializar esa arquitectura en un simulador real es necesario seleccionar una biblioteca
-de compresión concreta que se adapte bien al acceso parcial por bloques y al patrón repetido de lectura,
-modificación y escritura de amplitudes.
+Una vez definido el simulador base, la siguiente decisión metodológica consiste en
+seleccionar la biblioteca de compresión sin pérdida que permita materializar la
+arquitectura propuesta sobre el vector de estado. En este trabajo, la compresión no se
+plantea como una operación aislada de almacenamiento, sino como parte de un esquema
+de gestión de memoria basado en particionamiento por bloques, descompresión selectiva
+y reutilización temporal de datos. Por ello, la biblioteca elegida debía ser compatible con
+un patrón de acceso repetido de lectura, modificación y escritura sobre fragmentos del
+estado, y no únicamente ofrecer una buena tasa de compresión en escenarios
+secuenciales u orientados a archivo.
 
-Por esta razón, la decisión relevante es qué biblioteca de compresión sin pérdida facilita 
-una integración eficiente en una ruta crítica de simulación cuántica. En este contexto, interesan
-especialmente las soluciones que trabajen con bloques independientes, permitan incorporar filtros previos sobre
-datos de punto flotante y minimicen la latencia de descompresión cuando solo una fracción del vector de estado
-debe pasar temporalmente a representación densa.
-
-La distinción con respecto al capítulo de estado del arte es deliberada. Allí se revisaron algoritmos, transformaciones y familias de compresión sin pérdida para datos de punto flotante; en esta sección se comparan \emph{realizaciones software concretas} que puedan integrarse en un simulador en C/C++. Por ello aparecen bibliotecas como Blosc2, Zstd, LZ4 y zlib: no todas representan un algoritmo nuevo, pero sí distintos vehículos de implementación para materializar compresión por bloques, filtros reversibles y códecs de baja latencia dentro de la arquitectura del simulador.
+Bajo estas condiciones, la selección no debía responder solo al ratio de compresión
+reportado por una biblioteca, sino a su adecuación como componente de una ruta crítica
+de simulación numérica. En particular, interesaban bibliotecas utilizables desde C/C++,
+con operación completamente sin pérdida, soporte eficiente para datos residentes en
+memoria y una integración razonable en un esquema de bloques independientes.

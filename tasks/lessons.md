@@ -1,0 +1,1 @@
+- Siempre que hagas cambios en el texto, recompila el pdf y revisa que no hayan errores o warning, si los hay arreglalos y recompila main.pdf para que este muestre la última versión.

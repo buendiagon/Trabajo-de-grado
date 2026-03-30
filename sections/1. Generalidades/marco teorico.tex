@@ -2,9 +2,9 @@
 
 \subsection{\normalsize{Fundamentos de información cuántica}}
 
-\subsubsection{Qubits y espacio de estados}
+\subsubsection{Qubits, espacio de estados y superposición}
 
-La unidad básica de información en computación cuántica es el qubit. A diferencia del bit clásico, cuyo valor solo puede ser 0 o 1, un qubit se describe mediante un vector de estado en un espacio de Hilbert bidimensional generado por los estados base $\ket{0}$ y $\ket{1}$ \cite{Nielsen2010}. Un estado general de un qubit puede escribirse como
+La unidad básica de información en computación cuántica es el qubit. A diferencia del bit clásico, cuyo valor solo puede ser 0 o 1, un qubit se describe mediante un vector de estado en un espacio de Hilbert generado por los estados base $\ket{0}$ y $\ket{1}$ \cite{Nielsen2010}. Un estado general puede escribirse como
 \[
     \ket{\psi} = \alpha \ket{0} + \beta \ket{1},
 \]
@@ -13,49 +13,38 @@ donde $\alpha$ y $\beta$ son amplitudes complejas que satisfacen la condición d
     |\alpha|^2 + |\beta|^2 = 1.
 \]
 
-Esta expresión muestra que el estado de un qubit no se reduce a un valor discreto, sino que queda determinado por dos coeficientes complejos cuya magnitud y fase contienen la información relevante del sistema. En términos observables, la medición del qubit produce uno de los estados base, con probabilidades dadas por los módulos cuadrados de las amplitudes.
+Esta expresión muestra que el estado cuántico no queda determinado por un valor discreto, sino por una combinación lineal de estados base. Esta propiedad se conoce como superposición y constituye una de las características fundamentales de la información cuántica \cite{Nielsen2010}. En términos observables, al medir el sistema se obtiene uno de los estados base con probabilidades dadas por los módulos cuadrados de las amplitudes.
 
-Cuando se consideran varios qubits, el espacio de estados total se obtiene mediante el producto tensorial de los espacios individuales. En consecuencia, un sistema de $n$ qubits se describe en un espacio vectorial de dimensión $2^n$. Su estado general puede representarse como
+La formulación anterior puede generalizarse a registros de varios qubits. En ese caso, el espacio de estados total se obtiene mediante el producto tensorial de los espacios individuales, de modo que un sistema de $n$ qubits se describe en un espacio vectorial de dimensión $2^n$ \cite{Nielsen2010}. Su estado general se expresa como
 \[
     \ket{\psi} = \sum_{i=0}^{2^n-1} \alpha_i \ket{i},
 \]
-donde $\ket{i}$ denota cada uno de los estados base de la base computacional y $\alpha_i \in \mathbb{C}$. Para dos qubits, por ejemplo, el estado general es
+donde $\ket{i}$ representa cada estado base de la base computacional y $\alpha_i \in \mathbb{C}$. Por ejemplo, para dos qubits:
 \[
     \ket{\psi} = \alpha_{00}\ket{00} + \alpha_{01}\ket{01} + \alpha_{10}\ket{10} + \alpha_{11}\ket{11}.
 \]
 
-En sistemas multiqubit aparece una característica central de la computación cuántica: el número de amplitudes necesarias para describir completamente el sistema crece con el tamaño del espacio de estados. Esta propiedad es parte esencial del modelo cuántico y condiciona la forma en que dichos sistemas pueden representarse y procesarse en computadoras clásicas.
-
-\subsubsection{Superposición}
-
-La superposición es la propiedad según la cual un sistema cuántico puede encontrarse en una combinación lineal de varios estados base simultáneamente \cite{Nielsen2010}. En el caso de un qubit, esto significa que el estado puede involucrar a la vez contribuciones de $\ket{0}$ y $\ket{1}$, como se observa en la expresión
-\[
-    \ket{\psi} = \alpha \ket{0} + \beta \ket{1}.
-\]
-
-En sistemas con varios qubits, la superposición se extiende a todos los estados base del sistema. Así, un registro de $n$ qubits puede describirse como una combinación de $2^n$ configuraciones posibles. Esta propiedad no implica que todos los resultados sean observables al mismo tiempo, sino que la evolución del sistema ocurre sobre el conjunto completo de amplitudes antes de la medición.
-
-Desde el punto de vista matemático, la superposición convierte al estado cuántico en un objeto lineal sobre el cual pueden actuar operadores unitarios. Desde el punto de vista informacional, permite que la evolución del sistema manipule distribuciones completas de amplitudes, en lugar de valores puntuales. Por esta razón, la superposición constituye el punto de partida formal del modelo de circuitos cuánticos.
+La superposición adquiere aquí una forma más amplia: el sistema completo puede describirse como una combinación lineal de todos los estados base disponibles. Así, a medida que aumenta el número de qubits, crece también el número de amplitudes necesarias para describir el sistema con exactitud. Esta estructura matemática define el modo en que la información cuántica se representa antes de cualquier implementación computacional.
 
 \subsubsection{Entrelazamiento}
 
-El entrelazamiento aparece cuando el estado conjunto de varios qubits no puede expresarse como el producto tensorial de estados individuales \cite{Nielsen2010}. En estos casos, la información del sistema deja de estar contenida por separado en cada subsistema y pasa a describirse únicamente a nivel global.
+El entrelazamiento aparece cuando el estado conjunto de un sistema no puede expresarse como el producto tensorial de estados independientes para cada una de sus partes \cite{Nielsen2010}. En estos casos, la información del sistema deja de poder describirse completamente a partir de sus componentes por separado y pasa a estar contenida en el estado global.
 
 Un ejemplo clásico es el estado de Bell
 \[
     \ket{\Phi^+} = \frac{1}{\sqrt{2}}\left(\ket{00} + \ket{11}\right).
 \]
-Este estado no puede factorizarse como $\ket{\psi_1} \otimes \ket{\psi_2}$, por lo que los qubits involucrados no admiten una descripción independiente completa. El entrelazamiento introduce correlaciones no clásicas entre las partes del sistema y constituye uno de los rasgos distintivos de la información cuántica.
+Este estado no puede factorizarse como $\ket{\psi_1} \otimes \ket{\psi_2}$, por lo que sus componentes no admiten una descripción independiente completa. El entrelazamiento introduce correlaciones no clásicas entre las partes del sistema y constituye uno de los rasgos distintivos de la computación cuántica \cite{Nielsen2010}.
 
-En términos operativos, muchas compuertas multiqubit se diseñan precisamente para crear, transformar o aprovechar entrelazamiento. Por ello, esta propiedad no solo es conceptualmente importante, sino también fundamental para la construcción de circuitos cuánticos y para la complejidad estructural de los estados que dichos circuitos generan.
+Desde una perspectiva operativa, esta propiedad resulta fundamental porque muchas transformaciones cuánticas generan, modifican o explotan correlaciones de este tipo. En consecuencia, el entrelazamiento no solo es una característica teórica del modelo, sino también una propiedad estructural de gran importancia en la evolución de los estados cuánticos.
 
 \subsubsection{Interferencia}
 
-La interferencia es la propiedad por la cual las amplitudes complejas de un estado cuántico pueden combinarse de forma constructiva o destructiva durante la evolución del sistema \cite{Nielsen2010}. A diferencia de un modelo puramente probabilístico, donde las probabilidades se suman directamente, en un sistema cuántico primero se combinan amplitudes y luego se obtienen probabilidades a partir de sus módulos cuadrados.
+La interferencia es la propiedad mediante la cual las amplitudes complejas de un estado cuántico pueden combinarse de forma constructiva o destructiva durante la evolución del sistema \cite{Nielsen2010}. A diferencia de un esquema puramente probabilístico, en un sistema cuántico no se suman directamente probabilidades, sino amplitudes, y solo después se obtienen probabilidades a partir de sus módulos cuadrados.
 
-Esto implica que la fase de las amplitudes juega un papel central. Dos contribuciones con igual magnitud pueden reforzarse entre sí o anularse parcialmente según su relación de fase. Esta característica es esencial para el funcionamiento de numerosos algoritmos cuánticos, ya que permite redistribuir la probabilidad de medición mediante secuencias de compuertas.
+Esto implica que la fase relativa entre amplitudes desempeña un papel central. Dos contribuciones de magnitud similar pueden reforzarse entre sí o cancelarse parcialmente según su relación de fase. Por esta razón, la evolución cuántica no depende únicamente de cuánto ``peso'' tenga cada estado base, sino también de cómo se relacionan sus amplitudes complejas.
 
-Superposición, entrelazamiento e interferencia no son propiedades aisladas. En conjunto, definen la forma en que un sistema cuántico almacena y transforma información. Sobre esta base se construye el modelo de circuitos cuánticos utilizado en simulación y análisis algorítmico.
+La interferencia explica cómo ciertas configuraciones del sistema pueden aumentar su probabilidad de observación mientras otras disminuyen, aun cuando todas formen parte de la misma superposición. Junto con la superposición y el entrelazamiento, esta propiedad define la dinámica fundamental con la que la información cuántica es transformada.
 
 \subsection{\normalsize{Modelo de circuitos cuánticos}}
 
@@ -90,9 +79,9 @@ En términos generales, si un circuito aplica sucesivamente las compuertas $U_1,
 \]
 Esta descripción resalta que el circuito puede interpretarse como una composición ordenada de transformaciones lineales sobre el vector de estado.
 
-\subsubsection{Compuertas multiqubit y operaciones controladas}
+\subsubsection{Compuertas controladas y operaciones sobre varios qubits}
 
-Además de las operaciones de un solo qubit, los circuitos cuánticos utilizan compuertas que actúan sobre varios qubits de manera conjunta. Una de las más conocidas es la compuerta CNOT, que aplica una negación controlada sobre un qubit objetivo dependiendo del valor del qubit de control \cite{Nielsen2010}.
+Además de las operaciones de un solo qubit, los circuitos cuánticos utilizan compuertas que actúan sobre más de un qubit de manera conjunta. Una de las más conocidas es la compuerta CNOT, que aplica una negación controlada sobre un qubit objetivo dependiendo del valor del qubit de control \cite{Nielsen2010}.
 
 Las compuertas controladas permiten construir correlaciones entre qubits y son fundamentales para la generación de entrelazamiento. Por ejemplo, si se parte de $\ket{00}$, se aplica una compuerta Hadamard al primer qubit y después una CNOT controlada por ese mismo qubit, el resultado es
 \[
@@ -100,7 +89,7 @@ Las compuertas controladas permiten construir correlaciones entre qubits y son f
 \]
 que corresponde a un estado entrelazado.
 
-En el modelo de circuitos, las compuertas multiqubit amplían la capacidad expresiva del sistema al introducir dependencias entre subsistemas. Su efecto puede describirse algebraicamente mediante matrices unitarias de mayor dimensión, aunque en la práctica suelen implementarse mediante reglas de actualización local sobre el vector de estado.
+En el modelo de circuitos, estas compuertas amplían la capacidad expresiva del sistema al introducir dependencias entre subsistemas. Su efecto puede describirse algebraicamente mediante matrices unitarias de mayor dimensión, aunque en la práctica suelen implementarse mediante reglas de actualización local sobre el vector de estado.
 
 \subsubsection{Medición}
 
@@ -154,7 +143,7 @@ Esta segunda forma resulta útil para visualizar cómo un objeto abstracto de la
 
 La correspondencia entre índice, estado base y representación numérica puede ilustrarse con un sistema de tres qubits:
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \small
     \begin{tabular}{c c c c}
@@ -181,20 +170,41 @@ Usualmente, esta correspondencia sigue el orden binario natural del índice ente
 
 Una vez que el estado cuántico se representa como un arreglo lineal, la aplicación de compuertas puede entenderse como una secuencia de operaciones numéricas sobre subconjuntos específicos de amplitudes.
 
-En una compuerta de un solo qubit, la transformación no afecta una amplitud aislada, sino pares de amplitudes cuyos índices difieren en el bit asociado al qubit objetivo. Por ejemplo, en un sistema de tres qubits, si la compuerta actúa sobre el qubit menos significativo, los pares afectados son
-\[
-    (\alpha_0,\alpha_1),\;
-    (\alpha_2,\alpha_3),\;
-    (\alpha_4,\alpha_5),\;
-    (\alpha_6,\alpha_7).
-\]
-Si la compuerta actúa sobre el qubit más significativo, los pares pasan a ser
-\[
-    (\alpha_0,\alpha_4),\;
-    (\alpha_1,\alpha_5),\;
-    (\alpha_2,\alpha_6),\;
-    (\alpha_3,\alpha_7).
-\]
+En una compuerta de un solo qubit, la transformación no afecta una amplitud aislada, sino pares de amplitudes cuyos índices difieren en el bit asociado al qubit objetivo. En un sistema de tres qubits puede tomarse la convención $(q_2 q_1 q_0)$, donde $q_2$ es el bit más significativo y $q_0$ el menos significativo. Con esta convención, la Tabla~\ref{tab:pares-bits-compuerta} muestra cómo cambian los pares afectados según la posición del qubit objetivo.
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \begin{tabular}{c c c}
+        \hline
+        \multicolumn{3}{c}{Objetivo $q_0$ (se mantienen fijos $q_2$ y $q_1$)} \\
+        \hline
+        Bits fijos $(q_2 q_1)$ & Estados relacionados & Par afectado \\
+        \hline
+        $00$ & $000 \leftrightarrow 001$ & $(\alpha_0,\alpha_1)$ \\
+        $01$ & $010 \leftrightarrow 011$ & $(\alpha_2,\alpha_3)$ \\
+        $10$ & $100 \leftrightarrow 101$ & $(\alpha_4,\alpha_5)$ \\
+        $11$ & $110 \leftrightarrow 111$ & $(\alpha_6,\alpha_7)$ \\
+        \hline
+    \end{tabular}
+
+    \vspace{0.7em}
+
+    \begin{tabular}{c c c}
+        \hline
+        \multicolumn{3}{c}{Objetivo $q_2$ (se mantienen fijos $q_1$ y $q_0$)} \\
+        \hline
+        Bits fijos $(q_1 q_0)$ & Estados relacionados & Par afectado \\
+        \hline
+        $00$ & $000 \leftrightarrow 100$ & $(\alpha_0,\alpha_4)$ \\
+        $01$ & $001 \leftrightarrow 101$ & $(\alpha_1,\alpha_5)$ \\
+        $10$ & $010 \leftrightarrow 110$ & $(\alpha_2,\alpha_6)$ \\
+        $11$ & $011 \leftrightarrow 111$ & $(\alpha_3,\alpha_7)$ \\
+        \hline
+    \end{tabular}
+    \caption{Pares de amplitudes afectados por una compuerta de un solo qubit en un sistema de 3 qubits, mostrando qué bits permanecen fijos y cuál varía según el qubit objetivo.}
+    \label{tab:pares-bits-compuerta}
+\end{table}
 
 Esto muestra que el patrón de actualización depende de la posición del qubit sobre el cual se aplica la compuerta. De forma análoga, una compuerta de dos qubits modifica grupos más grandes de amplitudes, pero siempre siguiendo una regla determinada por la estructura binaria de los índices.
 
@@ -264,11 +274,3 @@ En arreglos de amplitudes complejas, esta propiedad significa que tanto la parte
     e_{\text{abs}} = \max_i \left|\alpha_i^{(\text{orig})} - \alpha_i^{(\text{rec})}\right|,
 \]
 el cual debe ser nulo en una estrategia estrictamente sin pérdida. Desde un punto de vista metodológico, ello permite distinguir claramente entre optimización del almacenamiento y modificación del contenido numérico.
-
-\subsubsection{Bases conceptuales de compresibilidad en vectores de estado}
-
-La posibilidad de comprimir un vector de estado depende de que sus amplitudes presenten algún tipo de regularidad aprovechable. Estas regularidades pueden manifestarse como distribuciones estructuradas, repeticiones parciales, regiones con baja variación o relaciones locales entre valores cercanos dentro del arreglo.
-
-No todos los estados cuánticos exhiben el mismo comportamiento frente a la compresión. Algunos pueden dar lugar a arreglos con mayor organización interna, mientras que otros producen distribuciones de amplitudes y fases más irregulares. Estudios previos sobre compresión en simulación cuántica muestran precisamente que la efectividad del enfoque depende fuertemente de la estructura del estado y del tipo de circuito considerado \cite{wu2018amplitude,wu2019full}.
-
-Esta idea sirve como base conceptual para analizar posteriormente cómo distintas clases de estados pueden presentar comportamientos diferentes frente a estrategias de almacenamiento comprimido, sin necesidad de desarrollar aún una comparación detallada de métodos o resultados.

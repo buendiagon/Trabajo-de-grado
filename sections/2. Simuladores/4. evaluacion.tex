@@ -1,10 +1,15 @@
 \subsection{Matriz de evaluación ponderada}
 
-Se aplicó una matriz de decisión ponderada para evaluar cada alternativa según los criterios de la tabla \ref{tab:criterios_sim}. La calificación se asignó en una escala discreta de 1 a 5, donde 5 indica cumplimiento excelente del criterio y 1 un cumplimiento deficiente para los objetivos de integración e instrumentación de compresión sin pérdida. Cada puntaje se definió a partir de la documentación técnica disponible, de las publicaciones asociadas a cada simulador y de la estructura de integración descrita para el vector de estado, de modo que la matriz funcione como un mecanismo de decisión trazable y no como una preferencia ad hoc.
+Con base en los criterios anteriores, se aplicó una matriz de decisión ponderada en una
+escala discreta de 1 a 5, donde 5 representa el mayor grado de adecuación al objetivo
+del trabajo y 1 el menor. Los puntajes corresponden a una valoración relativa respecto a
+la posibilidad de integrar, instrumentar y evaluar una estrategia de compresión sin
+pérdida sobre el vector de estado.
 
 \begin{table}[H]
 \centering
-\caption{Evaluación de alternativas (escala 1--5) y total ponderado} \label{tab:evaluacion_sim}
+\caption{Evaluación de alternativas (escala 1--5) y total ponderado}
+\label{tab:evaluacion_sim}
 \begin{tabular}{lcccccc}
 \hline
 \multicolumn{1}{c}{\textbf{Criterio}} &
@@ -15,18 +20,23 @@ Se aplicó una matriz de decisión ponderada para evaluar cada alternativa segú
 \textbf{qsim} &
 \textbf{Quantum++} \\
 \hline
-C1 & 0.10 & 5 & 4 & 4 & 4 & 4 \\
+C1 & 0.15 & 5 & 5 & 5 & 5 & 4 \\
 C2 & 0.25 & 5 & 3 & 2 & 2 & 3 \\
-C3 & 0.20 & 5 & 3 & 3 & 2 & 2 \\
-C4 & 0.10 & 4 & 3 & 2 & 2 & 5 \\
-C5 & 0.15 & 5 & 3 & 2 & 2 & 3 \\
-C6 & 0.10 & 3 & 5 & 5 & 5 & 4 \\
-C7 & 0.10 & 4 & 5 & 5 & 4 & 3 \\
+C3 & 0.20 & 5 & 3 & 2 & 2 & 3 \\
+C4 & 0.10 & 3 & 5 & 5 & 5 & 4 \\
+C5 & 0.10 & 4 & 3 & 2 & 2 & 5 \\
+C6 & 0.10 & 4 & 5 & 5 & 4 & 3 \\
+C7 & 0.10 & 5 & 3 & 3 & 2 & 2 \\
 \hline
 \textbf{Total} & \textbf{1.00} &
-\textbf{4.60} & 3.50 & 3.00 & 2.70 & 3.10 \\
+\textbf{4.70} & 3.70 & 3.20 & 2.90 & 3.30 \\
 \hline
 \end{tabular}
 \end{table}
 
-Los resultados muestran que, aunque QuEST, Intel-QS y qsim ofrecen excelente cobertura funcional y paralelismo, la decisión de este trabajo prioriza la capacidad de intervención experimental sobre el almacenamiento del vector de estado y la instrumentación cercana a rutas críticas. Bajo ese objetivo, TMFQSfullstate obtiene el mayor puntaje global, principalmente por C2, C3 y C5.
+La matriz muestra que las alternativas mejor orientadas a rendimiento y paralelismo no
+coinciden necesariamente con las mejor posicionadas para intervenir e instrumentar el
+almacenamiento del estado. En este marco, TMFQSfullstate obtiene la mayor
+puntuación global, principalmente por su ventaja en los criterios de intervención sobre la
+representación del estado, capacidad de instrumentación experimental y afinidad con el
+estudio de estrategias de memoria.

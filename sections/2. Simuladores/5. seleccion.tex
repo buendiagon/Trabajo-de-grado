@@ -1,17 +1,12 @@
 \subsection{Selección del simulador}
 
-Partiendo de la matriz de la tabla \ref{tab:evaluacion_sim}, se selecciona \textbf{TMFQSfullstate} como simulador base para este trabajo.
+A partir de la matriz de la tabla \ref{tab:evaluacion_sim}, se selecciona
+\textbf{TMFQSfullstate} como simulador base para este trabajo.
 
-La decisión se justifica por cuatro razones principales. Esta selección no pretende afirmar que TMFQSfullstate sea el simulador más robusto o más eficiente en términos generales dentro del ecosistema de simulación cuántica; su propósito es escoger la plataforma con mayor \textbf{capacidad de intervención experimental} sobre el almacenamiento del vector de estado, instrumentar métricas finas y aislar el efecto de la compresión sobre memoria y tiempo.
-
-\begin{itemize}
-    \item \textbf{Diseño orientado a experimentación de memoria (C3):} TMFQSfullstate se presenta como un prototipo cuyo foco explícito es evaluar consumo de memoria bajo distintas estrategias (estado completo, OpenMP, MPI y escenarios con compresión), lo cual se alinea directamente con el objetivo de insertar compresión sin pérdida sobre el vector de estado. \cite{diaz2024software, diaz_mdpi_mmss}
-
-    \item \textbf{Alta modificabilidad del núcleo (C2) e instrumentación (C5):} al ser un prototipo compacto y de propósito investigativo, reduce el esfuerzo necesario para ubicar puntos de inserción (capa de almacenamiento del vector de amplitudes y rutas críticas) y para instrumentar mediciones finas de tiempo/memoria, tal como se exige en la fase de diseño metodológico.
-
-    \item \textbf{Compatibilidad con arreglos de doble precisión (C1):} el material metodológico asociado al prototipo describe implementaciones basadas en arreglos en doble precisión para compuertas y estructuras numéricas, lo que facilita plantear compresión sin pérdida sobre datos de punto flotante sin introducir conversiones o cuantizaciones. \cite{diaz2024software, diaz_mdpi_mmss}
-
-    \item \textbf{Escenarios comparables de paralelismo (C7):} la disponibilidad de variantes con OpenMP/MPI permite evaluar la interacción entre compresión y paralelismo, y contrastar contra simuladores HPC sin que el paralelismo sea un factor ausente en el entorno experimental. \cite{diaz2024software}
-\end{itemize}
-
-En consecuencia, TMFQSfullstate ofrece el mejor balance entre \textit{control experimental} y \textit{esfuerzo de integración}, minimizando el riesgo técnico para implementar y evaluar compresión sin pérdida en el vector de estado, manteniendo al mismo tiempo una base suficientemente realista para comparar memoria y rendimiento dentro de los criterios definidos por este trabajo.
+La elección se sustenta en que ofrece el entorno más adecuado para integrar la
+estrategia propuesta, observar su efecto sobre el almacenamiento del vector de estado y
+mantener control experimental sobre la evaluación. Su arquitectura favorece la
+intervención directa sobre la representación interna del estado, reduce el riesgo técnico
+de integración y resulta coherente con el problema central de esta tesis, orientado a la
+optimización de memoria en simuladores cuánticos tipo Schrödinger mediante
+compresión sin pérdida de precisión.

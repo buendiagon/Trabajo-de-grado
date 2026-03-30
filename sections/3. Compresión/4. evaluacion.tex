@@ -1,40 +1,43 @@
 \subsection{Matriz de evaluación ponderada}
 
-La evaluación se presenta mediante una matriz ponderada basada en los criterios de la
-Tabla \ref{tab:criterios_compresion}. La escala de 1 a 5 expresa el grado de adecuación de
-cada biblioteca frente a compresión sin pérdida de arreglos numéricos, costo temporal de
-acceso e integración práctica en software científico escrito en C/C++. Las puntuaciones se
-asignaron a partir de la documentación oficial de cada biblioteca, de sus características de
-integración y del comportamiento esperado sobre arreglos numéricos homogéneos, con el fin de
-dejar explícito el criterio usado en la selección.
+Con base en los criterios anteriores, se aplicó una matriz de evaluación ponderada en una
+escala discreta de 1 a 5, donde 5 representa el mayor grado de adecuación al objetivo del
+trabajo y 1 el menor. Los puntajes no deben interpretarse como una medida absoluta de
+calidad de cada biblioteca, sino como una valoración relativa respecto a su conveniencia
+para integrarse en una arquitectura de almacenamiento comprimido por bloques dentro
+del simulador seleccionado.
 
 \begin{table}[H]
     \centering
     \caption{Evaluación de bibliotecas de compresión sin pérdida (escala 1--5) y total ponderado}
-    \label{tab:evaluacion_compresores}
-    \begin{tabular}{lcccccc}
+    \label{tab:evaluacion_bibliotecas}
+    \begin{tabular}{lccccc}
         \hline
-        \multicolumn{1}{l}{\textbf{Criterio}} &
-        \multicolumn{1}{c}{\textbf{Peso}} &
-        \multicolumn{1}{c}{\textbf{Blosc2}} &
-        \multicolumn{1}{c}{\textbf{Zstd}} &
-        \multicolumn{1}{c}{\textbf{LZ4}} &
-        \multicolumn{1}{c}{\textbf{zlib}} \\
+        \multicolumn{1}{c}{\textbf{Criterio}} &
+        \textbf{Peso} &
+        \textbf{Blosc2} &
+        \textbf{Zstd} &
+        \textbf{LZ4} &
+        \textbf{zlib} \\
         \hline
-        C1 (Efectividad en datos numéricos)    & 0.25 & 4 & 4 & 2 & 3 \\
-        C2 (Descompresión)                     & 0.20 & 5 & 4 & 5 & 2 \\
-        C3 (Compresión)                        & 0.15 & 4 & 4 & 5 & 2 \\
-        C4 (Integración C/C++)                 & 0.15 & 5 & 5 & 5 & 5 \\
-        C5 (Madurez y adopción)                & 0.10 & 4 & 5 & 5 & 5 \\
-        C6 (Optimización para datos numéricos) & 0.15 & 5 & 2 & 1 & 1 \\
+        C1 & 0.25 & 5 & 3 & 3 & 2 \\
+        C2 & 0.20 & 4 & 4 & 5 & 2 \\
+        C3 & 0.20 & 5 & 4 & 4 & 4 \\
+        C4 & 0.15 & 5 & 2 & 2 & 2 \\
+        C5 & 0.10 & 5 & 4 & 3 & 2 \\
+        C6 & 0.10 & 4 & 5 & 5 & 5 \\
         \hline
-        \textbf{Total}            & 1.00 &
-        \textbf{4.50} & 3.95 & 3.65 & 2.85 \\
+        \textbf{Total} & \textbf{1.00} &
+        \textbf{4.75} & 3.55 & 3.45 & 2.70 \\
         \hline
     \end{tabular}
 \end{table}
 
-Los resultados de la matriz muestran perfiles diferenciados entre las bibliotecas evaluadas. Zstd y LZ4 presentan un
-buen comportamiento general como compresores de alta velocidad, zlib conserva interés como referencia madura y
-ampliamente adoptada, y Blosc2 obtiene la mayor puntuación total por su buen balance entre costo de acceso,
-integración y adecuación a arreglos numéricos homogéneos. Esta ventaja es coherente con el panorama del estado del arte: Blosc2 no sustituye por sí mismo a los algoritmos analizados allí, pero sí ofrece una realización práctica que combina compresión por bloques, filtros reversibles tipo \emph{shuffle} y selección de códec en una interfaz directamente integrable en el simulador.
+La matriz muestra una diferencia clara entre bibliotecas generalistas de compresión y
+una biblioteca diseñada con mayor afinidad hacia datos numéricos particionados. Zstd y
+LZ4 obtienen una valoración favorable en velocidad y madurez, pero dependen en mayor
+medida de que la arquitectura de bloques sea resuelta externamente por la aplicación.
+zlib conserva valor como referencia estable, aunque resulta menos atractivo para una ruta
+crítica sensible a latencia y acceso parcial. En cambio, Blosc2 concentra ventajas en los
+criterios más relevantes para esta tesis: compresión por bloques en memoria, facilidad de
+integración y adecuación a arreglos numéricos homogéneos \cite{blosc2_docs}.
