@@ -28,3 +28,24 @@ simulador siga operando sobre amplitudes complejas y compuertas cuánticas del m
 modo que en una versión no comprimida, mientras la capa de almacenamiento resuelve
 de forma interna la recuperación, actualización y escritura de los bloques necesarios para
 cada paso de la simulación.
+
+\begin{figure}[H]
+    \centering
+    \caption{Flujo de ejecución para compuertas locales sobre un único bloque}
+    \includegraphics[width=0.9\textwidth]{images/development-workflow-a.png}
+    \label{fig:development-workflow-a}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Flujo de ejecución para compuertas que operan entre bloques}
+    \includegraphics[width=1\textwidth]{images/development-workflow-b.png}
+    \label{fig:development-workflow-b}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Flujo de persistencia diferida y escritura en backend comprimido}
+    \includegraphics[width=1\textwidth]{images/development-workflow-c.png}
+    \label{fig:development-workflow-c}
+\end{figure}
