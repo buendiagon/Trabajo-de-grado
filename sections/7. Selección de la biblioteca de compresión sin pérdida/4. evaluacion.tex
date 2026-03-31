@@ -2,10 +2,14 @@
 
 Con base en los criterios anteriores, se aplicó una matriz de evaluación ponderada en una
 escala discreta de 1 a 5, donde 5 representa el mayor grado de adecuación al objetivo del
-trabajo y 1 el menor. Los puntajes no deben interpretarse como una medida absoluta de
-calidad de cada biblioteca, sino como una valoración relativa respecto a su conveniencia
-para integrarse en una arquitectura de almacenamiento comprimido por bloques dentro
-del simulador seleccionado.
+trabajo y 1 el menor. Los puntajes corresponden a una valoración relativa respecto a la
+conveniencia de cada biblioteca para integrarse en una arquitectura de almacenamiento
+comprimido por bloques dentro del simulador seleccionado.
+
+La asignación de valores se apoyó en la documentación oficial y en la literatura técnica
+asociada a cada biblioteca. Estas fuentes permitieron identificar el propósito de diseño de
+cada biblioteca, su modelo de uso sobre memoria, la presencia o ausencia de mecanismos
+internos de particionamiento, y su orientación hacia datos binarios o numéricos.
 
 \begin{table}[H]
     \centering
@@ -13,31 +17,34 @@ del simulador seleccionado.
     \label{tab:evaluacion_bibliotecas}
     \begin{tabular}{lccccc}
         \hline
-        \multicolumn{1}{c}{\textbf{Criterio}} &
-        \textbf{Peso} &
-        \textbf{Blosc2} &
-        \textbf{Zstd} &
-        \textbf{LZ4} &
-        \textbf{zlib} \\
+        \textbf{Criterio} & \textbf{Peso} & \textbf{Blosc2} & \textbf{Zstd} & \textbf{LZ4} & \textbf{zlib} \\
         \hline
-        C1 & 0.25 & 5 & 3 & 3 & 2 \\
-        C2 & 0.20 & 4 & 4 & 5 & 2 \\
+        C1 & 0.35 & 5 & 3 & 3 & 2 \\
+        C2 & 0.30 & 4 & 4 & 5 & 2 \\
         C3 & 0.20 & 5 & 4 & 4 & 4 \\
         C4 & 0.15 & 5 & 2 & 2 & 2 \\
-        C5 & 0.10 & 5 & 4 & 3 & 2 \\
-        C6 & 0.10 & 4 & 5 & 5 & 5 \\
         \hline
-        \textbf{Total} & \textbf{1.00} &
-        \textbf{4.75} & 3.55 & 3.45 & 2.70 \\
+        \textbf{Total} & \textbf{1.00} & \textbf{4.75} & 3.50 & 3.65 & 2.50 \\
         \hline
     \end{tabular}
 \end{table}
 
-La matriz muestra una diferencia clara entre bibliotecas generalistas de compresión y
-una biblioteca diseñada con mayor afinidad hacia datos numéricos particionados. Zstd y
-LZ4 obtienen una valoración favorable en velocidad y madurez, pero dependen en mayor
-medida de que la arquitectura de bloques sea resuelta externamente por la aplicación.
-zlib conserva valor como referencia estable, aunque resulta menos atractivo para una ruta
-crítica sensible a latencia y acceso parcial. En cambio, Blosc2 concentra ventajas en los
-criterios más relevantes para esta tesis: compresión por bloques en memoria, facilidad de
-integración y adecuación a arreglos numéricos homogéneos \cite{blosc2_docs}.
+La matriz muestra una diferencia clara entre una biblioteca concebida con afinidad hacia
+datos numéricos particionados y bibliotecas generalistas de compresión sin pérdida.
+Blosc2 obtuvo la mayor valoración en adecuación a almacenamiento por bloques porque
+su modelo incorpora contenedores fragmentados, filtros reversibles y operación en
+memoria dentro de un marco unificado \cite{blosc2_docs}. Zstd y LZ4 alcanzaron una
+valoración favorable en costo de acceso e integración debido a sus APIs en memoria y a
+su perfil de alto desempeño, pero dependen en mayor medida de que el particionamiento,
+la política de acceso y la gestión de bloques sean resueltos por la aplicación
+\cite{ZstdRepo, ZstdSite, LZ4Repo}. zlib conserva valor como referencia estable y madura,
+aunque su perfil resulta menos atractivo para una ruta crítica sensible a latencia y acceso
+repetido sobre fragmentos del vector de estado \cite{ZlibTechDetails}.
+
+Las diferencias más relevantes se concentran en los criterios con mayor peso. Blosc2
+sobresale en estructura por bloques e integración porque ya articula un modelo de trabajo
+alineado con datos binarios y numéricos en memoria. Zstd y LZ4 ofrecen códecs rápidos
+y ampliamente adoptados, pero trasladan a la aplicación la responsabilidad principal
+sobre la organización del almacenamiento comprimido. zlib, aunque robusta y muy
+conocida, resulta menos favorable cuando la prioridad es reducir la sobrecarga temporal
+del acceso repetido a fragmentos del estado.

@@ -39,6 +39,15 @@ donde las transformaciones locales puedan ser explotadas para reducir la complej
 estructural.
 
 Estos avances en compresión sin pérdida han permitido extender la capacidad de
-simulación de circuitos cuánticos en hardware clásico. Sin embargo, aún
-existen limitaciones en la representación de estados arbitrarios, lo que ha llevado
-a la exploración de otros métodos para optimizar el uso de memoria.
+simulación de circuitos cuánticos en hardware clásico. Sin embargo, conviene distinguir
+tres familias de soluciones. Unas cambian la representación matemática del estado, como
+los diagramas de decisión; otras conservan exactitud, pero dependen de estructura
+especial, por ejemplo esparsidad o simetrías explotables; y otras todavía dejan abierto el
+problema de reducir memoria dentro del formalismo Schr\"odinger con almacenamiento
+explícito del vector de amplitudes.
+
+Esa distinción es precisamente la brecha que motiva esta tesis. El espacio menos cubierto
+por la literatura revisada no es el de representar el estado de otra manera, sino el de
+comprimir sin pérdida un vector de estado explícito, manteniendo la semántica del
+simulador tipo Schr\"odinger y gestionando la sobrecarga asociada a acceso, caché y
+actualización de bloques.

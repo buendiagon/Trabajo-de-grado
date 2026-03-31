@@ -2,21 +2,28 @@
 
 La partición del vector de estado se materializó mediante la clase
 \texttt{ChunkLayout}, encargada de establecer la correspondencia entre índices lógicos
-del arreglo de amplitudes y bloques físicos del backend comprimido. A través de esta
-clase se determina cuántos bloques componen el vector, cuántos estados almacena cada
-uno y cuál es la referencia local de una amplitud dentro del bloque al que pertenece.
+del arreglo de amplitudes y bloques físicos del backend comprimido. En la
+implementación, esta clase calcula explícitamente: número total de estados,
+número total de elementos reales almacenados (\texttt{2 * totalStates}), cantidad de
+estados por bloque, elementos por bloque y número de bloques requeridos. Además
+expone tres consultas decisivas: \texttt{chunkElemCount}, para conocer el tamaño real de
+un bloque; \texttt{chunkStateBegin}, para ubicar el primer estado lógico de cada bloque; y
+\texttt{stateRef}, para traducir un índice global a \texttt{(chunkIndex, elemOffset)}.
 
 Este mapeo cumple una función central dentro de la implementación. Por una parte,
-encapsula la granularidad del almacenamiento, evitando que otras partes del sistema
-deban reconstruir manualmente la relación entre estados y bloques. Por otra, asegura un
-tratamiento homogéneo tanto para bloques completos como para el bloque final, cuya
-cantidad efectiva de amplitudes puede diferir del tamaño nominal cuando el número total
-de estados no es múltiplo exacto del tamaño de bloque.
+encapsula la granularidad del almacenamiento y evita que otras partes del sistema
+reconstruyan manualmente la relación entre estados y bloques. Por otra, garantiza un
+tratamiento correcto del último bloque, cuya cantidad efectiva de amplitudes puede ser
+menor que la nominal cuando $2^n$ no es múltiplo exacto de \texttt{chunkStates}. Esto es
+relevante porque el backend opera sobre amplitudes complejas intercaladas
+\texttt{[real, imag, real, imag, \ldots]}, y por tanto cada estado ocupa exactamente dos
+elementos dentro del bloque.
 
 En términos operativos, el backend no trabaja con el vector completo como un único
 buffer comprimido, sino con una secuencia indexada de fragmentos. Cada consulta o
-modificación sobre una amplitud pasa primero por \texttt{ChunkLayout}, que resuelve el
-bloque correspondiente y la posición local del estado dentro de él. Gracias a esta
-mediación, el backend puede trabajar sobre una secuencia de fragmentos indexados y no
-sobre un arreglo monolítico, lo que simplifica la recuperación localizada y la escritura
-posterior de los datos.
+modificación pasa primero por \texttt{ChunkLayout}: si se solicita la amplitud de un estado,
+la clase devuelve el bloque que debe cargarse y el desplazamiento local del par
+real/imaginario; si se recorre el vector por bloques, también permite conocer cuántos
+elementos deben leerse o escribirse en cada fragmento. Gracias a esta mediación, la
+recuperación localizada y la escritura posterior pueden resolverse sin materializar el
+vector completo en memoria densa.

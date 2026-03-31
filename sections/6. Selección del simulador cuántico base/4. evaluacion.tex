@@ -3,40 +3,65 @@
 Con base en los criterios anteriores, se aplicó una matriz de decisión ponderada en una
 escala discreta de 1 a 5, donde 5 representa el mayor grado de adecuación al objetivo
 del trabajo y 1 el menor. Los puntajes corresponden a una valoración relativa respecto a
-la posibilidad de integrar, instrumentar y evaluar una estrategia de compresión sin
-pérdida sobre el vector de estado.
+la posibilidad de integrar y evaluar una estrategia de compresión sin pérdida sobre el
+vector de estado.
+
+La asignación de valores se estableció a partir de dos fuentes complementarias de
+evidencia: la documentación oficial y literatura técnica asociada a cada proyecto, y una
+revisión directa del código disponible en los repositorios o artefactos accesibles de
+cada simulador. La documentación permitió identificar el propósito de diseño, el
+modelo de ejecución y las capacidades de paralelismo reportadas por cada herramienta,
+mientras que la inspección del código permitió valorar la localización de la estructura
+que representa el estado, el nivel de acoplamiento entre esa estructura y la lógica de
+simulación, y la facilidad de introducir modificaciones sobre el backend de memoria.
+Bajo esta escala, la evaluación obtenida fue la siguiente:
 
 \begin{table}[H]
 \centering
 \caption{Evaluación de alternativas (escala 1--5) y total ponderado}
 \label{tab:evaluacion_sim}
-\begin{tabular}{lcccccc}
+\begin{tabular}{lcccc}
 \hline
-\multicolumn{1}{c}{\textbf{Criterio}} &
-\textbf{Peso} &
-\textbf{TMFQS} &
-\textbf{QuEST} &
-\textbf{Intel-QS} &
-\textbf{qsim} &
-\textbf{Quantum++} \\
+\textbf{Simulador} & \textbf{C1} & \textbf{C2} & \textbf{C3} & \textbf{Total ponderado} \\
 \hline
-C1 & 0.15 & 5 & 5 & 5 & 5 & 4 \\
-C2 & 0.25 & 5 & 3 & 2 & 2 & 3 \\
-C3 & 0.20 & 5 & 3 & 2 & 2 & 3 \\
-C4 & 0.10 & 3 & 5 & 5 & 5 & 4 \\
-C5 & 0.10 & 4 & 3 & 2 & 2 & 5 \\
-C6 & 0.10 & 4 & 5 & 5 & 4 & 3 \\
-C7 & 0.10 & 5 & 3 & 3 & 2 & 2 \\
-\hline
-\textbf{Total} & \textbf{1.00} &
-\textbf{4.70} & 3.70 & 3.20 & 2.90 & 3.30 \\
+QuEST          & 2 & 2 & 5 & 2.60 \\
+Intel-QS       & 2 & 2 & 5 & 2.60 \\
+qsim           & 4 & 4 & 4 & 4.00 \\
+Quantum++      & 4 & 4 & 2 & 3.60 \\
+TMFQSfullstate & 5 & 5 & 3 & 4.60 \\
 \hline
 \end{tabular}
 \end{table}
 
-La matriz muestra que las alternativas mejor orientadas a rendimiento y paralelismo no
-coinciden necesariamente con las mejor posicionadas para intervenir e instrumentar el
-almacenamiento del estado. En este marco, TMFQSfullstate obtiene la mayor
-puntuación global, principalmente por su ventaja en los criterios de intervención sobre la
-representación del estado, capacidad de instrumentación experimental y afinidad con el
-estudio de estrategias de memoria.
+Los valores consignados en la tabla responden a la forma en que cada alternativa
+articula flexibilidad arquitectónica y contexto de ejecución. QuEST e Intel-QS
+obtuvieron la máxima valoración en proyección de escalabilidad debido a su orientación
+explícita hacia ejecución multinúcleo, distribuida y, en el caso de QuEST, acelerada
+por GPU \cite{Jones2019, quest_repo, intelqs_doc}. Sin embargo, tanto la
+documentación como la revisión del código muestran una arquitectura más orientada a
+desempeño sobre infraestructuras HPC que a modificación experimental del backend de
+memoria, lo que reduce su valoración en los dos primeros criterios.
+
+En qsim, la separación entre componentes de simulación y manejo del \emph{state
+vector}, visible tanto en su documentación como en la organización del código, ofrece
+una base más modular para intervenir el almacenamiento con cambios controlados
+\cite{qsim_repo, qsim_cirq}. Por ello, recibió valores altos en intervenibilidad y
+desacoplamiento, además de una valoración también alta en escalabilidad por sus
+variantes orientadas a ejecución eficiente.
+
+Quantum++ obtuvo una valoración alta en los dos primeros criterios por su diseño como
+biblioteca general en C++ de estructura ligera, distribuida como librería
+\emph{header-only}, lo que favorece la inspección, modificación y extensión del código
+\cite{qpp_paper}. No obstante, su proyección de escalabilidad resulta menor que la de
+herramientas concebidas desde el inicio para contextos HPC o ejecución distribuida,
+razón por la cual su valoración en el tercer criterio fue inferior.
+
+TMFQSfullstate alcanzó la valoración más alta en intervenibilidad del almacenamiento y
+desacoplamiento entre lógica de simulación y backend de memoria. Tanto la literatura,
+como la revisión directa del código muestran una base de implementación más
+directa, con una organización favorable para sustituir la representación del estado y
+mantener control sobre la lógica de operación del simulador
+\cite{diaz2024software, diaz_mdpi_mmss, tmfqs_repo}. Aunque su contexto de
+escalabilidad es más limitado que el de QuEST o Intel-QS, conserva una proyección
+suficiente para desarrollos posteriores y, sobre todo, ofrece la mejor adecuación
+metodológica para integrar la estrategia de compresión propuesta.

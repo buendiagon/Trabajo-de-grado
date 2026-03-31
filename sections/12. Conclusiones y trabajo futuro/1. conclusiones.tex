@@ -1,37 +1,26 @@
 \subsection{Conclusiones}
-Los resultados obtenidos a lo largo del trabajo permiten afirmar 
-que la compresión sin pérdida representa una alternativa válida 
-para reducir la huella de memoria en simuladores cuánticos de estado 
-completo sin alterar la exactitud numérica de la simulación. 
-Su incorporación dentro del simulador mostró que este tipo de estrategias 
-puede aplicarse de manera efectiva sin abandonar la representación 
-completa del estado, lo que preserva el valor de estos simuladores 
-como referencia precisa para el análisis y la validación de algoritmos cuánticos.
+El trabajo logró diseñar e implementar una estrategia de almacenamiento comprimido
+sin pérdida para simuladores cuánticos tipo Schr\"odinger dentro de TMFQSfullstate,
+basada en particionamiento por bloques, descompresión selectiva, caché LRU y
+persistencia diferida sobre Blosc2. La propuesta mantuvo el formalismo de vector de
+estado explícito, preservó igualdad exacta frente a la referencia no comprimida y mostró
+que la compresión puede integrarse como parte nativa de la gestión de memoria del
+simulador, y no solo como un mecanismo externo de archivo o posprocesamiento.
 
-Al mismo tiempo, el comportamiento observado durante la evaluación 
-dejó claro que el beneficio de la compresión no es uniforme. 
-Su utilidad depende de la estructura del estado cuántico y del 
-tipo de circuito que se ejecuta, de modo que existen escenarios 
-en los que la reducción de memoria resulta favorable y otros en 
-los que esa ventaja es más limitada. Más que una solución general 
-para cualquier simulación, la compresión sin pérdida se perfila 
-así como una estrategia especialmente adecuada cuando el estado 
-conserva regularidades que pueden aprovecharse durante el almacenamiento.
+La evidencia experimental confirmó que esa integración produce beneficios concretos en
+escenarios favorables. En Grover, Blosc alcanzó ahorros de memoria entre 77.8~\% y
+93.5~\% con tiempos relativos entre 4.17x y 4.86x en la comparación principal, y entre
+87.0~\% y 96.6~\% con tiempos entre 1.40x y 2.11x en la variante optimizada. En QFT
+con superposición periódica mantuvo un comportamiento intermedio, con ahorros entre
+51.4~\% y 75.3~\% y tiempos entre 2.54x y 3.48x. En todos esos casos la igualdad exacta
+respecto a la referencia se conservó amplitud por amplitud, mientras que la alternativa
+con pérdida basada en ZFP introdujo error no nulo y, en general, mayores penalizaciones
+temporales.
 
-En este sentido, uno de los aportes centrales del trabajo fue 
-mostrar que el problema de memoria no se resuelve únicamente 
-con la elección de una biblioteca de compresión, sino con una 
-integración coherente entre particionamiento del vector, 
-acceso selectivo y reutilización temporal de datos. 
-La estrategia desarrollada permitió materializar esa idea en una 
-implementación concreta y comprobar que la compresión puede 
-incorporarse como parte de la gestión de memoria del simulador, 
-y no solo como un mecanismo externo de almacenamiento.
-
-En conjunto, el trabajo demuestra que la compresión sin pérdida 
-puede ampliar la capacidad práctica de simulación exacta cuando 
-la memoria constituye la restricción principal y el comportamiento 
-del estado ofrece condiciones favorables para ello. Su principal 
-alcance está en aportar una alternativa que conserva igualdad 
-exacta respecto a la ejecución no comprimida y que, por esa misma razón, 
-resulta útil en contextos donde no es aceptable sustituir precisión por aproximación.
+El principal límite del trabajo también quedó delimitado con claridad. Cuando el estado
+presentó alta entropía, la compresión dejó de ser conveniente: con QFT de fases
+aleatorias, Blosc registró ahorros negativos entre -12.1~\% y -49.0~\% y tiempos entre
+10.24x y 12.52x, mientras que ZFP tampoco mostró ventaja práctica. Por ello, la
+propuesta no debe leerse como una solución universal para toda simulación exacta, sino
+como una estrategia útil cuando la memoria es la restricción dominante y el estado
+conserva regularidades explotables por el almacenamiento por bloques.

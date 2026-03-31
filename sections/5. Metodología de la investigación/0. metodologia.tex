@@ -66,6 +66,15 @@ validación para comprobar la estabilidad del desarrollo y verificar, en el caso
 propuesta sin pérdida, la coincidencia exacta del estado final frente a la referencia no
 comprimida.
 
+Antes de fijar la campaña principal se realizó además una fase preliminar de ajuste de
+configuración, separada de la evaluación reportada en resultados. En esa etapa se
+compararon combinaciones de granularidad de bloque, tamaño de caché y parámetros de
+compresión sobre ejecuciones representativas, con el propósito de seleccionar una
+configuración estable que mantuviera ahorro de memoria positivo cuando existía
+compresibilidad y, al mismo tiempo, evitara penalizaciones temporales desproporcionadas.
+Una vez escogidos esos parámetros, se mantuvieron constantes en toda la campaña
+experimental para preservar la trazabilidad metodológica de la comparación.
+
 \subsection{\normalsize Evaluación experimental}
 
 La evaluación experimental se diseñó para determinar el efecto de la estrategia de

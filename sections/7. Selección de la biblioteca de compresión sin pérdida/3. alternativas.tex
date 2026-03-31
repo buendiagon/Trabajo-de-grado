@@ -1,38 +1,37 @@
 \subsection{Bibliotecas de compresión sin pérdida consideradas}
 
-Las alternativas evaluadas corresponden a bibliotecas o familias de bibliotecas
-utilizables desde C/C++ y relevantes para compresión sin pérdida de datos residentes en
-memoria. No todas fueron diseñadas específicamente para simulación científica, pero
-todas representan opciones plausibles para integrarse en una arquitectura de
-almacenamiento comprimido.
+Las alternativas evaluadas corresponden a bibliotecas utilizables desde C/C++ y
+relevantes para compresión sin pérdida de datos residentes en memoria. Aunque sus
+objetivos de diseño no son idénticos, todas representan opciones plausibles para
+integrarse en una arquitectura de almacenamiento comprimido aplicada al vector de
+estado.
 
 \begin{itemize}
     \item \textbf{Blosc2:} biblioteca orientada a compresión de datos binarios y arreglos
-    numéricos, concebida alrededor de contenedores por bloques y de un pipeline de
+    numéricos, organizada alrededor de contenedores particionados y de un pipeline de
     filtros y códecs configurable. Su diseño incorpora filtros como \emph{shuffle} y
-    \emph{bitshuffle}, y permite combinar distintos códecs dentro de un marco pensado
-    para datos estructurados y acceso en memoria. \cite{blosc2_docs}
+    \emph{bitshuffle}, y permite trabajar con datos en memoria dentro de una
+    organización por fragmentos \cite{blosc2_docs}.
 
     \item \textbf{Zstandard (Zstd):} biblioteca generalista de compresión sin pérdida con
-    amplio rango de compromiso entre velocidad y ratio. Ofrece funciones de
-    compresión y descompresión en memoria y resulta adecuada como códec base
-    cuando la aplicación controla externamente el particionamiento de los datos.
-    \cite{ZstdRepo,ZstdSite}
+    un amplio rango de compromiso entre velocidad y ratio. Proporciona funciones de
+    compresión y descompresión en memoria y resulta adecuada como códec base cuando
+    el particionamiento y la gestión de bloques son responsabilidad de la aplicación
+    \cite{ZstdRepo, ZstdSite}.
 
     \item \textbf{LZ4:} biblioteca de compresión sin pérdida orientada a muy baja latencia,
-    especialmente fuerte en descompresión. Su perfil la hace atractiva cuando el costo
-    temporal del acceso pesa más que la tasa de compresión. \cite{LZ4Repo}
+    especialmente fuerte en descompresión. Su perfil resulta atractivo cuando el
+    costo temporal del acceso tiene mayor peso que la tasa de compresión
+    \cite{LZ4Repo}.
 
     \item \textbf{zlib/Deflate:} solución madura y ampliamente adoptada para compresión
     sin pérdida en memoria y en flujo. Aunque no está especializada en arreglos
     científicos ni en acceso por bloques, constituye una referencia estable para
-    contrastar bibliotecas más recientes. \cite{ZlibTechDetails}
+    contrastar bibliotecas más recientes \cite{ZlibTechDetails}.
 \end{itemize}
 
-Las cuatro alternativas cubren perfiles diferentes. Blosc2 representa una biblioteca con
-orientación explícita a datos numéricos y estructuras particionadas; Zstd y LZ4 son
-bibliotecas generalistas de alto desempeño que pueden funcionar como códecs dentro de
-una arquitectura definida por la aplicación; y zlib aporta una referencia clásica, madura y
-bien conocida. Esta selección permite comparar una opción especialmente alineada con
-el problema de memoria del trabajo frente a alternativas generalistas de compresión sin
-pérdida.
+Las cuatro alternativas cubren perfiles distintos. Blosc2 representa una biblioteca con
+orientación explícita a estructuras particionadas y datos numéricos en memoria; Zstd y
+LZ4 son bibliotecas generalistas de alto desempeño que pueden emplearse como códecs
+dentro de una arquitectura definida externamente; y zlib aporta una referencia clásica,
+madura y ampliamente conocida.

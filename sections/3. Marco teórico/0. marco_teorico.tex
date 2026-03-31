@@ -91,21 +91,6 @@ que corresponde a un estado entrelazado.
 
 En el modelo de circuitos, estas compuertas amplían la capacidad expresiva del sistema al introducir dependencias entre subsistemas. Su efecto puede describirse algebraicamente mediante matrices unitarias de mayor dimensión, aunque en la práctica suelen implementarse mediante reglas de actualización local sobre el vector de estado.
 
-\subsubsection{Medición}
-
-La medición conecta el sistema cuántico con los resultados observables \cite{Nielsen2010}. Si el estado del sistema es
-\[
-    \ket{\psi} = \sum_{i=0}^{2^n-1} \alpha_i \ket{i},
-\]
-la probabilidad de observar el estado base $\ket{i}$ está dada por
-\[
-    P(i) = |\alpha_i|^2.
-\]
-
-Tras la medición, el sistema deja de describirse como una superposición general y pasa a corresponder a un resultado concreto compatible con la observación realizada. Por esta razón, en la mayoría de los circuitos la medición se reserva para el final o para etapas puntuales del proceso.
-
-Desde una perspectiva de simulación, esto significa que el objeto central durante la ejecución no es todavía la salida observada, sino el conjunto completo de amplitudes que describe al sistema antes de medir.
-
 \subsection{\normalsize{Del modelo cuántico a su representación clásica}}
 
 \subsubsection{El vector de estado como representación computacional}
@@ -122,49 +107,6 @@ Cada elemento del arreglo representa una amplitud del sistema, mientras que su p
 El uso explícito del vector de estado caracteriza a la simulación de estado completo, también conocida como simulación tipo Schr\"odinger \cite{Jones2019}. En ella, el sistema se representa manteniendo todas sus amplitudes y actualizándolas conforme se aplican las compuertas del circuito. La principal ventaja de esta aproximación es su correspondencia directa con la formulación matemática del modelo cuántico.
 
 Existen otros enfoques de simulación clásica, como los basados en redes tensoriales, diagramas de decisión o métodos de suma sobre caminos \cite{Vidal2003,Viamontes2003,Chen2018}. De manera general, estos métodos buscan representar la evolución cuántica mediante estructuras alternativas que explotan diferentes formas de organización algebraica o combinatoria. Sin embargo, la representación explícita por vector de estado ofrece el marco más directo para comprender cómo se traduce un sistema cuántico a memoria clásica y cómo se implementa su evolución sobre arreglos numéricos. Esta distinción también es importante porque no todas las estrategias para reducir memoria cambian la representación matemática del estado: algunas, como la que se estudia en este trabajo, mantienen el formalismo Schr\"odinger y actúan únicamente sobre la manera de almacenar los datos.
-
-\subsubsection{Organización del vector de estado en memoria}
-
-En una implementación clásica, cada amplitud $\alpha_i$ es un número complejo que puede expresarse como
-\[
-    \alpha_i = a_i + b_i\,\mathrm{i},
-\]
-donde $a_i$ es la parte real y $b_i$ la parte imaginaria. Si se utiliza doble precisión, ambas partes suelen almacenarse como valores de 8 bytes, por lo que cada amplitud compleja ocupa 16 bytes \cite{Jones2019,wu2019full}.
-
-Conceptualmente, el estado puede verse como un arreglo de números complejos
-\[
-    [\alpha_0,\alpha_1,\alpha_2,\ldots,\alpha_{2^n-1}]
-\]
-o, de forma más explícita, como una secuencia numérica intercalada
-\[
-    [\mathrm{real}_0,\mathrm{imag}_0,\mathrm{real}_1,\mathrm{imag}_1,\ldots,\mathrm{real}_{2^n-1},\mathrm{imag}_{2^n-1}].
-\]
-Esta segunda forma resulta útil para visualizar cómo un objeto abstracto de la mecánica cuántica termina almacenado como datos numéricos lineales en memoria principal.
-
-La correspondencia entre índice, estado base y representación numérica puede ilustrarse con un sistema de tres qubits:
-
-\begin{table}[H]
-    \centering
-    \small
-    \begin{tabular}{c c c c}
-        \hline
-        Índice & Estado base & Amplitud asociada & Representación numérica \\
-        \hline
-        0 & $\ket{000}$ & $\alpha_0$ & $\Re(\alpha_0), \Im(\alpha_0)$ \\
-        1 & $\ket{001}$ & $\alpha_1$ & $\Re(\alpha_1), \Im(\alpha_1)$ \\
-        2 & $\ket{010}$ & $\alpha_2$ & $\Re(\alpha_2), \Im(\alpha_2)$ \\
-        3 & $\ket{011}$ & $\alpha_3$ & $\Re(\alpha_3), \Im(\alpha_3)$ \\
-        4 & $\ket{100}$ & $\alpha_4$ & $\Re(\alpha_4), \Im(\alpha_4)$ \\
-        5 & $\ket{101}$ & $\alpha_5$ & $\Re(\alpha_5), \Im(\alpha_5)$ \\
-        6 & $\ket{110}$ & $\alpha_6$ & $\Re(\alpha_6), \Im(\alpha_6)$ \\
-        7 & $\ket{111}$ & $\alpha_7$ & $\Re(\alpha_7), \Im(\alpha_7)$ \\
-        \hline
-    \end{tabular}
-    \caption{Correspondencia entre estado base, amplitud e índice en memoria para un sistema de 3 qubits.}
-    \label{tab:estado-base-memoria}
-\end{table}
-
-Usualmente, esta correspondencia sigue el orden binario natural del índice entero $i$, lo que permite enlazar directamente la base computacional con la disposición lineal del arreglo.
 
 \subsubsection{Aplicación de compuertas sobre el arreglo de amplitudes}
 
@@ -218,7 +160,7 @@ Si cada amplitud compleja ocupa 16 bytes, el consumo de memoria del vector de es
 \[
     M(n)=2^n \times 16\ \text{bytes}.
 \]
-Esta relación resume el costo directo de almacenar explícitamente el sistema en una simulación de estado completo \cite{Jones2019,wu2019full}. Más allá del tamaño total, también importa el modo en que las compuertas inducen patrones de acceso sobre el arreglo: algunas operaciones actúan sobre elementos contiguos, mientras que otras requieren recorrer posiciones separadas por saltos regulares.
+Esta relación resume el costo directo de almacenar explícitamente el sistema en una simulación de estado completo \cite{Jones2019,wu2019full}. 
 
 Por tanto, la representación clásica del vector de estado involucra dos aspectos complementarios: cuánto espacio se necesita para almacenar las amplitudes y cómo se accede a ellas durante la evolución del circuito. Estos dos elementos son fundamentales para entender la gestión de memoria sobre arreglos numéricos de gran tamaño.
 
@@ -250,7 +192,7 @@ Por ello, la compresibilidad de un arreglo numérico depende tanto del contenido
 
 \subsubsection{Compresión por bloques, descompresión selectiva y caché}
 
-Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM o la memoria del acelerador \cite{wu2019full,zhang2024bmqsim}.
+Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \cite{wu2019full,zhang2024bmqsim}.
 
 La descompresión selectiva se basa en esa granularidad: solo se reconstruyen temporalmente los bloques necesarios para una operación determinada. De este modo, la compresión puede integrarse con el patrón de acceso del sistema y no únicamente con el almacenamiento final de los datos.
 

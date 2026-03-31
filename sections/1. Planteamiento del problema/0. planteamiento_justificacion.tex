@@ -2,7 +2,13 @@
 
 En un simulador cuántico tipo Schr\"odinger, cada incremento en el número de qubits duplica el tamaño del vector de estado. Como consecuencia, el consumo de memoria crece exponencialmente y se convierte en la restricción dominante mucho antes de que otras variables de desempeño se vuelvan críticas \cite{Jones2019,wu2019full}. El problema no es marginal: limita de forma directa el tamaño de los circuitos que pueden ejecutarse con exactitud en infraestructura clásica de uso académico o de laboratorio.
 
-Las estrategias disponibles para aliviar esta restricción no son equivalentes entre sí. Los métodos basados en redes tensoriales, diagramas de decisión o particionamiento del circuito pueden ser muy efectivos, pero dependen de supuestos estructurales sobre el circuito o redistribuyen el costo hacia el tiempo de cómputo y la complejidad de la simulación \cite{Vidal2003,Viamontes2003,Chen2018}. Por su parte, la compresión con pérdida ofrece ahorros importantes de memoria, aunque a costa de alterar las amplitudes y de reemplazar la igualdad exacta por métricas de aproximación o fidelidad \cite{wu2018amplitude,DiazToro2025}.
+Las estrategias disponibles para aliviar esta restricción no son equivalentes entre sí. Los
+métodos basados en redes tensoriales, diagramas de decisión o particionamiento del
+circuito pueden ser muy efectivos, pero no mantienen necesariamente el mismo modelo
+de simulación ni la misma relación entre generalidad, tiempo y memoria
+\cite{Vidal2003,Viamontes2003,Chen2018}. Por su parte, la compresión con pérdida
+ofrece ahorros importantes, aunque a costa de alterar las amplitudes y de reemplazar la
+igualdad exacta por métricas de aproximación o fidelidad \cite{wu2018amplitude,DiazToro2025}.
 
 Esto deja abierto un problema específico: cómo reducir la huella de memoria del vector de estado sin cambiar el modelo de simulación ni introducir error numérico. Resolverlo exige algo más que añadir un compresor al almacenamiento. La utilidad real de la compresión depende de la estructura de los estados generados, de la granularidad con que se particiona el vector y del patrón de lecturas y escrituras inducido por las compuertas. En otras palabras, una estrategia viable debe integrar compresión, acceso selectivo y reutilización temporal de datos de manera coherente con la dinámica del simulador.
 

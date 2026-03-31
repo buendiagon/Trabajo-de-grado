@@ -1,9 +1,6 @@
 \subsection{Alcance de la implementación}
 
-La implementación se concentró en incorporar un backend de almacenamiento
-comprimido para el vector de estado dentro de TMFQSfullstate, manteniendo el modelo
-de simulación de estado completo y preservando igualdad exacta respecto a la referencia
-no comprimida. El objetivo no fue rediseñar el simulador en su totalidad, sino intervenir
+El objetivo técnico principal no fue rediseñar el simulador en su totalidad, sino intervenir
 la capa en la que se representan, recuperan y actualizan las amplitudes durante la
 ejecución.
 
@@ -18,5 +15,23 @@ aplicación de compuertas sobre amplitudes distribuidas en uno o varios bloques.
 La implementación buscó, en consecuencia, verificar que la solución propuesta podía
 insertarse en un simulador cuántico real con control suficiente sobre el uso de memoria,
 la sobrecarga temporal y la exactitud numérica. Los resultados de esa evaluación se
-presentan posteriormente; en esta sección interesa describir la organización del
-desarrollo y la forma en que sus componentes cooperan durante la simulación.
+presentan posteriormente en la sección~\ref{sec:evaluation}.
+
+\begin{table}[H]
+    \centering
+    \small
+    \caption{Componentes principales de la implementación basada en Blosc}
+    \label{tab:impl-componentes}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{6.1cm}>{\raggedright\arraybackslash}p{4.2cm}}
+        \hline
+        \textbf{Componente} & \textbf{Responsabilidad principal} & \textbf{Efecto esperado en tiempo o memoria} \\
+        \hline
+        \texttt{IStateBackend} & Abstraer inicialización, exportación, lectura, escritura y aplicación de compuertas sin exponer la representación física del estado. & Permite sustituir almacenamiento denso por comprimido sin reescribir la lógica del registro. \\
+        \begin{tabular}[t]{@{}l@{}}\texttt{BloscState}\\\texttt{Backend}\end{tabular} & Coordinar layout, caché, acceso a amplitudes, aplicación de compuertas y sincronización del estado comprimido. & Reduce memoria persistiendo bloques comprimidos; introduce sobrecarga controlada por accesos y escrituras. \\
+        \texttt{ChunkLayout} & Mapear cada estado lógico al bloque y desplazamiento local que le corresponden. & Evita materializar el vector completo y habilita acceso selectivo. \\
+        \texttt{ChunkCache} & Mantener en memoria un conjunto acotado de bloques descomprimidos con política LRU y marcas limpio/sucio. & Disminuye descompresiones repetidas; limita memoria densa temporal. \\
+        \texttt{BloscCodec} & Crear, leer, actualizar y clonar el super-chunk comprimido de Blosc2. & Encapsula la compresión efectiva y reutiliza contexto/scratch para amortiguar el costo del códec. \\
+        \begin{tabular}[t]{@{}l@{}}\texttt{PairKernel}\\\texttt{Executor}\\y \texttt{GateApply}\\\texttt{Engine}\end{tabular} & Resolver rutas de compuertas intra-bloque, inter-bloque o genéricas. & Reduce accesos innecesarios cuando la geometría del bloque coincide con el patrón de la compuerta. \\
+        \hline
+    \end{tabular}
+\end{table}

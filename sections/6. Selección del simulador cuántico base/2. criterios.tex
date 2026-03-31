@@ -1,57 +1,43 @@
 \subsection{Criterios de selección}
 
-Los criterios de selección se definieron a partir de los requerimientos del problema y de
-las necesidades metodológicas de la propuesta. En particular, se priorizaron aquellos
-aspectos relacionados con la posibilidad de intervenir el almacenamiento del vector de
-estado, instrumentar el comportamiento del simulador y mantener condiciones
-reproducibles de evaluación.
+Los criterios de selección se definieron en función del objetivo metodológico del
+trabajo. Como la investigación requería modificar la forma de almacenamiento del
+vector de estado sin alterar la semántica general de la simulación, se priorizaron
+aquellos factores que incidían de manera más directa en la viabilidad de esa
+intervención y en la posibilidad de extenderla posteriormente.
 
 \begin{table}[H]
     \centering
     \small
-    \setlength{\tabcolsep}{3pt}
+    \setlength{\tabcolsep}{4pt}
     \caption{Criterios usados para la selección del simulador cuántico}
     \label{tab:criterios_sim}
-    \begin{tabular}{>{\raggedright\arraybackslash}p{0.7cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{0.54\linewidth}>{\centering\arraybackslash}p{0.9cm}}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{0.42\linewidth}>{\centering\arraybackslash}p{1.2cm}}
         \hline
-        \multicolumn{1}{l}{} &
-        \multicolumn{1}{c}{\textbf{Criterio}} &
-        \multicolumn{1}{c}{\textbf{Justificación}} &
-        \multicolumn{1}{c}{\textbf{Peso}} \\ \hline
-
-        C1 & Correspondencia con el modelo de simulación objetivo &
-        Se valora que la herramienta implemente simulación de estado completo tipo Schrödinger y exponga una representación compatible con amplitudes complejas en punto flotante, de forma que la compresión se aplique sobre la estructura realmente dominante en memoria. &
-        0.15 \\
-
-        C2 & Grado de intervención sobre la representación del estado &
-        Se evalúa en qué medida el código permite reemplazar, envolver o modificar el almacenamiento del vector de amplitudes con impacto controlado sobre el resto del simulador. Este criterio es central, porque la propuesta requiere intervenir la estructura principal de datos y no únicamente usar el simulador como entorno de ejecución. &
-        0.25 \\
-
-        C3 & Capacidad de instrumentación experimental &
-        Se considera la facilidad para medir tiempo de ejecución, memoria y comportamiento de rutas críticas próximas al acceso al vector de estado. Un simulador adecuado debe permitir una evaluación trazable y reproducible del efecto de la compresión. &
-        0.20 \\
-
-        C4 & Suficiencia funcional para los casos de prueba &
-        Se verifica que la herramienta permita implementar y ejecutar los circuitos empleados en la evaluación, en particular Grover y QFT, con el conjunto de compuertas y operaciones necesarias para reproducir los escenarios experimentales definidos. &
-        0.10 \\
-
-        C5 & Reproducibilidad técnica del entorno &
-        Se valora la complejidad de construcción, el número de dependencias y la facilidad de compilar y mantener una versión modificada del simulador durante el desarrollo experimental. Este criterio no mide desempeño, sino riesgo técnico de integración. &
-        0.10 \\
-
-        C6 & Contexto de paralelismo y escalamiento &
-        Se considera deseable que la herramienta disponga de mecanismos de paralelismo relevantes, como ejecución multihilo o distribuida, ya que ello permite situar la propuesta en un contexto realista de simulación de alto costo computacional. &
-        0.10 \\
-
-        C7 & Afinidad con experimentación en memoria &
-        Se valora si la herramienta, por su arquitectura o propósito, favorece el estudio de estrategias de gestión de memoria, incluyendo variantes de almacenamiento, particionamiento del estado o experimentación sobre consumo de recursos. &
-        0.10 \\ \hline
+        \textbf{Código} & \textbf{Criterio} & \textbf{Descripción} & \textbf{Peso} \\ \hline
+        C1 & Intervenibilidad del almacenamiento del vector de estado &
+        Evalúa qué tan fácilmente puede reemplazarse, envolverse o rediseñarse la
+        estructura que almacena las amplitudes complejas. Este criterio recibió la mayor
+        ponderación porque el aporte técnico principal del trabajo consiste en modificar
+        la forma de almacenamiento del estado cuántico. &
+        0.45 \\
+        C2 & Desacoplamiento entre lógica de simulación y backend de memoria &
+        Valora en qué medida la lógica asociada a compuertas, evolución del circuito y
+        operaciones sobre el estado puede mantenerse estable cuando se altera la forma
+        de almacenamiento subyacente. Una arquitectura con mayor separación entre
+        estas responsabilidades favorece una integración con impacto controlado sobre
+        el resto del simulador. &
+        0.35 \\
+        C3 & Proyección de escalabilidad y alineación con trabajo futuro &
+        Considera la presencia de mecanismos de paralelismo, distribución o aceleración
+        útiles en extensiones posteriores del trabajo. Aunque este aspecto no fue el eje
+        de la implementación actual, se incorporó para situar la selección en un contexto
+        realista de simulación cuántica y de posibles desarrollos futuros. &
+        0.20 \\ \hline
     \end{tabular}
 \end{table}
 
-Los pesos asignados reflejan el objetivo del trabajo. Por esta razón, los criterios con
-mayor incidencia fueron el grado de intervención sobre la representación del estado
-(C2), la capacidad de instrumentación experimental (C3) y la correspondencia con el
-modelo de simulación objetivo (C1). Los demás criterios complementan la evaluación al
-considerar cobertura funcional, reproducibilidad técnica, paralelismo y afinidad con el
-problema de memoria abordado.
+La ponderación asignada refleja la prioridad de intervenir el almacenamiento del vector
+de estado y mantener control sobre esa intervención. Por esta razón, los criterios de
+modificabilidad arquitectónica recibieron mayor peso que la proyección de
+escalabilidad general.

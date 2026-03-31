@@ -110,3 +110,12 @@ numéricos. Su relevancia dentro del estado del arte radica en mostrar que la co
 sin pérdida de flotantes no depende únicamente de predicción o de compresión
 entrópica, sino también de la capacidad de reordenar la representación binaria para
 hacer más visible su estructura estadística.
+
+Esta línea de trabajo es especialmente pertinente para el problema de esta tesis porque
+el vector de estado de un simulador Schr\"odinger se almacena como una secuencia de
+amplitudes complejas en doble precisión, usualmente intercaladas como pares
+real/imaginario. En ese formato, la compresibilidad no depende solo de la magnitud de
+las amplitudes, sino también de patrones binarios en exponentes y mantisas. Por ello,
+filtros reversibles como \emph{shuffle} o \emph{bitshuffle} resultan relevantes: pueden
+agrupar bytes o bits homólogos de valores IEEE 754 y exponer regularidades que no son
+visibles si cada amplitud se trata como un bloque opaco de 16 bytes.

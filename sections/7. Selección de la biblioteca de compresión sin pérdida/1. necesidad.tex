@@ -1,17 +1,18 @@
 \subsection{Necesidad de seleccionar una biblioteca de compresión}
 
-Una vez definido el simulador base, la siguiente decisión metodológica consiste en
-seleccionar la biblioteca de compresión sin pérdida que permita materializar la
+Una vez definido el simulador base, la siguiente decisión metodológica consistió en
+seleccionar la biblioteca de compresión sin pérdida que permitiera materializar la
 arquitectura propuesta sobre el vector de estado. En este trabajo, la compresión no se
 plantea como una operación aislada de almacenamiento, sino como parte de un esquema
 de gestión de memoria basado en particionamiento por bloques, descompresión selectiva
 y reutilización temporal de datos. Por ello, la biblioteca elegida debía ser compatible con
 un patrón de acceso repetido de lectura, modificación y escritura sobre fragmentos del
-estado, y no únicamente ofrecer una buena tasa de compresión en escenarios
+estado, y no limitarse a ofrecer una buena tasa de compresión en escenarios
 secuenciales u orientados a archivo.
 
-Bajo estas condiciones, la selección no debía responder solo al ratio de compresión
-reportado por una biblioteca, sino a su adecuación como componente de una ruta crítica
-de simulación numérica. En particular, interesaban bibliotecas utilizables desde C/C++,
-con operación completamente sin pérdida, soporte eficiente para datos residentes en
-memoria y una integración razonable en un esquema de bloques independientes.
+Bajo estas condiciones, la selección no debía responder únicamente al ratio de
+compresión reportado por una biblioteca, sino a su adecuación como componente de una
+ruta crítica de simulación numérica. En particular, interesaban bibliotecas utilizables
+desde C/C++, con operación completamente sin pérdida, soporte eficiente para datos
+residentes en memoria y comportamiento favorable dentro de una organización por
+bloques independientes.

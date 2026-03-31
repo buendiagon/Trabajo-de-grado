@@ -1,7 +1,12 @@
 El desarrollo se apoya en una separación entre la interfaz lógica del registro cuántico y
-el backend responsable del almacenamiento del estado. Esta decisión permite mantener
-una interacción uniforme con el vector de amplitudes y, al mismo tiempo, introducir una
-realización comprimida capaz de administrar particionamiento por bloques, recuperación
-bajo demanda y persistencia de datos modificados. De esta forma, el simulador conserva
-su modelo de ejecución, pero delega en un backend especializado la manera en que las
-amplitudes residen y circulan en memoria.
+el backend responsable del almacenamiento del estado. En TMFQSfullstate esa
+separación se materializa en la clase \texttt{QuantumRegister}, que conserva la API de
+operaciones cuánticas, y en la interfaz \texttt{IStateBackend}, que abstrae la forma de
+inicializar, exportar, consultar y mutar el vector de amplitudes.
+
+Esta decisión permite mantener una interacción uniforme con el estado y, al mismo
+tiempo, introducir una realización comprimida que administra particionamiento por
+bloques, recuperación bajo demanda, persistencia diferida y reutilización temporal. Así,
+el simulador conserva su modelo de ejecución compuerta por compuerta, pero delega en
+un backend especializado la manera concreta en que las amplitudes residen y circulan en
+memoria.

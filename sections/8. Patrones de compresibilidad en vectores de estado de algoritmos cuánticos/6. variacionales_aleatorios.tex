@@ -1,6 +1,6 @@
 \subsection{Circuitos variacionales y circuitos aleatorios: entre regularidad y alta entropía}
 \label{subsec:patrones_variacionales_aleatorios}
 
-En aplicaciones NISQ, algunos circuitos variacionales producen distribuciones de amplitud sesgadas por la estructura del problema, lo cual puede inducir regularidades (por ejemplo, subconjuntos dominantes o restricciones que eliminan estados). Esto puede mejorar la compresibilidad frente a escenarios plenamente aleatorios.
+En aplicaciones NISQ, algunos circuitos variacionales pueden heredar regularidades de la función objetivo. En esos casos cabe esperar distribuciones de amplitud menos uniformes que las de un circuito completamente aleatorio, por ejemplo con subconjuntos dominantes o con simetrías parciales, lo que en principio favorecería más la compresión que un estado de alta entropía.
 
-Por el contrario, circuitos aleatorios profundos tienden a generar estados altamente entrelazados y con amplitudes densas, donde la diversidad de valores reduce la redundancia. En simulación con compresión, este fenómeno se manifiesta como una caída del ratio a medida que el circuito genera más amplitudes no nulas y variadas, tal como se evidencia en evaluaciones de compresión sobre circuitos que densifican el vector de estado (por ejemplo, QFT) \cite{wu2018amplitude}.
+En cambio, para circuitos aleatorios profundos lo más razonable es esperar el escenario opuesto: estados densos, con gran diversidad de amplitudes y poca repetición exacta. Bajo esa condición, una estrategia sin pérdida tendría poco margen para explotar redundancia.

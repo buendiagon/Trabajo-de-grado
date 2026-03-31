@@ -4,24 +4,38 @@ La aplicación de compuertas sobre el backend comprimido se organizó de acuerdo
 patrón de acceso que cada operación induce sobre las amplitudes. En términos
 generales, la implementación distingue entre operaciones cuyos pares afectados pueden
 resolverse dentro de un mismo bloque y operaciones que involucran amplitudes
-distribuidas en bloques distintos. Esta distinción permite adaptar la ruta de ejecución al
-tipo de acceso requerido, en lugar de tratar todas las compuertas como si implicaran la
-materialización completa del vector.
+distribuidas en bloques distintos. Esta distinción se implementa de forma explícita en
+\texttt{PairKernelExecutor}, que selecciona tres rutas posibles según la geometría del
+\texttt{ChunkLayout} y la máscara del qubit objetivo: \textit{intra-chunk},
+\textit{inter-chunk} o \textit{fallback}.
 
-Cuando la operación permanece dentro de un bloque, el backend adquiere ese bloque,
-opera sobre su buffer descomprimido y marca el contenido como modificado cuando
-corresponde. Cuando la compuerta involucra amplitudes ubicadas en bloques distintos,
-la ejecución requiere adquirir simultáneamente los bloques implicados y coordinar la
-actualización sobre ambos buffers. Esta lógica se articula a través del propio backend y
-de componentes auxiliares como \texttt{PairKernelExecutor} y
-\texttt{GateApplyEngine}, que separan rutas optimizadas para pares de amplitudes de una
-ruta más general para compuertas de aplicación genérica.
+En una compuerta \textit{intra-bloque}, ambos estados del par afectado residen en el mismo
+fragmento. El backend adquiere un único slot de caché, obtiene dos punteros al mismo
+buffer descomprimido y aplica allí la transformación. Este es el caso más favorable,
+porque una sola descompresión permite resolver múltiples pares consecutivos y solo se
+marca un bloque como sucio. En una compuerta \textit{inter-bloque}, los dos estados del par
+están alineados pero viven en bloques distintos. Entonces el backend adquiere dos slots de
+caché, uno por bloque, y coordina la actualización cruzada de ambos buffers. Si la
+capacidad de caché es suficiente, la operación evita recorrer el vector completo y mantiene
+dos bloques activos mientras procesa todos los pares equivalentes. Cuando ninguna de esas
+condiciones geométricas se cumple, la ruta \textit{fallback} resuelve estado por estado,
+reutilizando \texttt{acquireAmplitudeRef} para recuperar y actualizar cada amplitud.
 
-La implementación incluye además un mecanismo de agrupación operativa para delimitar
-el inicio y el cierre de lotes de trabajo. Este permite agrupar operaciones consecutivas y
-diferir ciertas escrituras mientras los bloques implicados permanecen activos. Así se
-reducen recomposiciones innecesarias y se mejora la interacción entre acceso al backend,
-reutilización de buffers y persistencia diferida de datos.
+La política de compresión y persistencia sigue ese mismo flujo. Un bloque se descomprime
+cuando \texttt{acquireChunk} detecta que no está disponible en la caché. Se recomprime
+inmediatamente solo en dos situaciones: cuando un slot sucio debe expulsarse por LRU, o
+cuando finaliza el lote externo y \texttt{endOperationBatch} provoca un \texttt{flushCache}
+completo. Si no ocurre ninguna de esas situaciones, la escritura se difiere y el bloque
+permanece materializado para futuras compuertas, lo que amortiza el costo del códec
+cuando hay localidad temporal.
+
+Para compuertas frecuentes, el backend además incorpora rutas especializadas. Antes de
+usar la ruta genérica, \texttt{applyGate} detecta matrices equivalentes a Hadamard,
+Pauli-X, CNOT o compuerta de fase controlada y las redirige a kernels dedicados que
+operan directamente sobre pares de amplitudes. Solo las compuertas arbitrarias pasan por
+\texttt{GateApplyEngine}, que construye un layout de bloques lógicos de la compuerta y usa
+callbacks de carga y almacenamiento sobre el backend comprimido. Con ello se reduce el
+costo del caso común sin perder generalidad.
 
 Desde el punto de vista funcional, esta organización hace posible que la lógica del
 simulador siga operando sobre amplitudes complejas y compuertas cuánticas del mismo

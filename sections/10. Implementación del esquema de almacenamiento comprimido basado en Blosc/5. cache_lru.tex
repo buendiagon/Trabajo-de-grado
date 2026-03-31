@@ -2,21 +2,31 @@
 
 La gestión temporal de bloques materializados en memoria se implementó mediante la
 clase \texttt{ChunkCache}, cuya función es conservar un conjunto acotado de bloques
-descomprimidos recientemente utilizados. Su incorporación evita repetir ciclos completos
-de recuperación cuando varias operaciones consecutivas requieren acceder a las mismas
-regiones del vector de estado.
+descomprimidos recientemente utilizados. Cada entrada de caché contiene el índice del
+bloque actualmente asociado, un \texttt{buffer} con los valores descomprimidos, una marca
+\texttt{dirty} y un contador de uso para la política LRU.
 
-La caché se configura según una capacidad determinada y administra la adquisición de
-bloques mediante una política LRU. Cuando un bloque es requerido, el backend consulta
-primero si ya se encuentra disponible en la caché. Si está presente, se reutiliza
-directamente su buffer descomprimido. Si no está presente, el bloque debe recuperarse
-desde el almacenamiento comprimido y, en caso de que la caché esté llena, expulsar el
-bloque menos recientemente utilizado. Si el bloque expulsado fue modificado desde su
-ingreso a la caché, se recompone su versión comprimida antes de liberar el buffer
-asociado.
+En esta implementación, un bloque se considera \textit{limpio} cuando su contenido
+descomprimido coincide con la versión persistida en el super-chunk de Blosc2. Se vuelve
+\textit{sucio} cuando una operación de escritura o una compuerta modifica cualquiera de
+sus amplitudes y el backend marca explícitamente el \texttt{dirty flag} del slot. Esa
+distinción determina cuándo debe recomprimirse el bloque: los bloques limpios pueden
+descartarse sin costo adicional, mientras que los bloques sucios deben escribirse de vuelta
+al backend antes de ser expulsados o al cerrar un lote de operaciones.
+
+La adquisición de bloques se realiza mediante la operación \texttt{acquire}. Si el bloque ya
+está en caché, se reutiliza su buffer y solo se actualiza la marca temporal LRU. Si no está
+presente y la caché aún tiene capacidad, se crea un nuevo slot y se descomprime el bloque
+solicitado. Si la caché está llena, se selecciona el bloque menos recientemente utilizado;
+si ese bloque estaba sucio, se recomprime y persiste antes de liberar el slot para el nuevo
+bloque. Adicionalmente, el backend permite agrupar varias mutaciones entre
+\texttt{beginOperationBatch} y \texttt{endOperationBatch}. En ese intervalo la escritura de
+bloques sucios se difiere hasta el final del lote, salvo que una expulsión LRU obligue a
+persistirlos antes.
 
 La utilidad de esta implementación no se reduce a mejorar el rendimiento. La caché
 establece una forma explícita de administrar la memoria densa temporal del backend y
 determina qué parte del estado permanece materializada entre una compuerta y la
 siguiente. Por ello, su comportamiento influye directamente en la cantidad de
-descompresiones, en la frecuencia de escrituras y en la sobrecarga efectiva del sistema.
+descompresiones, en la frecuencia de recomposición del super-chunk y en la sobrecarga
+efectiva del sistema.

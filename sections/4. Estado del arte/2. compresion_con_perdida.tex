@@ -7,8 +7,8 @@ circuitos más grandes.
 
 Uno de los primeros enfoques en este ámbito fue el de \textcite{wu2018amplitude, wu2019full},
 quienes introdujeron la compresión adaptativa con error acotado. Utilizando la
-biblioteca SZ, lograron reducir el tamaño del vector de estado hasta en un factor
-de 16, manteniendo fidelidades superiores al 99.9~\%. Su principal ventaja es
+biblioteca SZ, reportaron reducciones del tamaño del vector de estado de hasta en un factor
+de 16 y fidelidades superiores al 99.9~\% en los casos experimentales estudiados. Su principal ventaja es
 que permite ampliar el número de qubits simulados sin un incremento
 proporcional en los requisitos de memoria. Sin embargo, la compresión y
 descompresión recurrente introduce sobrecarga computacional, afectando la eficiencia
@@ -18,7 +18,7 @@ En un esfuerzo por maximizar la escala de la simulación cuántica de estado
 completo, \textcite{zhang2024bmqsim} presentaron \emph{BMQSim}, un marco que
 extiende \emph{SV-Sim} mediante el uso de \textbf{compresores con pérdida de
 precisión y control de error punto a punto} ejecutados directamente en GPU (por
-ejemplo, variantes de la familia SZ/cuSZ)\cite{zhang2024bmqsim}. Su diseño
+ejemplo, variantes de la familia SZ/cuSZ). Su diseño
 combina:
 \begin{itemize}
     \item Una estrategia de \textit{circuit partitioning} que disminuye la
@@ -31,7 +31,7 @@ combina:
         que asigna dinámicamente espacio a los bloques comprimidos.
 \end{itemize}
 Con estas técnicas, BMQSim reduce el consumo de memoria en más de un orden de magnitud
-y mantiene fidelidades superiores al 99~\% sin penalizar de forma apreciable el
+y mantiene fidelidades superiores al 99~\% en los experimentos reportados sin penalizar de forma apreciable el
 tiempo de simulación. Su eficacia, sin embargo, está condicionada a la
 disponibilidad de hardware acelerado con GPUs de alto rendimiento y
 unidades NVMe rápidas, lo que puede restringir su adopción en plataformas de menor
@@ -39,8 +39,9 @@ capacidad computacional.
 
 Más recientemente, \textcite{Huffman2024} exploraron la cuantización de
 amplitudes como un mecanismo para reducir la precisión numérica sin afectar la
-fidelidad global del sistema. Demostraron que representaciones con tan solo 7 bits
-por amplitud permiten mantener una fidelidad superior al 99~\%, lo que sugiere que
+fidelidad global del sistema. Demostraron que, bajo las configuraciones evaluadas,
+representaciones con tan solo 7 bits por amplitud permiten mantener una fidelidad
+superior al 99~\%, lo que sugiere que
 la precisión completa de punto flotante puede ser innecesaria en muchas simulaciones.
 Aunque esta técnica ofrece un enfoque simple y eficiente para reducir el uso
 de memoria, su aplicabilidad a circuitos de gran escala aún requiere validación
