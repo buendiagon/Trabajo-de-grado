@@ -1,101 +1,175 @@
 \section{Derivación de la parametrización reducida de Grover}
 \label{ap:grover_reducido}
 
-Este apéndice resume la derivación de la formulación reducida usada como punto de
-comparación para Grover en la evaluación experimental. El objetivo es mostrar, de
-forma compacta, por qué bajo las hipótesis habituales del algoritmo la dinámica ideal
-puede describirse con solo dos parámetros.
+La idea central es que, bajo las hipótesis habituales del algoritmo,
+la evolución no necesita seguir de manera independiente las \(N\) amplitudes del vector de
+estado. Debido a la simetría entre estados marcados y no marcados, basta con describir la
+dinámica mediante dos parámetros: una amplitud común para los estados marcados y otra
+para los no marcados.
 
-Sea $W\subseteq\{0,\dots,N-1\}$ el conjunto de estados marcados por el oráculo, con
-$M=|W|$. Cuando Grover parte de la superposición uniforme y el oráculo introduce únicamente
-un cambio de fase sobre los estados de $W$, el espacio relevante de evolución puede
-describirse mediante los vectores normalizados
+Sea \(W \subseteq \{0,\dots,N-1\}\) el conjunto de estados marcados por el oráculo, con
+\(M = |W|\). En la versión estándar del algoritmo, el estado inicial es la superposición
+uniforme
+\[
+\ket{s}=\frac{1}{\sqrt{N}}\sum_{x=0}^{N-1}\ket{x},
+\]
+y el oráculo actúa cambiando el signo de las amplitudes asociadas a los estados de \(W\).
+
+Bajo estas condiciones, todos los estados marcados tienen inicialmente la misma amplitud,
+y lo mismo ocurre con todos los estados no marcados. Además, tanto el oráculo como el
+operador de difusión preservan esa simetría: el primero afecta por igual a todos los estados
+marcados, y el segundo transforma cada amplitud únicamente en función del promedio global.
+Por ello, durante toda la evolución ideal del algoritmo, las amplitudes pueden agruparse en
+solo dos clases:
+\[
+a_x^{(t)}=
+\begin{cases}
+u_t, & x\in W,\\[4pt]
+v_t, & x\notin W,
+\end{cases}
+\]
+donde \(u_t\) representa la amplitud común de los estados marcados en la iteración \(t\),
+y \(v_t\) la amplitud común de los no marcados.
+
+Esta misma idea puede expresarse en términos de una base reducida del subespacio relevante.
+Definiendo los vectores normalizados
 \[
 \ket{w}=\frac{1}{\sqrt{M}}\sum_{x\in W}\ket{x},
 \qquad
-\ket{r}=\frac{1}{\sqrt{N-M}}\sum_{x\notin W}\ket{x}.
+\ket{r}=\frac{1}{\sqrt{N-M}}\sum_{x\notin W}\ket{x},
 \]
-El estado inicial uniforme se descompone entonces como
+el estado inicial uniforme se descompone como
 \[
 \ket{s}
 =
 \frac{1}{\sqrt{N}}\sum_{x=0}^{N-1}\ket{x}
 =
-\sqrt{\frac{M}{N}}\ket{w}+\sqrt{\frac{N-M}{N}}\ket{r}.
+\sqrt{\frac{M}{N}}\,\ket{w}
++
+\sqrt{\frac{N-M}{N}}\,\ket{r}.
+\]
+En consecuencia, la evolución ideal de Grover queda confinada al subespacio generado por
+\(\{\ket{w},\ket{r}\}\), y cualquier estado del algoritmo puede escribirse como
+\[
+\ket{\psi_t}=\alpha_t \ket{w}+\beta_t \ket{r}.
 \]
 
-La iteración de Grover está dada por el producto del oráculo $O$ y el operador de difusión
-$D=2\ket{s}\!\bra{s}-I$. El oráculo actúa como
-\[
-O\ket{w}=-\ket{w},
-\qquad
-O\ket{r}=\ket{r},
-\]
-mientras que el operador de difusión refleja el estado respecto a la dirección $\ket{s}$.
-Como ambos operadores preservan el subespacio generado por $\{\ket{w},\ket{r}\}$, cualquier
-estado de la evolución ideal puede escribirse como
-\[
-\ket{\psi_t}=\alpha_t\ket{w}+\beta_t\ket{r}.
-\]
-
-Si se desea recuperar las amplitudes a nivel de estado base, basta definir
+La relación entre ambas representaciones es directa. Como \(\ket{w}\) distribuye
+uniformemente la amplitud sobre los \(M\) estados marcados y \(\ket{r}\) sobre los
+\(N-M\) restantes, se tiene
 \[
 u_t=\frac{\alpha_t}{\sqrt{M}},
 \qquad
-v_t=\frac{\beta_t}{\sqrt{N-M}},
+v_t=\frac{\beta_t}{\sqrt{N-M}}.
 \]
-de manera que cada estado marcado tiene amplitud $u_t$ y cada estado no marcado tiene
-amplitud $v_t$. Tras aplicar el oráculo, las amplitudes pasan a ser $-u_t$ sobre $W$ y
-$v_t$ fuera de $W$. El promedio de amplitud en ese punto es
+Por tanto, seguir la evolución en términos de \((\alpha_t,\beta_t)\) o en términos de
+\((u_t,v_t)\) es equivalente.
+
+\subsection*{Acción del oráculo}
+
+El oráculo de Grover cambia el signo de las amplitudes correspondientes a los estados
+marcados y deja intactas las demás. Por tanto, si antes del oráculo el estado está descrito por
+\((u_t,v_t)\), después del oráculo las amplitudes quedan como
 \[
-\mu_t=\frac{-Mu_t+(N-M)v_t}{N}.
+u_t'=-u_t,
+\qquad
+v_t'=v_t.
 \]
 
-El operador de difusión actúa componente a componente mediante la transformación
-$x\mapsto 2\mu_t-x$. Por tanto, para un estado marcado se obtiene
+\subsection*{Acción del operador de difusión}
+
+El operador de difusión viene dado por
 \[
-u_{t+1}=2\mu_t-(-u_t)=2\mu_t+u_t
-=
-\frac{N-2M}{N}u_t+\frac{2(N-M)}{N}v_t,
+D = 2\ket{s}\!\bra{s} - I,
 \]
-y para un estado no marcado
+y puede interpretarse como una inversión de cada amplitud respecto al promedio global.
+Si \(\mu_t\) denota el promedio de amplitud después de aplicar el oráculo, entonces la difusión
+transforma cada componente según la regla
 \[
-v_{t+1}=2\mu_t-v_t
+x \mapsto 2\mu_t - x.
+\]
+
+Después del oráculo, el promedio de amplitud es
+\[
+\mu_t
+=
+\frac{1}{N}
+\left(
+\sum_{x\in W}(-u_t)+\sum_{x\notin W}v_t
+\right)
+=
+\frac{-Mu_t+(N-M)v_t}{N}.
+\]
+
+Aplicando ahora la difusión:
+
+Para un estado marcado, cuya amplitud después del oráculo es \(-u_t\),
+\[
+u_{t+1}=2\mu_t-(-u_t)=2\mu_t+u_t.
+\]
+Sustituyendo \(\mu_t\),
+\[
+u_{t+1}
+=
+2\left(\frac{-Mu_t+(N-M)v_t}{N}\right)+u_t
+=
+\frac{N-2M}{N}u_t+\frac{2(N-M)}{N}v_t.
+\]
+
+Para un estado no marcado, cuya amplitud después del oráculo es \(v_t\),
+\[
+v_{t+1}=2\mu_t-v_t.
+\]
+Sustituyendo nuevamente \(\mu_t\),
+\[
+v_{t+1}
+=
+2\left(\frac{-Mu_t+(N-M)v_t}{N}\right)-v_t
 =
 -\frac{2M}{N}u_t+\frac{N-2M}{N}v_t.
 \]
-En forma matricial,
+
+En consecuencia, una iteración completa de Grover queda descrita por la recurrencia
 \[
 \begin{bmatrix}
-u_{t+1} \\
+u_{t+1}\\
 v_{t+1}
 \end{bmatrix}
 =
 \begin{bmatrix}
-\frac{N-2M}{N} & \frac{2(N-M)}{N} \\
+\frac{N-2M}{N} & \frac{2(N-M)}{N}\\[6pt]
 -\frac{2M}{N} & \frac{N-2M}{N}
 \end{bmatrix}
 \begin{bmatrix}
-u_t \\
+u_t\\
 v_t
 \end{bmatrix}.
 \]
 
-La evolución completa queda así reducida a una recurrencia lineal de dimensión dos. En
-consecuencia, si el objetivo es seguir la dinámica ideal de Grover bajo estas hipótesis, cada
-iteración puede resolverse actualizando solo los parámetros $u_t$ y $v_t$, en lugar de
-aplicar el oráculo y la difusión sobre las $N$ amplitudes del vector de estado. La
-reconstrucción explícita del vector completo solo es necesaria cuando se requiere materializar
-las amplitudes individuales:
+\subsection*{Condiciones iniciales y reconstrucción del estado}
+
+Como el algoritmo parte de la superposición uniforme, en \(t=0\) todas las amplitudes son
+iguales a \(1/\sqrt{N}\). Por tanto,
+\[
+u_0=v_0=\frac{1}{\sqrt{N}}.
+\]
+
+A partir de la recurrencia anterior, cada iteración puede resolverse actualizando únicamente
+los parámetros \(u_t\) y \(v_t\), sin necesidad de aplicar el oráculo y la difusión sobre las
+\(N\) amplitudes del vector de estado. Si en algún momento se requiere reconstruir el estado
+completo, basta asignar
 \[
 a_x^{(t)}=
 \begin{cases}
-u_t, & x\in W,\\
+u_t, & x\in W,\\[4pt]
 v_t, & x\notin W.
 \end{cases}
 \]
 
-Esta reducción depende de que la preparación inicial, el oráculo y la dinámica posterior
-preserven la igualdad de amplitud dentro de las clases marcada y no marcada. Por ello, se
-trata de una optimización específica para Grover y no de un sustituto de un esquema general de
-simulación o almacenamiento.
+\subsection*{Alcance de la reducción}
+
+La parametrización reducida depende de una propiedad muy específica de Grover: la
+evolución preserva la igualdad de amplitud dentro de las clases ``marcada'' y ``no marcada''.
+Esa propiedad se cumple cuando el algoritmo parte de la superposición uniforme y el oráculo
+solo introduce un cambio de fase sobre los estados marcados. Bajo estas hipótesis, la dinámica
+efectiva queda contenida en un subespacio de dimensión dos.

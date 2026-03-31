@@ -1,36 +1,7 @@
-% Esta sección presenta la evaluación experimental de la estrategia de almacenamiento comprimido
-% integrada en el simulador. El objetivo no es únicamente reportar diferencias de desempeño,
-% sino establecer bajo qué condiciones la compresión del vector de estado constituye una
-% alternativa conveniente frente al almacenamiento no comprimido. Para ello se comparan tres
-% estrategias de representación: una referencia sin compresión, una propuesta sin pérdida
-% basada en Blosc y una estrategia con pérdida controlada basada en ZFP.
-
-% La evaluación se organizó sobre dos familias de circuitos con comportamientos contrastantes
-% desde el punto de vista de la compresibilidad: el algoritmo de búsqueda de Grover y la
-% transformada cuántica de Fourier (QFT). Esta selección permite observar la propuesta tanto en
-% escenarios donde el estado cuántico conserva regularidades explotables como en otros donde
-% esa regularidad es menor y, por tanto, la compresión enfrenta condiciones menos favorables.
-
-% La campaña experimental cubrió 22, 23 y 24 qubits. En Grover se estudiaron dos variantes:
-% objetivo único y multiobjetivo. En QFT se consideraron dos tipos de entrada: una
-% superposición periódica y una superposición de alta entropía con fases aleatorias. Con esta
-% combinación se buscó evitar una lectura sesgada por un solo patrón de estado y, al mismo
-% tiempo, contrastar comportamientos representativos de compresibilidad alta y baja.
-
-% Las tablas de resultados reportan cuatro magnitudes principales: memoria residente máxima,
-% ahorro de memoria respecto a la referencia no comprimida, tiempo total de ejecución y tiempo
-% relativo expresado en múltiplos de la referencia. En el caso de Blosc, al tratarse de una
-% estrategia sin pérdida, la exactitud se verificó comparando amplitud por amplitud el vector
-% completo exportado por cada ejecución comprimida frente a la ejecución no comprimida de la
-% misma instancia. En todos los casos reportados, esa comparación produjo igualdad exacta y,
-% por tanto, error máximo absoluto nulo. Para ZFP, la misma comparación completa se utilizó
-% para calcular el máximo error absoluto frente a la referencia.
-
-% Además de esta comparación principal, en Grover se incorpora una evaluación complementaria
-% con la variante de parametrización reducida descrita en la
-% Sección~\ref{subsec:grover_reducido_impl}. Su propósito es distinguir entre el beneficio que
-% proviene de comprimir el almacenamiento del estado y el que resulta de explotar directamente
-% la estructura algebraica del algoritmo. En esa subsección complementaria, por tanto, la
-% lectura se concentra en memoria y tiempo, ya que el interés principal no es contrastar
-% exactitud entre compresores, sino delimitar el papel relativo de cada estrategia de
-% optimización.
+Esta sección describe el diseño experimental empleado para evaluar la 
+estrategia propuesta de almacenamiento comprimido. La evaluación se 
+planteó como una comparación controlada entre almacenamiento no comprimido, 
+compresión sin pérdida y compresión con pérdida controlada, usando cargas 
+de trabajo con distinta compresibilidad, un mismo entorno de ejecución y 
+criterios uniformes de medición, con el fin de analizar simultáneamente 
+ahorro de memoria, sobrecarga temporal y exactitud numérica.

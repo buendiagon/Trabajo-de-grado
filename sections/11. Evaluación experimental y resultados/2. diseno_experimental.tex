@@ -1,59 +1,32 @@
 \subsection{Diseño experimental}
 
-% La campaña experimental se definió a partir de cargas de trabajo explícitas con el fin de
-% evaluar la propuesta en condiciones comparables y, al mismo tiempo, distinguir entre
-% escenarios favorables y adversos para la compresión del vector de estado. En todos los casos
-% se trabajó con 22, 23 y 24 qubits, y cada comparación entre estrategias se realizó sobre la
-% misma instancia del circuito, con los mismos parámetros de entrada y bajo la misma política
-% de recolección de métricas. De esta manera, las diferencias observadas pueden atribuirse al
-% esquema de almacenamiento y no a cambios en la carga de trabajo.
+\subsubsection{Estrategias comparadas}
 
-En Grover se analizaron dos casos. El primero correspondió a un oráculo con objetivo único y
-se ejecutó con tres posiciones representativas del estado marcado: $N/8$, $N/2$ y $7N/8$,
-donde $N=2^n$ es el tamaño del espacio de búsqueda. El segundo caso correspondió a un
-oráculo multiobjetivo con tres estados marcados ubicados en esas mismas regiones. Esta
-elección permitió comprobar si la posición de los elementos marcados alteraba de manera
-apreciable el comportamiento de las estrategias evaluadas.
+El experimento se organizó alrededor de tres estrategias de representación del vector de estado: una referencia sin compresión, la propuesta sin pérdida basada en Blosc y una alternativa con pérdida controlada basada en ZFP. Las tres se ejecutaron sobre los mismos circuitos, con iguales tamaños de qubits y bajo un procedimiento homogéneo de medición, de modo que las diferencias observadas pudieran atribuirse al esquema de almacenamiento y no a cambios en la carga o en la instrumentación.
 
-En QFT se estudiaron dos familias de entrada. La primera fue una superposición periódica,
-seleccionada por su estructura regular y repetitiva. La segunda fue una superposición de alta
-entropía con amplitudes de magnitud uniforme y fases aleatorias,
-$a_y = e^{i\phi_y}/\sqrt{N}$ con $\phi_y \sim U[0, 2\pi)$ y semilla fija. Con ello se
-contrastó un caso donde la compresión dispone de redundancia explotable con otro donde esa
-redundancia es escasa.
+\subsubsection{Selección de cargas de trabajo}
 
-Las ejecuciones se realizaron en una estación de trabajo con Rocky Linux 10.1, procesador
-AMD Ryzen 7 5700X de 8 núcleos y 16 hilos, y 32~GiB de memoria RAM. La campaña se
-instrumentó mediante los scripts de perfilado del repositorio del simulador, los cuales
-ejecutan los binarios experimentales y recolectan tiempo transcurrido y memoria residente
-máxima mediante \texttt{psrecord}. En Grover, cada fila resume tres instancias por tamaño y
-estrategia; en QFT, cada fila corresponde a una instancia por familia de entrada, número de
-qubits y estrategia.
+La evaluación se estructuró sobre dos familias de circuitos con comportamientos contrastantes en términos de compresibilidad: el algoritmo de búsqueda de Grover y la transformada cuántica de Fourier (QFT). Esta selección permitió evitar una evaluación sesgada hacia un único tipo de estado cuántico: Grover representa escenarios donde pueden emerger regularidades aprovechables por la compresión, mientras que QFT permite examinar casos en los que esa estructura se reduce o desaparece. Así, el diseño no solo cubre condiciones favorables para la propuesta, sino también situaciones menos propicias, necesarias para valorar su alcance real.
 
-\begin{table}[H]
-    \centering
-    \small
-    \caption{Cargas de trabajo utilizadas en la evaluación}
-    \label{tab:exp-workloads}
-    \begin{tabular}{>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{2.8cm}>{\centering\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{6.8cm}}
-        \hline
-        \textbf{Circuito} & \textbf{Caso} & \textbf{Qubits} & \textbf{Definición de la entrada} \\
-        \hline
-        Grover & Objetivo único & 22, 23 y 24 & Tres instancias por tamaño con estado marcado en $N/8$, $N/2$ y $7N/8$. \\
-        Grover & Multiobjetivo & 22, 23 y 24 & Tres estados marcados por tamaño, ubicados en $N/8$, $N/2$ y $7N/8$. \\
-        QFT & Superposición periódica & 22, 23 y 24 & Estado de entrada con patrón regular y repetitivo. \\
-        QFT & Superposición de alta entropía & 22, 23 y 24 & Estado de entrada con magnitud uniforme y fases aleatorias. \\
-        \hline
-    \end{tabular}
-\end{table}
+\paragraph{Casos evaluados para Grover}
 
-% Las estrategias comprimidas se evaluaron con configuraciones efectivas fijas, resumidas en la
-% Tabla~\ref{tab:exp-configs}. Los parámetros allí reportados corresponden a la configuración
-% final empleada en la campaña experimental, seleccionada a partir de pruebas previas orientadas
-% a identificar combinaciones con una relación favorable entre tasa de compresión y tiempo de
-% ejecución para las cargas de trabajo consideradas. La referencia corresponde al almacenamiento 
-% no comprimido del simulador y se
-% utiliza como base para calcular las razones de memoria y tiempo reportadas posteriormente.
+En Grover se estudiaron dos variantes. La primera correspondió a un oráculo con objetivo único y se ejecutó con tres ubicaciones representativas del estado marcado: $N/8$, $N/2$ y $7N/8$, donde $N = 2^n$ es el tamaño del espacio de búsqueda. La segunda correspondió a un oráculo multiobjetivo con tres estados marcados distribuidos en esas mismas regiones. Con esta definición se buscó que los resultados no dependieran de una sola disposición de índices y, al mismo tiempo, observar si la posición de los elementos marcados introducía variaciones apreciables en memoria o tiempo de ejecución.
+
+\paragraph{Casos evaluados para QFT}
+
+En QFT se consideraron dos familias de entrada. La primera fue una superposición periódica, incluida por su estructura regular y repetitiva. La segunda fue una superposición de alta entropía con amplitudes de magnitud uniforme y fases aleatorias, definida como $a_y = e^{i\phi_y}/\sqrt{N}$ con $\phi_y \sim U[0, 2\pi)$ y semilla fija. Este contraste permitió enfrentar la propuesta tanto a estados con redundancia potencialmente explotable como a estados donde dicha redundancia es escasa, mientras que el uso de una semilla fija preservó la reproducibilidad del experimento.
+
+\subsubsection{Escala del experimento}
+
+La evaluación se realizó para 22, 23 y 24 qubits. Este rango permitió trabajar con instancias suficientemente grandes para que la memoria se convirtiera en una restricción relevante dentro de la capacidad disponible del entorno experimental, sin perder reproducibilidad ni comprometer la comparabilidad entre estrategias. Elegir varios tamaños dentro de ese intervalo también permitió observar cómo evolucionaban los efectos de la compresión a medida que crecía el vector de estado.
+
+\subsubsection{Entorno experimental e instrumentación}
+
+Todas las ejecuciones se realizaron en una plataforma experimental con Rocky Linux 10.1, procesador AMD Ryzen 7 5700X de 8 núcleos y 16 hilos, y 32~GiB de memoria RAM. La recolección de métricas se efectuó con los scripts de perfilado del repositorio del simulador, que ejecutan los binarios experimentales y registran tiempo transcurrido y memoria máxima mediante \texttt{psrecord}. Se recurrió a \texttt{psrecord} porque, al operar como una herramienta externa al código instrumentado, permite observar el consumo de recursos del proceso sin introducir lógica adicional en la implementación evaluada. Con ello se buscó reducir la interferencia de la propia medición sobre el experimento y mantener un procedimiento uniforme para todas las estrategias comparadas.
+
+\subsubsection{Configuración de compresión}
+
+Las estrategias comprimidas se evaluaron con configuraciones fijas durante toda la evaluación, resumidas en la Tabla~\ref{tab:exp-configs}. Esta decisión se adoptó después de realizar pruebas previas de ajuste y respondió a un criterio de estabilidad metodológica: una vez seleccionadas las configuraciones que ofrecían el mejor compromiso entre memoria y tiempo para los casos de estudio, se conservaron sin cambios en toda la evaluación para evitar que la comparación quedara condicionada por un reajuste específico en cada experimento.
 
 \begin{table}[H]
     \centering
@@ -70,26 +43,22 @@ qubits y estrategia.
     \end{tabular}
 \end{table}
 
-Las métricas principales fueron el tiempo total de ejecución y la memoria residente máxima.
-Ambas se obtuvieron a partir de las trazas generadas por \texttt{psrecord}: el tiempo
-corresponde al último valor registrado en la columna \textit{Elapsed time}, mientras que la
-memoria máxima corresponde al máximo de la columna \textit{Real (MB)}. A partir de estas
-mediciones se calcularon dos indicadores de lectura directa:
+\subsubsection{Métricas de evaluación}
+
+Las métricas principales del estudio fueron el tiempo total de ejecución y la memoria  máxima. Ambas se obtuvieron a partir de las trazas generadas por \texttt{psrecord}: el tiempo corresponde al último valor registrado en la columna \textit{Elapsed time}, mientras que la memoria máxima corresponde al mayor valor de la columna \textit{Real (MB)}. A partir de estas medidas se calcularon dos indicadores de lectura directa:
+
 \[
 \text{Ahorro de memoria (\%)} = 100\left(1-\frac{M_{\text{comp}}}{M_{\text{ref}}}\right),
 \qquad
 \text{Tiempo relativo (x)} = \frac{T_{\text{comp}}}{T_{\text{ref}}}.
 \]
 
-En estas expresiones, $M_{\text{ref}}$ y $T_{\text{ref}}$ corresponden a la ejecución con
-almacenamiento no comprimido del mismo circuito y del mismo número de qubits. Un valor
-negativo en el ahorro de memoria indica que la estrategia evaluada consumió más memoria que
-la referencia.
+En estas expresiones, $M_{\text{ref}}$ y $T_{\text{ref}}$ corresponden a la ejecución con almacenamiento no comprimido del mismo circuito y del mismo número de qubits. Un valor negativo en el ahorro de memoria indica que la estrategia evaluada consumió más memoria que la referencia, lo que permite identificar con claridad los casos en los que la compresión no alcanza a compensar sus propios costos auxiliares.
 
-La exactitud numérica se trató de manera distinta según la naturaleza de cada estrategia. En
-Blosc, la verificación consistió en exportar el vector completo de amplitudes de la ejecución
-comprimida y compararlo amplitud por amplitud contra la referencia no comprimida de la misma
-instancia experimental. En todos los casos reportados, esa comparación produjo igualdad
-exacta y, en consecuencia, error máximo absoluto nulo. En ZFP, el campo de error se conserva
-de forma explícita en las tablas para registrar el máximo error absoluto medido mediante esa
-misma comparación completa del estado.
+\subsubsection{Verificación de exactitud numérica}
+
+La exactitud numérica se evaluó según la naturaleza de cada estrategia. En Blosc, al tratarse de una compresión sin pérdida, la validación consistió en exportar el vector completo de amplitudes de cada ejecución comprimida y compararlo amplitud por amplitud con la ejecución no comprimida de la misma instancia, con el fin de verificar igualdad exacta respecto a la referencia. En ZFP, esa misma comparación completa se empleó para medir el máximo error absoluto, ya que en este caso el interés no era demostrar igualdad exacta, sino cuantificar la desviación introducida por la compresión con pérdida.
+
+\subsubsection{Comparación complementaria para Grover}
+
+Además de la comparación principal entre almacenamiento no comprimido, Blosc y ZFP, en Grover se incorporó una evaluación complementaria con la variante de parametrización reducida descrita en la Sección~\ref{subsec:grover_reducido_impl}. Esta comparación adicional permitió distinguir entre el beneficio derivado de comprimir el vector de estado y el que proviene de explotar directamente la estructura algebraica del algoritmo, por lo que en esa subsección complementaria la interpretación se concentra principalmente en memoria y tiempo de ejecución.
