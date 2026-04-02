@@ -192,7 +192,7 @@ Por ello, la compresibilidad de un arreglo numérico depende tanto del contenido
 
 \subsubsection{Compresión por bloques, descompresión selectiva y caché}
 
-Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \cite{wu2019full,zhang2024bmqsim}.
+Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \cite{wu2019full,Zhang2025BMQSim}.
 
 La descompresión selectiva se basa en esa granularidad: solo se reconstruyen temporalmente los bloques necesarios para una operación determinada. De este modo, la compresión puede integrarse con el patrón de acceso del sistema y no únicamente con el almacenamiento final de los datos.
 

@@ -7,38 +7,13 @@
   doi       = {10.1145/3295500.3356155}
 }
 
-@misc{zhang2024bmqsim,
-  author       = {Zhang, Boyuan and Fang, Bo and Ye, Fanjiang and Gu, Yida and Tallent, Nathan and Tan, Guangming and Tao, Dingwen},
-  title        = {Overcoming Memory Constraints in Quantum Circuit Simulation with a High-Fidelity Compression Framework},
-  year         = {2024},
-  archivePrefix= {arXiv},
-  eprint       = {2410.14088},
-  primaryClass = {cs.DC},
-  url          = {https://arxiv.org/abs/2410.14088}
-}
-
-@misc{awsBraketTest2026,
-  author       = {{Amazon Web Services}},
-  title        = {Testing your quantum tasks with Amazon Braket},
-  year         = {2026},
-  howpublished = {\url{https://docs.aws.amazon.com/braket/latest/developerguide/braket-test.html}},
-  note         = {Amazon Braket Developer Guide. Accessed March 29, 2026}
-}
-
-@misc{awsBraketEmulator2026,
-  author       = {{Amazon Web Services}},
-  title        = {Local quantum device emulator},
-  year         = {2026},
-  howpublished = {\url{https://docs.aws.amazon.com/braket/latest/developerguide/braket-local-emulator.html}},
-  note         = {Amazon Braket Developer Guide. Accessed March 29, 2026}
-}
-
-@misc{microsoftResourceEstimator2026,
-  author       = {{Microsoft}},
-  title        = {What is the Microsoft Quantum resource estimator?},
-  year         = {2026},
-  howpublished = {\url{https://learn.microsoft.com/en-us/azure/quantum/intro-to-resource-estimation}},
-  note         = {Azure Quantum documentation. Accessed March 29, 2026}
+@inproceedings{Zhang2025BMQSim,
+  author    = {Zhang, Boyuan and Fang, Bo and Ye, Fanjiang and Guo, Luanzheng and Tallent, Nathan and Tao, Dingwen},
+  title     = {BMQSim: Overcoming Memory Constraints in Quantum Circuit Simulation with a High-Fidelity Compression Framework},
+  booktitle = {Proceedings of the 39th ACM International Conference on Supercomputing},
+  year      = {2025},
+  doi       = {10.1145/3721145.3725747},
+  url       = {https://dl.acm.org/doi/10.1145/3721145.3725747}
 }
 
 @inproceedings{wu2018amplitude,
@@ -61,14 +36,14 @@
   url          = {https://arxiv.org/abs/2411.15332}
 }
 
-@article{diaz2024software,
-  author       = {Díaz, Gilberto and Steffenel, Luiz Angelo and Barrios, Carlos Jaime and Couturier, Jean-François},
+@misc{diaz2024software,
+  author       = {D{\'i}az, Gilberto and Steffenel, Luiz Angelo and Barrios, Carlos Jaime and Couturier, Jean-Francois},
   title        = {How to Build a Software Quantum Simulator},
   year         = {2024},
-  publisher = {Preprints},
-  doi = {10.20944/preprints202409.1497.v1},
-  url = {https://doi.org/10.20944/preprints202409.1497.v1},
-  journal = {Preprints}
+  publisher    = {Preprints.org},
+  doi          = {10.20944/preprints202409.1497.v1},
+  url          = {https://www.preprints.org/manuscript/202409.1497/v1},
+  note         = {Preprint; no peer-reviewed version confirmed as of 2026-04-01}
 }
 
 @phdthesis{DiazToro2025,
@@ -131,21 +106,26 @@
   url={https://arxiv.org/abs/1710.05867}
 }
 
-@misc{Li2018,
-  author = {Ruling Li and Bujiao Wu and Mingsheng Ying and Xiaoming Sun and Guangwen Yang},
-  title  = {Quantum supremacy circuit simulation on Sunway TaihuLight},
-  note   = {arXiv:1804.04797},
-  year   = {2018}
+@article{Li2018,
+  author  = {Li, Riling and Wu, Bujiao and Ying, Mingsheng and Sun, Xiaoming and Yang, Guangwen},
+  title   = {Quantum Supremacy Circuit Simulation on Sunway TaihuLight},
+  journal = {IEEE Transactions on Parallel and Distributed Systems},
+  year    = {2020},
+  volume  = {31},
+  number  = {4},
+  pages   = {805--816},
+  doi     = {10.1109/TPDS.2019.2947511},
+  url     = {https://doi.org/10.1109/TPDS.2019.2947511}
 }
 
-@misc{Markov2018,
-  title = {Quantum Supremacy Is Both Closer and Farther than It Appears},
-  author = {Markov, Igor L. and Fatima, Aneeqa and Isakov, Sergei V. and Boixo, Sergio},
-  year={2018},
-  eprint={1807.10749},
-  archivePrefix={arXiv},
-  primaryClass={quant-ph},
-  url={https://arxiv.org/abs/1807.10749}
+@inproceedings{Markov2018,
+  author    = {Markov, Igor L. and Fatima, Aneeqa and Isakov, Sergei V. and Boixo, Sergio},
+  title     = {Massively Parallel Approximate Simulation of Hard Quantum Circuits},
+  booktitle = {Proceedings of the 57th ACM/IEEE Design Automation Conference (DAC)},
+  year      = {2020},
+  pages     = {1--6},
+  doi       = {10.1109/DAC18072.2020.9218591},
+  url       = {https://doi.org/10.1109/DAC18072.2020.9218591}
 }
 
 @article{Aaronson2004,
@@ -159,50 +139,61 @@
 }
 
 @article{Vidal2003,
-  author  = {Guifr\'e Vidal},
-  title   = {Efficient classical simulation of slightly entangled quantum computations},
-  journal = {Phys. Rev. Lett.},
-  volume  = {91},
-  number  = {14},
-  pages   = {147902},
-  year    = {2003},
-  doi     = {10.1103/PhysRevLett.91.147902}
+  author    = {Vidal, Guifr\'e},
+  title     = {Efficient Classical Simulation of Slightly Entangled Quantum Computations},
+  journal   = {Phys. Rev. Lett.},
+  volume    = {91},
+  number    = {14},
+  pages     = {147902},
+  year      = {2003},
+  doi       = {10.1103/PhysRevLett.91.147902},
+  url       = {https://link.aps.org/doi/10.1103/PhysRevLett.91.147902}
 }
 
 @article{Zulehner2018,
-  author  = {Alwin Zulehner and Robert Wille},
-  title   = {Advanced simulation of quantum computations},
-  journal = {IEEE Trans. Comput.-Aided Design Integr. Circuits Syst.},
+  author  = {Zulehner, Alwin and Wille, Robert},
+  title   = {Advanced Simulation of Quantum Computations},
+  journal = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+  year    = {2019},
   volume  = {38},
   number  = {5},
   pages   = {848--859},
-  year    = {2019},
-  doi     = {10.1109/TCAD.2018.2846658}
+  doi     = {10.1109/TCAD.2018.2834427},
+  url     = {https://doi.org/10.1109/TCAD.2018.2834427}
 }
 
 @article{Villalonga2020,
-  author  = {Benjamin Villalonga and Dmitry Lyakh and Sergio Boixo and Hartmut Neven and Travis S. Humble and Rupak Biswas and Eleanor G. Rieffel and Alan Ho and Salvatore Mandr\`a},
-  title   = {Establishing the quantum supremacy frontier with a 281 Pflop/s simulation},
-  journal = {Quantum Sci. Technol.},
-  volume  = {5},
-  number  = {3},
-  pages   = {034003},
-  year    = {2020},
-  doi     = {10.1088/2058-9565/ab7eeb}
+  author    = {Villalonga, Benjamin and Lyakh, Dmitry and Boixo, Sergio and Neven, Hartmut and Humble, Travis S and Biswas, Rupak and Rieffel, Eleanor G and Ho, Alan and Mandr{\`a}, Salvatore},
+  title     = {Establishing the quantum supremacy frontier with a 281 Pflop/s simulation},
+  journal   = {Quantum Science and Technology},
+  year      = {2020},
+  month     = apr,
+  volume    = {5},
+  number    = {3},
+  pages     = {034003},
+  publisher = {IOP Publishing},
+  doi       = {10.1088/2058-9565/ab7eeb},
+  url       = {https://doi.org/10.1088/2058-9565/ab7eeb}
 }
 
 @misc{Collet2015,
-  author       = {Yann Collet},
-  title        = {Zstandard -- Real-time data compression algorithm},
-  howpublished = {\url{http://facebook.github.io/zstd/}},
-  year         = {2015}
+  author       = {Collet, Yann},
+  title        = {Zstandard -- Real-Time Data Compression Algorithm},
+  year         = {2015},
+  howpublished = {Project website},
+  url          = {https://facebook.github.io/zstd/}
 }
 
-@article{Steiger2024,
-  author  = {Damian S. Steiger and Thomas H{\"a}ner and Scott N. Genin and Helmut G. Katzgraber},
-  title   = {Sparse Simulation of VQE Circuits},
-  journal = {arXiv preprint arXiv:2404.10047},
-  year    = {2024}
+@misc{Steiger2025,
+  author       = {Steiger, Damian S. and H{\"a}ner, Thomas and Genin, Scott N. and Katzgraber, Helmut G.},
+  title        = {Sparse Simulation of VQE Circuits},
+  year         = {2025},
+  archivePrefix= {arXiv},
+  eprint       = {2404.10047},
+  primaryClass = {quant-ph},
+  doi          = {10.48550/arXiv.2404.10047},
+  url          = {https://arxiv.org/abs/2404.10047},
+  note         = {Preprint}
 }
 
 @article{Li2023,
@@ -216,36 +207,41 @@
 }
 
 @misc{Chen2018,
-  author       = {Jianxin Chen and Fang Zhang and Cupjin Huang and Michael Newman and Yaoyun Shi},
+  author       = {Chen, Jianxin and Zhang, Fang and Huang, Cupjin and Newman, Michael and Shi, Yaoyun},
   title        = {Classical Simulation of Intermediate-Size Quantum Circuits},
   year         = {2018},
   archivePrefix= {arXiv},
   eprint       = {1805.01450},
   primaryClass = {quant-ph},
+  doi          = {10.48550/arXiv.1805.01450},
   url          = {https://arxiv.org/abs/1805.01450},
+  note         = {Preprint}
 }
 
 @misc{Huffman2024,
-  author       = {Noah Huffman and Dmitri Pavlichin and Tsachy Weissman},
-  title        = {Lossy Compression for Schrödinger-style Quantum Simulations},
+  author       = {Huffman, Noah and Pavlichin, Dmitri and Weissman, Tsachy},
+  title        = {Lossy Compression for Schr{\"o}dinger-style Quantum Simulations},
   year         = {2024},
   archivePrefix= {arXiv},
   eprint       = {2401.11088},
   primaryClass = {quant-ph},
+  doi          = {10.48550/arXiv.2401.11088},
   url          = {https://arxiv.org/abs/2401.11088},
+  note         = {Preprint}
 }
 
-@article{Viamontes2005,
-  author       = {George F. Viamontes and Igor L. Markov and John P. Hayes},
+@inproceedings{Viamontes2004,
+  author       = {Viamontes, George F. and Markov, Igor L. and Hayes, John P.},
   title        = {Graph-based simulation of quantum computation in the density matrix representation},
-  journal      = {Quantum Information \& Computation},
-  year         = {2005},
-  volume       = {5},
-  number       = {2},
-  pages        = {113--130},
-  archivePrefix= {arXiv},
-  eprint       = {quant-ph/0403114},
-  url          = {https://arxiv.org/abs/quant-ph/0403114},
+  booktitle    = {Quantum Information and Computation II},
+  editor       = {Donkor, Eric and Pirich, Andrew R. and Brandt, Howard E.},
+  volume       = {5436},
+  pages        = {285--296},
+  year         = {2004},
+  organization = {International Society for Optics and Photonics},
+  publisher    = {SPIE},
+  doi          = {10.1117/12.542767},
+  url          = {https://doi.org/10.1117/12.542767}
 }
 
 @article{Viamontes2003,
@@ -253,130 +249,148 @@
   title   = {Improving Gate-Level Simulation of Quantum Circuits},
   journal = {Quantum Information Processing},
   year    = {2003},
+  month   = oct,
   volume  = {2},
   number  = {5},
   pages   = {347--380},
+  issn    = {1573-1332},
   doi     = {10.1023/B:QINP.0000022725.70000.4a},
-  url     = {https://deepblue.lib.umich.edu/handle/2027.42/45525}
+  url     = {https://doi.org/10.1023/B:QINP.0000022725.70000.4a}
 }
 
 @inproceedings{Miller2006,
-  author    = {D. Michael Miller and Mitchell A. Thornton},
+  author    = {Miller, D. M. and Thornton, M. A.},
   title     = {{QMDD}: A Decision Diagram Structure for Reversible and Quantum Circuits},
-  booktitle = {Proceedings of the 36th International Symposium on Multiple-Valued Logic ({ISMVL}'06)},
+  booktitle = {36th International Symposium on Multiple-Valued Logic (ISMVL'06)},
   year      = {2006},
-  pages     = {30},
+  pages     = {30--30},
   doi       = {10.1109/ISMVL.2006.35},
-  url       = {https://ieeexplore.ieee.org/document/1623982/},
+  url       = {https://doi.org/10.1109/ISMVL.2006.35}
 }
 
-@misc{Jaques2021,
-  author       = {Samuel Jaques and Thomas Häner},
-  title        = {Leveraging state sparsity for more efficient quantum simulations},
-  year         = {2021},
-  archivePrefix= {arXiv},
-  eprint       = {2105.01533},
-  primaryClass = {quant-ph},
-  url          = {https://arxiv.org/abs/2105.01533},
+@article{Jaques2022,
+  author     = {Jaques, Samuel and H{\"a}ner, Thomas},
+  title      = {Leveraging State Sparsity for More Efficient Quantum Simulations},
+  journal    = {ACM Transactions on Quantum Computing},
+  year       = {2022},
+  issue_date = {September 2022},
+  volume     = {3},
+  number     = {3},
+  month      = jun,
+  articleno  = {15},
+  numpages   = {17},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  doi        = {10.1145/3491248},
+  url        = {https://doi.org/10.1145/3491248}
 }
 
 @article{Vinkhuijzen2023,
-  author    = {Lieuwe Vinkhuijzen and Tim Coopmans and David Elkouss and Vedran Dunjko and Alfons Laarman},
+  author    = {Vinkhuijzen, Lieuwe and Coopmans, Tim and Elkouss, David and Dunjko, Vedran and Laarman, Alfons},
   title     = {{LIMDD}: {A} {D}ecision {D}iagram for {S}imulation of {Q}uantum {C}omputing {I}ncluding {S}tabilizer {S}tates},
   journal   = {Quantum},
   year      = {2023},
   volume    = {7},
   pages     = {1108},
   month     = sep,
+  issn      = {2521-327X},
+  publisher = {Verein zur F{\"o}rderung des Open Access Publizierens in den Quantenwissenschaften},
   doi       = {10.22331/q-2023-09-11-1108},
-  url       = {https://quantum-journal.org/papers/q-2023-09-11-1108/},
+  url       = {https://doi.org/10.22331/q-2023-09-11-1108}
 }
 
 @article{Markov2008,
-  author       = {Igor L. Markov and Yaoyun Shi},
-  title        = {Simulating quantum computation by contracting tensor networks},
-  journal      = {SIAM Journal on Computing},
-  year         = {2008},
-  volume       = {38},
-  number       = {3},
-  pages        = {963--981},
-  doi          = {10.1137/050644756},
-  archivePrefix= {arXiv},
-  eprint       = {quant-ph/0511069},
-  url          = {https://arxiv.org/abs/quant-ph/0511069},
+  author  = {Markov, Igor L. and Shi, Yaoyun},
+  title   = {Simulating Quantum Computation by Contracting Tensor Networks},
+  journal = {SIAM Journal on Computing},
+  year    = {2008},
+  volume  = {38},
+  number  = {3},
+  pages   = {963--981},
+  doi     = {10.1137/050644756},
+  url     = {https://doi.org/10.1137/050644756}
 }
 
-@article{Boixo2017,
-  title = {Simulation of low-depth quantum circuits as complex undirected graphical models},
-  author = {Boixo, Sergio and Isakov, Sergei V. and Smelyanskiy, Vadim N. and Neven, Hartmut},
-  journal = {arXiv preprint arXiv:1712.05384},
-  year = {2017},
-  url = {https://arxiv.org/abs/1712.05384}
+@misc{Boixo2018,
+  author       = {Boixo, Sergio and Isakov, Sergei V. and Smelyanskiy, Vadim N. and Neven, Hartmut},
+  title        = {Simulation of low-depth quantum circuits as complex undirected graphical models},
+  year         = {2018},
+  eprint       = {1712.05384},
+  archivePrefix= {arXiv},
+  eprint       = {1712.05384},
+  primaryClass = {quant-ph},
+  doi          = {10.48550/arXiv.1712.05384},
+  url          = {https://arxiv.org/abs/1712.05384},
+  note         = {Preprint}
 }
 
 @article{arute2019quantum,
-  title = {Quantum supremacy using a programmable superconducting processor},
-  author = {Arute, Frank and Arya, Kunal and Babbush, Ryan and Bacon, Dave and Bardin, Joseph C. and Barends, Rami and Biswas, Rupak and Boixo, Sergio and Brandao, Fernando G. S. L. and Buell, David A. and Burkett, Brian and Chen, Yu and Chen, Zijun and Chiaro, Ben and Collins, Roberto and Courtney, William and Dunsworth, Andrew and Farhi, Edward and Foxen, Brooks and Fowler, Austin and Gidney, Craig and Giustina, Marissa and Graff, Rob and Guerin, Keith and Habegger, Steve and Harrigan, Matthew P. and Hartmann, Michael J. and Ho, Alan and Hoffmann, Markus R. and Huang, Trent and Humble, Travis S. and Isakov, Sergei V. and Jeffrey, Evan and Jiang, Zhang and Kafri, Dvir and Kechedzhi, Kostyantyn and Kelly, Julian and Klimov, Paul V. and Knysh, Sergey and Korotkov, Alexander N. and Kostritsa, Fedor and Landhuis, David and Lindmark, Mike and Lucero, Erik and Lyakh, Dmitry and Mandra, Salvatore and McClean, Jarrod R. and McEwen, Matt and Megrant, Anthony and Mi, Xiao and Michielsen, Kristel and Mohseni, Masoud and Mutus, Josh and Naaman, Ofer and Neeley, Matthew and Neill, Charles and Niu, Murphy Yuezhen and Ostby, Eric and Petukhov, Andre and Platt, John C. and Quintana, Chris and Rieffel, Eleanor G. and Roushan, Pedram and Rubin, Nicholas C. and Sank, Daniel and Satzinger, Kevin J. and Smelyanskiy, Vadim N. and Sung, Kevin J. and Trevithick, Matthew D. and Vainsencher, Amit and Villalonga, Benjamin and White, Theodore and Yao, Z. Jamie and Yeh, Ping and Zalcman, Adam and Neven, Hartmut and Martinis, John M.},
+  author  = {Arute, Frank and Arya, Kunal and Babbush, Ryan and Bacon, Dave and Bardin, Joseph C. and Barends, Rami and Biswas, Rupak and Boixo, Sergio and Brandao, Fernando G. S. L. and Buell, David A. and Burkett, Brian and Chen, Yu and Chen, Zijun and Chiaro, Ben and Collins, Roberto and Courtney, William and Dunsworth, Andrew and Farhi, Edward and Foxen, Brooks and Fowler, Austin and Gidney, Craig and Giustina, Marissa and Graff, Rob and Guerin, Keith and Habegger, Steve and Harrigan, Matthew P. and Hartmann, Michael J. and Ho, Alan and Hoffmann, Markus and Huang, Trent and Humble, Travis S. and Isakov, Sergei V. and Jeffrey, Evan and Jiang, Zhang and Kafri, Dvir and Kechedzhi, Kostyantyn and Kelly, Julian and Klimov, Paul V. and Knysh, Sergey and Korotkov, Alexander and Kostritsa, Fedor and Landhuis, David and Lindmark, Mike and Lucero, Erik and Lyakh, Dmitry and Mandr{\`a}, Salvatore and McClean, Jarrod R. and McEwen, Matthew and Megrant, Anthony and Mi, Xiao and Michielsen, Kristel and Mohseni, Masoud and Mutus, Josh and Naaman, Ofer and Neeley, Matthew and Neill, Charles and Niu, Murphy Yuezhen and Ostby, Eric and Petukhov, Andre and Platt, John C. and Quintana, Chris and Rieffel, Eleanor G. and Roushan, Pedram and Rubin, Nicholas C. and Sank, Daniel and Satzinger, Kevin J. and Smelyanskiy, Vadim and Sung, Kevin J. and Trevithick, Matthew D. and Vainsencher, Amit and Villalonga, Benjamin and White, Theodore and Yao, Z. Jamie and Yeh, Ping and Zalcman, Adam and Neven, Hartmut and Martinis, John M.},
+  title   = {Quantum supremacy using a programmable superconducting processor},
   journal = {Nature},
-  volume = {574},
-  number = {7779},
-  pages = {505--510},
-  year = {2019},
-  doi = {10.1038/s41586-019-1666-5},
-  url = {https://www.nature.com/articles/s41586-019-1666-5},
-  publisher = {Nature Publishing Group}
+  year    = {2019},
+  month   = oct,
+  volume  = {574},
+  number  = {7779},
+  pages   = {505--510},
+  issn    = {1476-4687},
+  doi     = {10.1038/s41586-019-1666-5},
+  url     = {https://doi.org/10.1038/s41586-019-1666-5}
 }
 
 @article{burtscher2009fpc,
-author  = {Burtscher, Martin and Ratanaworabhan, Paruj},
-title   = {FPC: A High-Speed Compressor for Double-Precision Floating-Point Data},
-journal = {IEEE Transactions on Computers},
-volume  = {58},
-number  = {1},
-pages   = {18--31},
-year    = {2009},
-doi     = {10.1109/TC.2008.131},
-url     = {https://userweb.cs.txstate.edu/~mb92/papers/tc09.pdf}
+  author  = {Burtscher, Martin and Ratanaworabhan, Paruj},
+  title   = {FPC: A High-Speed Compressor for Double-Precision Floating-Point Data},
+  journal = {IEEE Transactions on Computers},
+  year    = {2009},
+  volume  = {58},
+  number  = {1},
+  pages   = {18--31},
+  doi     = {10.1109/TC.2008.131},
+  url     = {https://doi.org/10.1109/TC.2008.131}
 }
 
 @article{lindstrom2006fpzip,
-author  = {Lindstrom, Peter and Isenburg, Martin},
-title   = {Fast and Efficient Compression of Floating-Point Data},
-journal = {IEEE Transactions on Visualization and Computer Graphics},
-volume  = {12},
-number  = {5},
-pages   = {1245--1250},
-year    = {2006},
-doi     = {10.1109/TVCG.2006.143},
-url     = {https://pubmed.ncbi.nlm.nih.gov/17080858/}
+  author  = {Lindstrom, Peter and Isenburg, Martin},
+  title   = {Fast and Efficient Compression of Floating-Point Data},
+  journal = {IEEE Transactions on Visualization and Computer Graphics},
+  year    = {2006},
+  volume  = {12},
+  number  = {5},
+  pages   = {1245--1250},
+  doi     = {10.1109/TVCG.2006.143},
+  url     = {https://doi.org/10.1109/TVCG.2006.143}
 }
 
 @article{masui2015bitshuffle,
-author  = {Masui, Kiyoshi and Amiri, Mandana and Connor, Liam and Deng, Meiling and Fandino, Mateus and Hoefer, Carolin and Halpern, Mark and Hanna, David and Hincks, Adam D. and Hinshaw, Gary and Mena Parra, Juan and Newburgh, Laura B. and Shaw, J. Richard and Vanderlinde, Keith},
-title   = {A compression scheme for radio data in high performance computing},
-journal = {arXiv preprint arXiv:1503.00638},
-year    = {2015},
-doi     = {10.48550/arXiv.1503.00638},
-url     = {https://arxiv.org/abs/1503.00638},
-note    = {Describes the Bitshuffle filter and HDF5 plugin}
+  author  = {Masui, K. and Amiri, M. and Connor, L. and Deng, M. and Fandino, M. and H{\"o}fer, C. and Halpern, M. and Hanna, D. and Hincks, A. D. and Hinshaw, G. and Parra, J. M. and Newburgh, L. B. and Shaw, J. R. and Vanderlinde, K.},
+  title   = {A compression scheme for radio data in high performance computing},
+  journal = {Astronomy and Computing},
+  volume  = {12},
+  pages   = {181--190},
+  year    = {2015},
+  issn    = {2213-1337},
+  doi     = {10.1016/j.ascom.2015.07.002},
+  url     = {https://www.sciencedirect.com/science/article/pii/S2213133715000694}
 }
 
 @misc{jamalidinan2025tdt,
-author        = {Jamalidinan, Samirasadat and Cheshmi, Kazem},
-title         = {Floating-Point Data Transformation for Lossless Compression},
-year          = {2025},
-archivePrefix = {arXiv},
-eprint        = {2506.18062},
-primaryClass  = {cs.DB},
-doi           = {10.48550/arXiv.2506.18062},
-url           = {https://arxiv.org/abs/2506.18062}
+  author       = {Jamalidinan, Samirasadat and Cheshmi, Kazem},
+  title        = {Floating-Point Data Transformation for Lossless Compression},
+  year         = {2025},
+  eprint       = {2506.18062},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.DB},
+  doi          = {10.48550/arXiv.2506.18062},
+  url          = {https://arxiv.org/abs/2506.18062},
+  note         = {Preprint}
 }
 
 @misc{blosc2_docs,
   author       = {{Blosc Development Team}},
   title        = {C-Blosc2 Documentation},
   year         = {2026},
-  howpublished = {\url{https://www.blosc.org/c-blosc2/}},
+  howpublished = {\url{https://blosc.org/c-blosc2/c-blosc2.html}},
   note         = {Documentaci\'on oficial consultada el 29 de marzo de 2026}
 }
 
@@ -440,45 +454,49 @@ url           = {https://arxiv.org/abs/2506.18062}
 }
 
 @article{diaz_mdpi_mmss,
-  title   = {Memory Management Strategies for Software Quantum Simulators},
-  author  = {D{\'i}az, Gilberto and Steffenel, Luiz and Barrios, Carlos and Couturier, Jean},
-  year    = {2025},
-  journal = {Quantum Reports},
-  volume  = {7},
-  number  = {3},
-  pages   = {41},
-  doi     = {10.3390/quantum7030041},
-  url     = {https://www.mdpi.com/2624-960X/7/3/41}
+  author    = {D{\'i}az, Gilberto and Steffenel, Luiz and Barrios, Carlos and Couturier, Jean},
+  title     = {Memory Management Strategies for Software Quantum Simulators},
+  journal   = {Quantum Reports},
+  year      = {2025},
+  volume    = {7},
+  number    = {3},
+  articleno = {41},
+  issn      = {2624-960X},
+  doi       = {10.3390/quantum7030041},
+  url       = {https://www.mdpi.com/2624-960X/7/3/41}
 }
 
 @misc{quest_repo,
   author       = {{QuEST-Kit contributors}},
   title        = {QuEST: Quantum Exact Simulation Toolkit},
+  year         = {2026},
   howpublished = {GitHub repository},
   url          = {https://github.com/QuEST-Kit/QuEST},
   urldate      = {2026-03-27}
 }
 
 @misc{intelqs_doc,
-  author       = {{Intel-QS project}},
-  title        = {Intel Quantum Simulator (Intel-QS) Documentation},
-  howpublished = {ReadTheDocs},
+  author       = {{Intel Corporation}},
+  title        = {{Intel Quantum Simulator (Intel-QS) Documentation}},
+  year         = {2026},
+  note         = {Online documentation},
   url          = {https://intel-qs.readthedocs.io/en/docs/getting-started.html},
   urldate      = {2026-03-27}
 }
 
 @misc{qsim_repo,
-  author       = {{quantumlib contributors}},
+  author       = {{Quantumlib contributors}},
   title        = {qsim: Fast C++ and Python library for state-vector simulation of quantum circuits},
-  howpublished = {GitHub repository},
-  url          = {https://github.com/quantumlib/qsim},
+  year         = {2025},
+  howpublished = {\url{https://github.com/quantumlib/qsim}},
+  note         = {GitHub repository},
   urldate      = {2026-03-27}
 }
 
 @misc{qsim_cirq,
   author       = {{Google Quantum AI}},
   title        = {qsimcirq Python Reference},
-  howpublished = {Official documentation},
+  howpublished = {Google Quantum AI Documentation},
   url          = {https://quantumai.google/reference/python/qsimcirq},
   urldate      = {2026-03-27}
 }
@@ -486,8 +504,8 @@ url           = {https://arxiv.org/abs/2506.18062}
 @misc{qiskit_aer_doc,
   author       = {{Qiskit Development Team}},
   title        = {Qiskit Aer Documentation},
-  howpublished = {Official documentation},
   year         = {2025},
+  howpublished = {Qiskit documentation},
   url          = {https://qiskit.github.io/qiskit-aer/},
   urldate      = {2026-03-27}
 }
@@ -528,24 +546,29 @@ url           = {https://arxiv.org/abs/2506.18062}
 
 @article{DeutschJozsa1992,
   author  = {Deutsch, David and Jozsa, Richard},
-  title   = {Rapid Solution of Problems by Quantum Computation},
+  title   = {Rapid solution of problems by quantum computation},
   journal = {Proceedings of the Royal Society of London. Series A: Mathematical and Physical Sciences},
   volume  = {439},
   number  = {1907},
   pages   = {553--558},
   year    = {1992},
+  month   = dec,
+  issn    = {0962-8444},
   doi     = {10.1098/rspa.1992.0167},
-  url     = {https://doi.org/10.1098/rspa.1992.0167}
+  url     = {https://doi.org/10.1098/rspa.1992.0167},
+  eprint  = {https://royalsocietypublishing.org/rspa/article-pdf/439/1907/553/68698/rspa.1992.0167.pdf}
 }
 
 @article{Szablowski2021,
-  author  = {Szab{\l}owski, Pawe{\l} J.},
-  title   = {Understanding Mathematics of Grover's Algorithm},
-  journal = {Quantum Information Processing},
-  volume  = {20},
-  number  = {5},
-  pages   = {182},
-  year    = {2021},
-  doi     = {10.1007/s11128-021-03125-w},
-  url     = {https://doi.org/10.1007/s11128-021-03125-w}
+  author    = {Szab{\l}owski, Pawe{\l} J.},
+  title     = {Understanding mathematics of Grover's algorithm},
+  journal   = {Quantum Information Processing},
+  year      = {2021},
+  month     = may,
+  volume    = {20},
+  number    = {5},
+  articleno = {191},
+  issn      = {1573-1332},
+  doi       = {10.1007/s11128-021-03125-w},
+  url       = {https://doi.org/10.1007/s11128-021-03125-w}
 }
