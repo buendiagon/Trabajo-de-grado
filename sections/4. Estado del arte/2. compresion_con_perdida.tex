@@ -47,6 +47,19 @@ Aunque esta técnica ofrece un enfoque simple y eficiente para reducir el uso
 de memoria, su aplicabilidad a circuitos de gran escala aún requiere validación
 empírica.
 
+Dentro de esta familia de técnicas, ZFP constituye una referencia relevante para
+arreglos numéricos de punto flotante. Su esquema divide el arreglo en bloques
+pequeños e independientes y transforma los valores de cada bloque a una
+representación más compacta antes de codificar sus coeficientes según un
+criterio de tasa, precisión o error tolerado \cite{Lindstrom2014ZFP}. Esta
+organización permite comprimir y descomprimir fragmentos del arreglo sin
+depender del resto, una propiedad útil cuando el acceso a los datos es parcial o
+segmentado. A diferencia de los enfoques sin pérdida, ZFP no busca preservar
+igualdad exacta bit a bit, sino controlar el compromiso entre reducción de
+memoria y desviación numérica. Por esta razón, en este trabajo se toma como
+referencia de compresión con pérdida controlada frente a la estrategia exacta
+basada en Blosc.
+
 \textcite{DiazToro2025} propone un esquema de \textbf{vector de estado
 comprimido} que emplea compresores con pérdida de precisión, principalmente
 \emph{ZFP} en modo \emph{fixed-rate}, complementado por \emph{SZ}, para reducir
