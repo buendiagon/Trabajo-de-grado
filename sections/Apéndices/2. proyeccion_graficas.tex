@@ -1,0 +1,117 @@
+\section{Metodología de proyección en las gráficas experimentales}
+\label{ap:proyeccion_graficas}
+
+Las gráficas de la evaluación experimental distinguen, para cada caso analizado, dos
+magnitudes: el tiempo total de ejecución y la memoria máxima consumida. En todas ellas, el
+eje \(x\) representa el número de qubits \(n\), mientras que el eje \(y\) se presenta en escala
+logarítmica. Esta elección responde a que tanto el tamaño del vector de estado como el costo
+de simularlo tienden a crecer de manera multiplicativa a medida que aumenta \(n\). Usar una
+escala logarítmica permite, por tanto, comparar en una misma figura valores que difieren por
+varios órdenes de magnitud sin perder legibilidad.
+
+En cada curva, las líneas continuas corresponden a mediciones obtenidas directamente en los
+experimentos realizados. A partir del último punto medido, las líneas discontinuas muestran
+una proyección del comportamiento esperado para tamaños no evaluados de forma directa. La
+banda sombreada indica el intervalo de predicción del \(95\%\), y la línea vertical punteada
+marca precisamente el límite entre la región observada y la región proyectada. De este modo,
+la figura permite distinguir con claridad qué parte de la curva proviene de datos medidos y
+cuál debe interpretarse como una estimación.
+
+\subsection*{Modelo de proyección}
+
+La proyección se construyó de manera independiente para cada combinación de experimento,
+estrategia de almacenamiento y métrica. Si \(y_i\) denota el tiempo o la memoria medidos
+para un número de qubits \(n_i\), el primer paso consiste en transformar la variable de
+respuesta al espacio logarítmico:
+\[
+z_i = \log(y_i).
+\]
+
+Esta transformación se utiliza porque el crecimiento de tiempo y memoria en simulación
+cuántica de estado completo puede aproximarse razonablemente mediante una tendencia
+exponencial respecto al número de qubits. Al pasar al espacio logarítmico, esa relación se
+vuelve aproximadamente lineal, lo que permite ajustarla con un modelo más simple e
+interpretable. Además, al regresar después a la escala original mediante la función
+\(\exp(\cdot)\), las predicciones conservan valores positivos y mantienen una interpretación
+coherente con magnitudes como tiempo y memoria.
+
+En los casos en que una misma figura resume varias variantes de un experimento, como ocurre
+con Grover para los objetivos ubicados en \(N/8\), \(N/2\) y \(7N/8\), primero se obtiene un
+valor representativo por qubit y estrategia mediante la media geométrica. Esta elección es
+consistente con el ajuste en espacio logarítmico, ya que equivale a promediar los valores
+transformados y luego volver a la escala original.
+
+Sobre los valores así obtenidos se ajusta una regresión lineal de la forma
+\[
+z_i = \beta_0 + \beta_1 n_i + \varepsilon_i,
+\]
+donde \(\varepsilon_i\) recoge la variación que no queda explicada por la tendencia
+aproximadamente exponencial del fenómeno.
+
+La estimación de los parámetros se realiza por mínimos cuadrados ordinarios. Si \(X\) es la
+matriz de diseño, formada por una columna de unos y una columna con los valores de \(n_i\),
+entonces
+\[
+\hat{\beta} = (X^\top X)^{-1} X^\top z.
+\]
+
+Para un nuevo tamaño \(n_0\), con \(x_0 = [1, n_0]^\top\), la predicción en espacio
+logarítmico viene dada por
+\[
+\hat{z}_0 = x_0^\top \hat{\beta}.
+\]
+Finalmente, el valor proyectado que se muestra en la gráfica se obtiene al volver a la escala
+original:
+\[
+\hat{y}_0 = \exp(\hat{z}_0).
+\]
+
+\subsection*{Estimación de la incertidumbre}
+
+La incertidumbre asociada a la proyección también se calcula en espacio logarítmico. Una vez
+ajustado el modelo, la varianza residual se estima como
+\[
+s^2 = \frac{1}{m-p}\sum_{i=1}^{m}(z_i-\hat{z}_i)^2,
+\]
+donde \(m\) es el número de observaciones utilizadas en el ajuste y \(p=2\) corresponde al
+número de parámetros del modelo. En las curvas presentadas en este trabajo se emplean seis
+mediciones por estrategia, correspondientes a \(q20\) hasta \(q25\), por lo que los grados de
+libertad son \(m-p=4\).
+
+Para un nuevo valor \(n_0\), el error estándar de predicción se calcula como
+\[
+s_{\mathrm{pred}}(n_0)
+=
+s\sqrt{1+x_0^\top (X^\top X)^{-1}x_0}.
+\]
+
+Esta expresión incorpora dos fuentes de incertidumbre. Por un lado, el término
+\(x_0^\top (X^\top X)^{-1}x_0\) refleja que la proyección se vuelve menos precisa a medida
+que el punto estimado se aleja de la región en la que se cuenta con mediciones. Por otro, el
+término adicional \(1\) indica que no se está construyendo solo un intervalo de confianza para
+la media de la tendencia, sino un intervalo de predicción para una posible observación futura.
+
+Con ello, el intervalo de predicción del \(95\%\) en espacio logarítmico se expresa como
+\[
+\hat{z}_0
+\pm
+t_{0.975,\,m-p}\,s_{\mathrm{pred}}(n_0),
+\]
+donde \(t_{0.975,\,m-p}\) es el valor crítico de la distribución \(t\) de Student con
+\(m-p\) grados de libertad.
+
+Para representar este intervalo en la escala original, se aplica la función exponencial a sus
+dos extremos:
+\[
+\left[
+\exp\!\left(\hat{z}_0-t_{0.975,\,m-p}s_{\mathrm{pred}}(n_0)\right),
+\exp\!\left(\hat{z}_0+t_{0.975,\,m-p}s_{\mathrm{pred}}(n_0)\right)
+\right].
+\]
+
+Se emplea la distribución \(t\) de Student, y no una aproximación normal, porque cada curva
+se ajusta con un número reducido de observaciones. Esta elección permite incorporar de forma
+más adecuada la incertidumbre asociada a la estimación de la varianza residual. Del mismo
+modo, se utiliza un intervalo de predicción y no únicamente un intervalo de confianza, ya que
+la banda sombreada busca indicar un rango plausible para futuras ejecuciones y no solo la
+incertidumbre de la tendencia media ajustada.

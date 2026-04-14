@@ -1,188 +1,147 @@
 \subsection{Resultados para Grover}
 
-Los resultados de Grover permiten examinar el comportamiento de las estrategias evaluadas 
-en un escenario donde el vector de estado conserva regularidades que favorecen la compresión. 
-Por esta razón, la discusión se organiza en torno a dos preguntas: cómo se comporta la 
-relación entre ahorro de memoria y sobrecarga temporal frente a la referencia no comprimida, 
-y en qué medida ese comportamiento se mantiene al pasar del caso estándar a la variante optimizada.
+Los experimentos con Grover representan el escenario más favorable para la
+estrategia sin pérdida propuesta. Como se explicó en la
+Sección~\ref{subsec:patrones_grover}, este algoritmo tiende a mantener una
+estructura de amplitudes altamente regular, lo que favorece la compresibilidad
+del vector de estado. A partir de esa base, esta sección analiza cómo dicha
+regularidad se refleja en las tres dimensiones evaluadas: consumo de memoria,
+tiempo de ejecución y exactitud numérica.
 
 \subsubsection{Objetivo único}
 
-Los resultados de la Tabla~\ref{tab:grover-single} muestran un patrón estable en los tres 
-tamaños evaluados: la estrategia sin pérdida basada en Blosc reduce de forma pronunciada 
-la memoria pico y lo hace con una sobrecarga temporal moderada en comparación con ZFP. 
-Más que un efecto aislado de un tamaño particular, lo que se observa es una tendencia 
-consistente a medida que crece el número de qubits: el ahorro de memoria de Blosc aumenta 
-con la escala del problema, mientras que su costo temporal relativo permanece en un rango 
-acotado cercano a cuatro o cinco veces la referencia. Esta combinación indica que, 
-en Grover con objetivo único, la compresión sin pérdida no solo preserva exactitud, 
-sino que mantiene una relación entre espacio y tiempo claramente más favorable que 
-la alternativa con pérdida.
-
-Otro aspecto relevante es que los promedios reportados sobre las posiciones $N/8$, $N/2$ y $7N/8$ 
-no muestran indicios de una sensibilidad fuerte a la ubicación del objetivo. Esto sugiere que, 
-al menos para las posiciones seleccionadas en el diseño experimental, el comportamiento 
-agregado de memoria y tiempo está dominado por la estructura global del algoritmo más que 
-por la elección puntual del índice marcado. Esa observación es importante para la lectura 
-de la tabla porque permite interpretar los resultados como una propiedad del caso de estudio 
-y no como un efecto ligado a una única instancia favorable.
-
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \small
-    \setlength{\tabcolsep}{3pt}
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_single_ram.png}
+    \par\smallskip
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_single_time.png}
     \caption{Grover con objetivo único: promedios sobre las posiciones $N/8$, $N/2$ y $7N/8$}
-    \label{tab:grover-single}
-    \resizebox{\linewidth}{!}{%
-    \begin{tabular}{lcccccc}
-        \hline
-        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
-        \hline
-        22 & Referencia & 71.6 & 0.0 & 7.66 & 1.00 & 0 \\
-        22 & Blosc & 15.9 & 77.8 & 37.16 & 4.85 & 0 \\
-        22 & ZFP & 45.5 & 36.4 & 289.30 & 37.78 & $1.61\times 10^{-14}$ \\
-        23 & Referencia & 135.5 & 0.0 & 24.82 & 1.00 & 0 \\
-        23 & Blosc & 16.2 & 88.1 & 104.85 & 4.22 & 0 \\
-        23 & ZFP & 78.2 & 42.3 & 801.01 & 32.27 & $1.11\times 10^{-14}$ \\
-        24 & Referencia & 263.7 & 0.0 & 65.40 & 1.00 & 0 \\
-        24 & Blosc & 17.1 & 93.5 & 279.33 & 4.27 & 0 \\
-        24 & ZFP & 143.1 & 45.7 & 2274.03 & 34.77 & $8.04\times 10^{-15}$ \\
-        \hline
-    \end{tabular}
-    }
-\end{table}
+    \label{fig:grover-single}
+\end{figure}
+
+La Figura~\ref{fig:grover-single} y la
+Tabla~\ref{tab:app:grover-single} muestran con claridad que Blosc reduce de
+forma importante el crecimiento de memoria observado en la referencia sin
+compresión. Mientras la referencia pasa de 20.3~MB a 516.7~MB entre 20 y 25
+qubits, Blosc se mantiene en un intervalo mucho más estrecho, entre 11.3~MB y
+14.1~MB. En términos de ahorro, esto equivale a una reducción que crece desde
+44.2\,\% hasta 97.3\,\%.
+
+Este comportamiento indica que, en Grover, la compresión no depende solamente
+del tamaño del vector, sino también de su estructura interna. Dado que durante
+la ejecución aparecen pocas clases efectivas de amplitud, los bloques contienen
+patrones repetitivos o muy similares que el códec puede aprovechar. Como
+resultado, el costo adicional de metadatos y buffers auxiliares queda compensado
+por la reducción lograda en el almacenamiento.
+
+En tiempo de ejecución, Blosc introduce una penalización respecto a la
+referencia en todos los tamaños evaluados. Esto era esperable, ya que la
+arquitectura comprimida debe descomprimir bloques, actualizarlos y volver a
+comprimirlos durante la simulación. Sin embargo, el crecimiento de esa
+sobrecarga no es proporcional al tamaño del problema. Por el contrario, el
+tiempo relativo disminuye de 12.00x en 20 qubits a 3.29x en 25 qubits. Esta
+tendencia sugiere que, a medida que aumenta la escala, el costo del códec se
+amortiza mejor frente al costo total de la simulación.
+
+ZFP también reduce memoria, pero su comportamiento resulta menos favorable en
+este caso. En 25 qubits consume 210.8~MB, muy por encima de los 14.1~MB de
+Blosc, y además requiere 5788.27~s frente a 684.88~s. Esto muestra que, para un
+algoritmo como Grover, la compresión con pérdida no aporta una ventaja
+adicional significativa. La regularidad del estado ya es suficiente para que una
+estrategia sin pérdida consiga un ahorro muy alto sin introducir error
+numérico.
 
 \subsubsection{Multiobjetivo}
 
-La Tabla~\ref{tab:grover-multi} muestra que el paso de un objetivo único a 
-tres estados marcados no altera de forma sustancial el patrón observado en Grover. 
-Blosc conserva prácticamente los mismos niveles de ahorro de memoria y tiempos 
-relativos muy próximos a los del caso anterior, mientras que ZFP mantiene una 
-reducción de memoria más modesta y una penalización temporal mucho mayor. 
-La continuidad de este comportamiento sugiere que, dentro del rango evaluado, 
-el aumento en el número de objetivos modifica la instancia del problema sin 
-cambiar el rasgo que resulta más relevante para la compresión: la presencia 
-de una estructura del estado suficientemente regular para que la representación 
-comprimida siga siendo ventajosa.
-
-En los dos casos, la propuesta sin pérdida desplaza el compromiso entre memoria 
-y tiempo hacia una zona intermedia: reduce de manera muy marcada la memoria 
-requerida respecto a la referencia, pero sin incurrir en la penalización extrema 
-que acompaña a ZFP. Esa estabilidad entre variantes fortalece la interpretación 
-de que el beneficio observado no depende exclusivamente de una configuración 
-particular del oráculo, sino de un comportamiento más general de Grover como 
-carga favorable para la compresión sin pérdida.
-
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \small
-    \setlength{\tabcolsep}{3pt}
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_multi_ram.png}
+    \par\smallskip
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_multi_time.png}
     \caption{Grover multiobjetivo con tres estados marcados}
-    \label{tab:grover-multi}
-    \resizebox{\linewidth}{!}{%
-    \begin{tabular}{lcccccc}
-        \hline
-        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} & \textbf{Error} \\
-        \hline
-        22 & Referencia & 71.7 & 0.0 & 7.50 & 1.00 & 0 \\
-        22 & Blosc & 15.9 & 77.8 & 36.43 & 4.86 & 0 \\
-        22 & ZFP & 45.4 & 36.7 & 285.99 & 38.13 & $1.61\times 10^{-14}$ \\
-        23 & Referencia & 135.6 & 0.0 & 24.98 & 1.00 & 0 \\
-        23 & Blosc & 16.2 & 88.1 & 104.11 & 4.17 & 0 \\
-        23 & ZFP & 78.2 & 42.3 & 827.17 & 33.12 & $1.11\times 10^{-14}$ \\
-        24 & Referencia & 263.6 & 0.0 & 65.62 & 1.00 & 0 \\
-        24 & Blosc & 17.1 & 93.4 & 278.25 & 4.24 & 0 \\
-        24 & ZFP & 143.1 & 45.7 & 2278.80 & 34.73 & $8.04\times 10^{-15}$ \\
-        \hline
-    \end{tabular}
-    }
-\end{table}
+    \label{fig:grover-multi}
+\end{figure}
+
+El caso multiobjetivo presenta el mismo comportamiento general, como se observa
+en la Figura~\ref{fig:grover-multi} y en la
+Tabla~\ref{tab:app:grover-multi}. Aunque el oráculo cambia al marcar tres
+estados en lugar de uno, la estructura global del algoritmo sigue siendo lo
+suficientemente regular como para conservar una alta compresibilidad. Por esa
+razón, Blosc vuelve a mantener el consumo de memoria en un intervalo muy
+reducido, entre 11.4~MB y 14.3~MB, mientras la referencia crece hasta
+516.8~MB.
+
+La comparación entre objetivo único y multiobjetivo permite ver que el ahorro de
+memoria no depende de una posición específica del estado marcado. En ambos
+casos, el comportamiento promedio es muy similar y los ahorros superan el
+90\,\% a partir de 23 qubits. Además, Blosc mantiene error absoluto máximo nulo,
+lo que confirma que la reducción de memoria no altera el resultado de la
+simulación.
+
+La diferencia más visible entre ambas variantes aparece en el tiempo de
+ejecución. En los tamaños mayores, el caso multiobjetivo resulta menos costoso
+que el de objetivo único tanto para la referencia como para las estrategias
+comprimidas. Dado que el patrón de memoria se mantiene prácticamente igual, esta
+diferencia parece estar asociada al trabajo concreto de la instancia evaluada y
+no a un cambio sustancial en la compresibilidad del estado.
+
+ZFP repite aquí la misma tendencia observada en el caso anterior. Aunque reduce
+memoria frente a la referencia, queda por detrás de Blosc tanto en ahorro como
+en tiempo. En 25 qubits, por ejemplo, ZFP alcanza 59.1\,\% de ahorro y un
+tiempo relativo de 31.15x, mientras Blosc alcanza 97.2\,\% y 3.61x. En
+conjunto, estos resultados refuerzan que, para Grover, la estrategia sin pérdida
+es suficiente para capturar la estructura disponible de manera más eficiente.
 
 \subsubsection{Comparación complementaria con la variante optimizada}
 
-Las Tablas~\ref{tab:grover-opt-single} y~\ref{tab:grover-opt-multi} muestran 
-un resultado especialmente relevante para la proyección de este trabajo: 
-cuando la ejecución de Grover se reorganiza de forma que disminuye la necesidad 
-de materializar y actualizar repetidamente bloques del vector de estado, 
-la compresión sin pérdida conserva casi el mismo beneficio espacial observado 
-en la variante general, pero con una penalización temporal mucho más contenida. 
-En particular, Blosc mantiene ahorros de memoria entre 87.0\,\% y 96.6\,\%, 
-mientras que su tiempo relativo frente a la referencia cae a un intervalo 
-aproximado entre 1.40x y 2.11x. Esta diferencia es significativa si se compara 
-con la versión no optimizada, donde la sobrecarga temporal se ubicaba alrededor 
-de cuatro veces la referencia.
-
-Este comportamiento sugiere que, en el caso de Grover, una parte importante 
-del costo temporal no proviene de la compresión en sí misma, sino del patrón 
-de acceso al almacenamiento comprimido. Cuando la ejecución obliga a recuperar, 
-descomprimir, modificar y recomprimir bloques con alta frecuencia, la ventaja 
-espacial se obtiene a costa de una sobrecarga más marcada. En cambio, al reducir 
-el número de accesos y evitar ciclos repetidos de compresión y descompresión 
-sobre chunks que no necesitan ser materializados continuamente, la relación 
-entre memoria y tiempo mejora de forma clara. En otras palabras, la variante 
-optimizada pone en evidencia que el verdadero cuello de botella no está únicamente 
-en la tasa de compresión alcanzada, sino en la cantidad de transferencias y 
-transformaciones que deben realizarse sobre los bloques durante la simulación. 
-Esta interpretación es consistente con la arquitectura propuesta, en la que la 
-sobrecarga efectiva depende del número de bloques activados, de la localidad 
-del acceso y de la posibilidad de reutilizar buffers descomprimidos mediante caché. 
-
-Otro aspecto importante es que esta mejora se mantiene tanto en el caso de objetivo 
-único como en el multiobjetivo. La cercanía entre los resultados de ambas tablas indica 
-que la optimización no depende de una instancia particular del oráculo, sino de 
-una propiedad más general: la posibilidad de explotar una representación más compacta 
-del estado y un flujo de ejecución que disminuya las operaciones sobre memoria comprimida. 
-Esto refuerza la idea de que, para algoritmos con estructura regular como Grover, 
-la combinación de compresión sin pérdida y reducción del tráfico de memoria puede 
-convertirse en una estrategia especialmente efectiva para ampliar la escala práctica 
-de simulación.
-
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \small
-    \setlength{\tabcolsep}{3pt}
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_lazy_single_ram.png}
+    \par\smallskip
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_lazy_single_time.png}
     \caption{Variante optimizada de Grover con objetivo único}
-    \label{tab:grover-opt-single}
-    \resizebox{\linewidth}{!}{%
-    \begin{tabular}{lccccc}
-        \hline
-        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} \\
-        \hline
-        22 & Referencia & 135.6 & 0.0 & 0.72 & 1.00 \\
-        22 & Blosc & 17.6 & 87.0 & 1.01 & 1.40 \\
-        22 & ZFP & 39.9 & 70.6 & 1.34 & 1.85 \\
-        23 & Referencia & 263.6 & 0.0 & 0.91 & 1.00 \\
-        23 & Blosc & 17.6 & 93.3 & 1.46 & 1.60 \\
-        23 & ZFP & 65.0 & 75.4 & 2.10 & 2.31 \\
-        24 & Referencia & 519.6 & 0.0 & 1.12 & 1.00 \\
-        24 & Blosc & 18.2 & 96.5 & 2.36 & 2.11 \\
-        24 & ZFP & 114.1 & 78.0 & 3.53 & 3.16 \\
-        \hline
-    \end{tabular}
-    }
-\end{table}
+    \label{fig:grover-opt-single}
+\end{figure}
 
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \small
-    \setlength{\tabcolsep}{3pt}
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_lazy_multi_ram.png}
+    \par\smallskip
+    \includegraphics[width=0.78\linewidth]{images/tmfqs_grover_lazy_multi_time.png}
     \caption{Variante optimizada de Grover multiobjetivo}
-    \label{tab:grover-opt-multi}
-    \resizebox{\linewidth}{!}{%
-    \begin{tabular}{lccccc}
-        \hline
-        \textbf{Qubits} & \textbf{Estrategia} & \textbf{Mem. pico (MB)} & \textbf{Ahorro mem. (\%)} & \textbf{Tiempo (s)} & \textbf{Tiempo rel. (x)} \\
-        \hline
-        22 & Referencia & 135.6 & 0.0 & 0.67 & 1.00 \\
-        22 & Blosc & 16.9 & 87.6 & 1.01 & 1.52 \\
-        22 & ZFP & 39.9 & 70.6 & 1.27 & 1.91 \\
-        23 & Referencia & 263.7 & 0.0 & 0.81 & 1.00 \\
-        23 & Blosc & 17.2 & 93.5 & 1.42 & 1.74 \\
-        23 & ZFP & 65.0 & 75.3 & 2.04 & 2.51 \\
-        24 & Referencia & 519.7 & 0.0 & 1.14 & 1.00 \\
-        24 & Blosc & 17.7 & 96.6 & 2.38 & 2.10 \\
-        24 & ZFP & 114.1 & 78.0 & 3.50 & 3.08 \\
-        \hline
-    \end{tabular}
-    }
-\end{table}
+    \label{fig:grover-opt-multi}
+\end{figure}
+
+Las Figuras~\ref{fig:grover-opt-single} y~\ref{fig:grover-opt-multi}, junto con
+las Tablas~\ref{tab:app:grover-opt-single} y~\ref{tab:app:grover-opt-multi},
+permiten distinguir dos tipos de mejora que conviene no confundir. Por un lado,
+está la reducción de memoria obtenida al comprimir el vector de estado explícito.
+Por otro, está la optimización específica de Grover descrita en la
+Sección~\ref{subsec:grover_reducido_impl}, que reformula la simulación de este
+algoritmo para reducir el trabajo necesario durante la ejecución.
+
+La variante optimizada disminuye de forma drástica el tiempo de la referencia.
+En 25 qubits, la ejecución pasa de cientos de segundos en Grover estándar a
+1.00~s en ambas configuraciones optimizadas. Esto muestra que la mejora temporal
+más grande no proviene de la compresión, sino del aprovechamiento de una
+propiedad particular del algoritmo. Sin embargo, esa optimización no elimina por
+sí sola el crecimiento de memoria asociado a mantener una representación densa
+del estado. De hecho, la referencia optimizada todavía alcanza aproximadamente
+1029~MB en 25 qubits.
+
+En este contexto, Blosc conserva su aporte principal: reducir la huella de
+memoria sin alterar la exactitud. El consumo se mantiene entre 11.3~MB y
+13.8~MB, con un ahorro de hasta 98.7\,\% en 25 qubits. La penalización temporal
+existe, pero en términos absolutos sigue siendo baja. La razón relativa, en
+cambio, fluctúa más porque la referencia optimizada es extremadamente rápida.
+Cuando el tiempo base se reduce tanto, cualquier costo fijo de compresión o de
+gestión de bloques tiene un peso mayor en la comparación relativa, aunque el
+tiempo total siga siendo pequeño.
+
+En consecuencia, esta comparación complementaria muestra que ambas estrategias
+resuelven problemas distintos. La compresión sin pérdida mejora la gestión de
+memoria del simulador, mientras que la variante reducida disminuye el trabajo
+específico de Grover. Su combinación resulta especialmente favorable para este
+algoritmo, pero no debe interpretarse como una propiedad general de cualquier
+circuito cuántico, sino como una ventaja asociada a una estructura particular de
+esta carga de trabajo.

@@ -2,11 +2,11 @@
 
 \subsubsection{Estrategias comparadas}
 
-El experimento se organizó alrededor de tres estrategias de representación del vector de estado: una referencia sin compresión, la propuesta sin pérdida basada en Blosc y una alternativa con pérdida controlada basada en ZFP. Las tres se ejecutaron sobre los mismos circuitos, con iguales tamaños de qubits y bajo un procedimiento homogéneo de medición, de modo que las diferencias observadas pudieran atribuirse al esquema de almacenamiento y no a cambios en la carga o en la instrumentación.
+El experimento se organizó alrededor de tres estrategias de representación del vector de estado: una referencia sin compresión, la propuesta sin pérdida basada en Blosc y una alternativa con pérdida controlada basada en ZFP. Las tres se ejecutaron sobre los mismos circuitos, con iguales tamaños de qubits y bajo un procedimiento homogéneo de medición, de modo que las diferencias observadas pudieran atribuirse al esquema de almacenamiento y no a cambios en la carga, en la instrumentación o en el entorno de ejecución.
 
 \subsubsection{Selección de cargas de trabajo}
 
-La evaluación se estructuró sobre dos familias de circuitos con comportamientos contrastantes en términos de compresibilidad: el algoritmo de búsqueda de Grover y la transformada cuántica de Fourier (QFT). Esta selección permitió evitar una evaluación sesgada hacia un único tipo de estado cuántico: Grover representa escenarios donde pueden emerger regularidades aprovechables por la compresión, mientras que QFT permite examinar casos en los que esa estructura se reduce o desaparece. Así, el diseño no solo cubre condiciones favorables para la propuesta, sino también situaciones menos propicias, necesarias para valorar su alcance real.
+La evaluación se estructuró sobre dos familias de circuitos con comportamientos contrastantes en términos de compresibilidad: el algoritmo de búsqueda de Grover y la transformada cuántica de Fourier (QFT). Esta selección evitó sesgar la evaluación hacia un único tipo de estado cuántico. Grover representa escenarios en los que pueden mantenerse regularidades aprovechables por la compresión, mientras que QFT permite examinar casos en los que esa estructura se reduce o desaparece. El diseño, por tanto, cubre tanto condiciones favorables para la propuesta como situaciones menos propicias, necesarias para delimitar su alcance real.
 
 \paragraph{Casos evaluados para Grover}
 
@@ -18,7 +18,7 @@ En QFT se consideraron dos familias de entrada. La primera fue una superposició
 
 \subsubsection{Escala del experimento}
 
-La evaluación se realizó para 22, 23 y 24 qubits. Este rango permitió trabajar con instancias suficientemente grandes para que la memoria se convirtiera en una restricción relevante dentro de la capacidad disponible del entorno experimental, sin perder reproducibilidad ni comprometer la comparabilidad entre estrategias. Elegir varios tamaños dentro de ese intervalo también permitió observar cómo evolucionaban los efectos de la compresión a medida que crecía el vector de estado.
+La evaluación se ejecutó para tamaños entre 20 y 25 qubits. Este rango permitió trabajar con instancias suficientemente grandes para que la memoria se convirtiera en una restricción relevante dentro de la capacidad disponible del entorno experimental, sin perder reproducibilidad ni comprometer la comparabilidad entre estrategias. Elegir varios tamaños dentro de ese intervalo también permitió observar cómo evolucionaban los efectos de la compresión a medida que crecía el vector de estado.
 
 \subsubsection{Entorno experimental e instrumentación}
 
@@ -26,7 +26,7 @@ Todas las ejecuciones se realizaron en una plataforma experimental con Rocky Lin
 
 \subsubsection{Configuración de compresión}
 
-Las estrategias comprimidas se evaluaron con configuraciones fijas durante toda la evaluación, resumidas en la Tabla~\ref{tab:exp-configs}. Esta decisión se adoptó después de una fase preliminar de ajuste, separada de la evaluación principal, en la que se exploraron valores de granularidad de bloque, tamaño de caché y parámetros de compresión sobre ejecuciones representativas. El criterio de selección fue privilegiar configuraciones que mantuvieran ahorro de memoria positivo cuando existía estructura compresible y que, simultáneamente, evitaran una sobrecarga temporal excesiva frente a la referencia. Una vez fijadas, las configuraciones se conservaron sin cambios para impedir que la comparación quedara condicionada por un reajuste particular en cada caso.
+Las estrategias comprimidas se evaluaron con configuraciones fijas durante toda la campaña experimental, resumidas en la Tabla~\ref{tab:exp-configs}. Esta decisión se adoptó después de una fase preliminar de ajuste, separada de la evaluación principal, en la que se exploraron valores de granularidad de bloque, tamaño de caché y parámetros de compresión sobre ejecuciones representativas. El criterio de selección fue privilegiar configuraciones que mantuvieran ahorro de memoria positivo cuando existía estructura compresible y que, simultáneamente, evitaran una sobrecarga temporal excesiva frente a la referencia. Una vez fijadas, las configuraciones se conservaron sin cambios para impedir que la comparación quedara condicionada por un reajuste particular en cada caso.
 
 En particular, los valores $\texttt{chunkStates}=32768$ y $\texttt{gateCacheSlots}=8$ se eligieron porque ofrecieron una granularidad suficiente para amortiguar el costo del códec sin forzar materializaciones demasiado grandes, y porque permitieron retener en memoria de trabajo los bloques más reutilizados durante la aplicación de compuertas. En Blosc, $\texttt{clevel}=1$ y $\texttt{useShuffle}=\texttt{true}$ se fijaron por representar una configuración conservadora, favorable al tiempo de ejecución y coherente con arreglos homogéneos de dobles intercalados. En ZFP, el modo \texttt{FixedPrecision} con \texttt{precision}=40 se mantuvo como punto de comparación con pérdida controlada, priorizando una discrepancia numérica pequeña sin eliminar por completo el potencial de reducción de memoria.
 
@@ -47,7 +47,7 @@ En particular, los valores $\texttt{chunkStates}=32768$ y $\texttt{gateCacheSlot
 
 \subsubsection{Métricas de evaluación}
 
-Las métricas principales del estudio fueron el tiempo total de ejecución y la memoria  máxima. Ambas se obtuvieron a partir de las trazas generadas por \texttt{psrecord}: el tiempo corresponde al último valor registrado en la columna \textit{Elapsed time}, mientras que la memoria máxima corresponde al mayor valor de la columna \textit{Real (MB)}. A partir de estas medidas se calcularon dos indicadores de lectura directa:
+Las métricas principales del estudio fueron el tiempo total de ejecución y la memoria máxima. Ambas se obtuvieron a partir de las trazas generadas por \texttt{psrecord}: el tiempo corresponde al último valor registrado en la columna \textit{Elapsed time}, mientras que la memoria máxima corresponde al mayor valor de la columna \textit{Real (MB)}. A partir de estas medidas se calcularon dos indicadores de lectura directa:
 
 \[
 \text{Ahorro de memoria (\%)} = 100\left(1-\frac{M_{\text{comp}}}{M_{\text{ref}}}\right),
@@ -61,6 +61,10 @@ En estas expresiones, $M_{\text{ref}}$ y $T_{\text{ref}}$ corresponden a la ejec
 
 La exactitud numérica se evaluó según la naturaleza de cada estrategia. En Blosc, al tratarse de una compresión sin pérdida, la validación consistió en exportar el vector completo de amplitudes de cada ejecución comprimida y compararlo amplitud por amplitud con la ejecución no comprimida de la misma instancia, con el fin de verificar igualdad exacta respecto a la referencia. En ZFP, esa misma comparación completa se empleó para medir el máximo error absoluto, ya que en este caso el interés no era demostrar igualdad exacta, sino cuantificar la desviación introducida por la compresión con pérdida.
 
+\subsubsection{Criterio de lectura de las figuras}
+
+En todas las figuras, las líneas continuas representan resultados medidos hasta 25 qubits. A partir de ese punto, las líneas punteadas muestran proyecciones de tendencia hasta 28 qubits y las bandas sombreadas representan la incertidumbre asociada a esa estimación. Los fundamentos teóricos y los criterios estadísticos empleados para obtener estas predicciones se describen en el Apéndice~\ref{ap:proyeccion_graficas}. Estas proyecciones se utilizan únicamente como apoyo interpretativo para discutir la dirección esperada de las curvas si se ampliara el tamaño del problema dentro del mismo régimen experimental; por tanto, no sustituyen la evidencia medida ni se emplean como base de las conclusiones principales.
+
 \subsubsection{Comparación complementaria para Grover}
 
-Además de la comparación principal entre almacenamiento no comprimido, Blosc y ZFP, en Grover se incorporó una evaluación complementaria con la variante de parametrización reducida descrita en la Sección~\ref{subsec:grover_reducido_impl}. Esta comparación adicional permitió distinguir entre el beneficio derivado de comprimir el vector de estado y el que proviene de explotar directamente la estructura algebraica del algoritmo, por lo que en esa subsección complementaria la interpretación se concentra principalmente en memoria y tiempo de ejecución.
+Además de la comparación principal entre almacenamiento no comprimido, Blosc y ZFP, en Grover se incorporó una evaluación complementaria con la variante de parametrización reducida descrita en la Sección~\ref{subsec:grover_reducido_impl}. Esta comparación adicional permitió distinguir entre el beneficio derivado de comprimir el vector de estado denso y el beneficio asociado a una reformulación específica del algoritmo que reduce el volumen efectivo de datos manipulados. En esta subsección complementaria, la discusión se concentra en memoria y tiempo de ejecución, pues la exactitud ya queda determinada por la naturaleza exacta de la variante implementada y por la verificación de referencia efectuada en los experimentos de grover estándar.

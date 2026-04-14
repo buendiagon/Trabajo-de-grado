@@ -1,26 +1,38 @@
-\subsection{Conclusiones}
-El trabajo logró diseñar e implementar una estrategia de almacenamiento comprimido
-sin pérdida para simuladores cuánticos tipo Schr\"odinger dentro de TMFQSfullstate,
-basada en particionamiento por bloques, descompresión selectiva, caché LRU y
-persistencia diferida sobre Blosc2. La propuesta mantuvo el formalismo de vector de
-estado explícito, preservó igualdad exacta frente a la referencia no comprimida y mostró
-que la compresión puede integrarse como parte nativa de la gestión de memoria del
-simulador, y no solo como un mecanismo externo de archivo o posprocesamiento.
+\section{Conclusiones}
 
-La evidencia experimental confirmó que esa integración produce beneficios concretos en
-escenarios favorables. En Grover, Blosc alcanzó ahorros de memoria entre 77.8~\% y
-93.5~\% con tiempos relativos entre 4.17x y 4.86x en la comparación principal, y entre
-87.0~\% y 96.6~\% con tiempos entre 1.40x y 2.11x en la variante optimizada. En QFT
-con superposición periódica mantuvo un comportamiento intermedio, con ahorros entre
-51.4~\% y 75.3~\% y tiempos entre 2.54x y 3.48x. En todos esos casos la igualdad exacta
-respecto a la referencia se conservó amplitud por amplitud, mientras que la alternativa
-con pérdida basada en ZFP introdujo error no nulo y, en general, mayores penalizaciones
-temporales.
+Los resultados obtenidos a lo largo de este trabajo muestran que la compresión
+sin pérdida puede incorporarse de manera viable a la gestión de memoria de un
+simulador cuántico tipo Schrödinger sin alterar la exactitud numérica de la
+simulación. La estrategia implementada sobre TMFQSfullstate, basada en
+almacenamiento por bloques, descompresión selectiva y reutilización temporal
+mediante caché, permitió reducir la huella de memoria manteniendo coincidencia
+exacta con la referencia no comprimida en todos los casos evaluados. En ese
+sentido, el estudio confirma que es posible intervenir la forma de almacenar el
+vector de estado sin modificar el modelo de simulación ni introducir
+aproximaciones sobre las amplitudes.
 
-El principal límite del trabajo también quedó delimitado con claridad. Cuando el estado
-presentó alta entropía, la compresión dejó de ser conveniente: con QFT de fases
-aleatorias, Blosc registró ahorros negativos entre -12.1~\% y -49.0~\% y tiempos entre
-10.24x y 12.52x, mientras que ZFP tampoco mostró ventaja práctica. Por ello, la
-propuesta no debe leerse como una solución universal para toda simulación exacta, sino
-como una estrategia útil cuando la memoria es la restricción dominante y el estado
-conserva regularidades explotables por el almacenamiento por bloques.
+La evaluación experimental también permite precisar en qué condiciones esa
+integración resulta realmente favorable. En los circuitos de Grover, donde el
+estado conserva una estructura altamente regular, la compresión sin pérdida
+alcanzó sus mejores resultados y mostró una relación especialmente conveniente
+entre ahorro de memoria y costo temporal. En QFT, el comportamiento fue más
+dependiente de la naturaleza del estado de entrada: las superposiciones con
+patrones periódicos todavía ofrecieron oportunidades de compresión, mientras que
+los estados de alta entropía redujeron de forma marcada la efectividad del
+enfoque. Esta diferencia confirma que la utilidad práctica de la estrategia no
+está determinada solo por la escala del vector, sino por la forma en que la
+estructura del estado se traduce en redundancia aprovechable para el
+almacenamiento.
+
+A partir de ello, la principal conclusión del trabajo no es que la compresión
+sin pérdida constituya una solución general para cualquier simulación cuántica de
+estado completo, sino que representa una alternativa técnicamente sólida cuando
+la memoria es la restricción dominante y la carga de trabajo conserva
+regularidades suficientes para ser explotadas. Bajo esas condiciones, la
+propuesta amplía la capacidad práctica de simulación exacta sin renunciar al
+formalismo de estado completo. Al mismo tiempo, los resultados dejan claro que
+ese beneficio no puede asumirse de manera uniforme y que, en escenarios más
+irregulares o de alta entropía, no se observa una ventaja consistente frente a
+la ejecución convencional. Así, el valor de la estrategia queda delimitado con
+mayor precisión: no reside en prometer mejoras universales, sino en ofrecer una
+opción exacta y útil para un conjunto bien definido de regímenes de simulación.
