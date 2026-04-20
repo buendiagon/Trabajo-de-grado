@@ -150,6 +150,26 @@
 \renewcommand{\appendixtocname}{Lista de apéndices}
 \renewcommand{\appendixpagename}{}
 
+% Anexos setup
+\newcounter{anexo}
+\renewcommand{\theanexo}{\Alph{anexo}}
+
+\newcommand{\anexosection}[1]{%
+  \clearpage
+  \refstepcounter{anexo}%
+  \phantomsection
+  \section*{Anexo \theanexo\hspace{1em}#1}%
+  \addcontentsline{toc}{section}{Anexo \theanexo: #1}%
+  \addcontentsline{anx}{section}{Anexo \theanexo: #1}%
+}
+
+\makeatletter
+\newcommand{\listofanexos}{%
+  \section*{Lista de anexos}%
+  \@starttoc{anx}%
+}
+\makeatother
+
 \makeatletter
 \let\oldappendix\appendices
 
