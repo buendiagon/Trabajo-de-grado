@@ -168,7 +168,7 @@
 \renewcommand{\theanexo}{\Alph{anexo}}
 
 \newcommand{\anexosection}[1]{%
-  \clearpage
+  \ifnum\value{anexo}>0\relax\clearpage\fi
   \refstepcounter{anexo}%
   \phantomsection
   \section*{Anexo \theanexo\hspace{1em}#1}%
