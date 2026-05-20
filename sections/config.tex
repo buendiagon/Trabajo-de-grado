@@ -1,8 +1,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
 \usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{amssymb,amsfonts}
+\usepackage{amsfonts}
 \usepackage{physics}
 \usepackage[inkscapeversion=1.0]{svg}
 \usepackage{multirow}
@@ -96,6 +98,9 @@
 \newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
 
 \usepackage[center]{caption}
+\DeclareCaptionLabelFormat{colon}{#1~#2:}
+\captionsetup[figure]{position=top,labelformat=colon,labelsep=newline}
+\captionsetup[table]{position=top,labelformat=colon,labelsep=newline}
 
 \usepackage{longtable}
 
@@ -109,16 +114,16 @@
   \newunicodechar{✗}{\ding{55}}
 
 \usepackage{fancyhdr}
+\newcommand*{\cornisaText}{SIMULACIÓN CUÁNTICA}
+\newcommand*{\cornisa}[1]{\renewcommand*{\cornisaText}{#1}}
 \fancypagestyle{plain}{
     \lhead{}
     \fancyhead[R]{\thepage}
-    \fancyhead[L]{SIMULACIÓN CUÁNTICA}
+  \fancyhead[L]{\cornisaText}
     \renewcommand{\headrulewidth}{0pt}
     \fancyfoot{}
 }
 
-\usepackage{cite}
-    
 \pagestyle{plain}
 \newlength\FHoffset
 
@@ -126,14 +131,22 @@
 
 \usepackage{float}
 
-\usepackage{apacite}
-\newcommand{\textcite}[1]{\citeA{#1}}
+\usepackage[
+  style=apa,
+  backend=biber,
+  language=spanish,
+  sortcites=true
+]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{bibliography.bib}
 
 \usepackage{url}
 \usepackage[spanish]{babel}
 
 \usepackage{setspace}
 \doublespacing
+\setlength{\parindent}{0.5in}
+\setlength{\parskip}{0pt}
 
 \usepackage{geometry}
 \geometry {
@@ -227,7 +240,7 @@
 \usepackage{titlesec}
 \titleformat{\section}{\centering\normalfont\normalsize\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\raggedright\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}{\raggedright\normalfont\small\bfseries\slshape}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}[hang]{\raggedright\small}{\bfseries\itshape\thesubsubsection}{1em}{\bfseries\itshape}
 
 \newcommand{\fakesection}[1]{%
   \par\refstepcounter{section}
