@@ -13,11 +13,11 @@ En una compuerta \textit{intra-bloque}, ambos estados del par afectado residen e
 fragmento. El backend adquiere un único slot de caché, obtiene dos punteros al mismo
 buffer descomprimido y aplica allí la transformación. Este es el caso más favorable,
 porque una sola descompresión permite resolver múltiples pares consecutivos y solo se
-marca un bloque como sucio. En una compuerta \textit{inter-bloque}, los dos estados del par
+marca un bloque como sucio, como se ilustra en la Figura~\ref{fig:development-workflow-a}. En una compuerta \textit{inter-bloque}, los dos estados del par
 están alineados pero viven en bloques distintos. Entonces el backend adquiere dos slots de
 caché, uno por bloque, y coordina la actualización cruzada de ambos buffers. Si la
 capacidad de caché es suficiente, la operación evita recorrer el vector completo y mantiene
-dos bloques activos mientras procesa todos los pares equivalentes. Cuando ninguna de esas
+dos bloques activos mientras procesa todos los pares equivalentes, según el flujo representado en la Figura~\ref{fig:development-workflow-b}. Cuando ninguna de esas
 condiciones geométricas se cumple, la ruta \textit{fallback} resuelve estado por estado,
 reutilizando \texttt{acquireAmplitudeRef} para recuperar y actualizar cada amplitud.
 
@@ -27,7 +27,7 @@ inmediatamente solo en dos situaciones: cuando un slot sucio debe expulsarse por
 cuando finaliza el lote externo y \texttt{endOperationBatch} provoca un \texttt{flushCache}
 completo. Si no ocurre ninguna de esas situaciones, la escritura se difiere y el bloque
 permanece materializado para futuras compuertas, lo que amortiza el costo del códec
-cuando hay localidad temporal.
+cuando hay localidad temporal. La Figura~\ref{fig:development-workflow-c} esquematiza este flujo de escritura diferida.
 
 Para compuertas frecuentes, el backend además incorpora rutas especializadas. Antes de
 usar la ruta genérica, \texttt{applyGate} detecta matrices equivalentes a Hadamard,

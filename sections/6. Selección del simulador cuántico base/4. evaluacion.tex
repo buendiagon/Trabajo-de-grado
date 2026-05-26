@@ -37,7 +37,7 @@ Los valores consignados en la tabla responden a la forma en que cada alternativa
 articula flexibilidad arquitectónica y contexto de ejecución. QuEST e Intel-QS
 obtuvieron la máxima valoración en proyección de escalabilidad debido a su orientación
 explícita hacia ejecución multinúcleo, distribuida y, en el caso de QuEST, acelerada
-por GPU \cite{Jones2019, quest_repo, intelqs_doc}. Sin embargo, tanto la
+por GPU \parencite{Jones2019, quest_repo, intelqs_doc}. Sin embargo, tanto la
 documentación como la revisión del código muestran una arquitectura más orientada a
 desempeño sobre infraestructuras HPC que a modificación experimental del backend de
 memoria, lo que reduce su valoración en los dos primeros criterios.
@@ -45,14 +45,14 @@ memoria, lo que reduce su valoración en los dos primeros criterios.
 En qsim, la separación entre componentes de simulación y manejo del \emph{state
 vector}, visible tanto en su documentación como en la organización del código, ofrece
 una base más modular para intervenir el almacenamiento con cambios controlados
-\cite{qsim_repo, qsim_cirq}. Por ello, recibió valores altos en intervenibilidad y
+\parencite{qsim_repo, qsim_cirq}. Por ello, recibió valores altos en intervenibilidad y
 desacoplamiento, además de una valoración también alta en escalabilidad por sus
 variantes orientadas a ejecución eficiente.
 
 Quantum++ obtuvo una valoración alta en los dos primeros criterios por su diseño como
 biblioteca general en C++ de estructura ligera, distribuida como librería
 \emph{header-only}, lo que favorece la inspección, modificación y extensión del código
-\cite{qpp_paper}. No obstante, su proyección de escalabilidad resulta menor que la de
+\parencite{qpp_paper}. No obstante, su proyección de escalabilidad resulta menor que la de
 herramientas concebidas desde el inicio para contextos HPC o ejecución distribuida,
 razón por la cual su valoración en el tercer criterio fue inferior.
 
@@ -61,7 +61,7 @@ desacoplamiento entre lógica de simulación y backend de memoria. Tanto la lite
 como la revisión directa del código muestran una base de implementación más
 directa, con una organización favorable para sustituir la representación del estado y
 mantener control sobre la lógica de operación del simulador
-\cite{diaz2024software, diaz_mdpi_mmss, tmfqs_repo}. Aunque su contexto de
+\parencite{diaz2024software, diaz_mdpi_mmss, tmfqs_repo}. Aunque su contexto de
 escalabilidad es más limitado que el de QuEST o Intel-QS, conserva una proyección
 suficiente para desarrollos posteriores y, sobre todo, ofrece la mejor adecuación
 metodológica para integrar la estrategia de compresión propuesta.

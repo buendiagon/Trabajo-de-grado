@@ -1,8 +1,11 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage[final]{microtype}
 \usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{amssymb,amsfonts}
+\usepackage{amsfonts}
 \usepackage{physics}
 \usepackage[inkscapeversion=1.0]{svg}
 \usepackage{multirow}
@@ -96,6 +99,9 @@
 \newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
 
 \usepackage[center]{caption}
+\DeclareCaptionLabelFormat{apa}{#1~#2}
+\captionsetup[figure]{position=top,labelformat=apa,labelsep=newline}
+\captionsetup[table]{position=top,labelformat=apa,labelsep=newline}
 
 \usepackage{longtable}
 
@@ -109,16 +115,16 @@
   \newunicodechar{✗}{\ding{55}}
 
 \usepackage{fancyhdr}
+\newcommand*{\cornisaText}{SIMULACIÓN CUÁNTICA}
+\newcommand*{\cornisa}[1]{\renewcommand*{\cornisaText}{#1}}
 \fancypagestyle{plain}{
     \lhead{}
     \fancyhead[R]{\thepage}
-    \fancyhead[L]{SIMULACIÓN CUÁNTICA}
+  \fancyhead[L]{\cornisaText}
     \renewcommand{\headrulewidth}{0pt}
     \fancyfoot{}
 }
 
-\usepackage{cite}
-    
 \pagestyle{plain}
 \newlength\FHoffset
 
@@ -126,14 +132,24 @@
 
 \usepackage{float}
 
-\usepackage{apacite}
-\newcommand{\textcite}[1]{\citeA{#1}}
+\usepackage{csquotes}
+\usepackage[
+  style=apa,
+  backend=biber,
+  language=spanish,
+  sortcites=true
+]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{bibliography.bib}
+\setlength{\bibhang}{\parindent}
 
 \usepackage{url}
 \usepackage[spanish]{babel}
 
 \usepackage{setspace}
 \doublespacing
+\setlength{\parindent}{0.5in}
+\setlength{\parskip}{0pt}
 
 \usepackage{geometry}
 \geometry {
@@ -155,7 +171,7 @@
 \renewcommand{\theanexo}{\Alph{anexo}}
 
 \newcommand{\anexosection}[1]{%
-  \clearpage
+  \ifnum\value{anexo}>0\relax\clearpage\fi
   \refstepcounter{anexo}%
   \phantomsection
   \section*{Anexo \theanexo\hspace{1em}#1}%
@@ -173,7 +189,7 @@
 \makeatletter
 \let\oldappendix\appendices
 
-\captionsetup{justification=raggedright, singlelinecheck=false, labelfont={it,bf}}
+\captionsetup{justification=raggedright, singlelinecheck=false, labelfont=bf, textfont=it}
 
 \g@addto@macro\tableofcontents{%
   \let\tf@toc@orig\tf@toc
@@ -227,7 +243,15 @@
 \usepackage{titlesec}
 \titleformat{\section}{\centering\normalfont\normalsize\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\raggedright\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}{\raggedright\normalfont\small\bfseries\slshape}{\thesubsubsection}{1em}{}
+\titleformat{\subsubsection}[hang]{\raggedright\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries\itshape}{\theparagraph}{0pt}{}[.]
+\titleformat{\subparagraph}[runin]{\normalfont\normalsize\itshape}{\thesubparagraph}{0pt}{}[.]
+
+\titlespacing*{\section}{0pt}{2\baselineskip}{2\baselineskip}
+\titlespacing*{\subsection}{0pt}{\baselineskip}{0pt}
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0pt}
+\titlespacing*{\paragraph}{\parindent}{\baselineskip}{0.5em}
+\titlespacing*{\subparagraph}{\parindent}{\baselineskip}{0.5em}
 
 \newcommand{\fakesection}[1]{%
   \par\refstepcounter{section}
