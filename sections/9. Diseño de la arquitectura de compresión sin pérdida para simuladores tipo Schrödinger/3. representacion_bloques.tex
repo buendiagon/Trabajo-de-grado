@@ -14,7 +14,7 @@ simulación.
 La representación por bloques también favorece una integración más limpia con el simulador. En lugar de alterar la semántica de las operaciones
 cuánticas, la arquitectura interpone una capa de almacenamiento que resuelve qué bloque contiene cada amplitud, cómo se recupera temporalmente y
 cuándo debe volver a forma comprimida. Esto conserva el modelo de ejecución del simulador, pero reemplaza la idea de un vector siempre residente
-en memoria densa por un backend capaz de administrar bloques en distintos estados de materialización.
+en memoria densa por un backend capaz de administrar bloques en distintos estados de materialización. La Figura~\ref{fig:simulation-design-blocks} muestra un ejemplo de esta partición abstracta.
 
 \begin{figure}[H]
     \centering

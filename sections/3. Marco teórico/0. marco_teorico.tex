@@ -4,7 +4,7 @@
 
 \subsubsection{Qubits, espacio de estados y superposición}
 
-La unidad básica de información en computación cuántica es el qubit. A diferencia del bit clásico, cuyo valor solo puede ser 0 o 1, un qubit se describe mediante un vector de estado en un espacio de Hilbert generado por los estados base $\ket{0}$ y $\ket{1}$ \cite{Nielsen2010}. Un estado general puede escribirse como
+La unidad básica de información en computación cuántica es el qubit. A diferencia del bit clásico, cuyo valor solo puede ser 0 o 1, un qubit se describe mediante un vector de estado en un espacio de Hilbert generado por los estados base $\ket{0}$ y $\ket{1}$ \parencite{Nielsen2010}. Un estado general puede escribirse como
 \[
     \ket{\psi} = \alpha \ket{0} + \beta \ket{1},
 \]
@@ -13,9 +13,9 @@ donde $\alpha$ y $\beta$ son amplitudes complejas que satisfacen la condición d
     |\alpha|^2 + |\beta|^2 = 1.
 \]
 
-Esta expresión muestra que el estado cuántico no queda determinado por un valor discreto, sino por una combinación lineal de estados base. Esta propiedad se conoce como superposición y constituye una de las características fundamentales de la información cuántica \cite{Nielsen2010}. En términos observables, al medir el sistema se obtiene uno de los estados base con probabilidades dadas por los módulos cuadrados de las amplitudes.
+Esta expresión muestra que el estado cuántico no queda determinado por un valor discreto, sino por una combinación lineal de estados base. Esta propiedad se conoce como superposición y constituye una de las características fundamentales de la información cuántica \parencite{Nielsen2010}. En términos observables, al medir el sistema se obtiene uno de los estados base con probabilidades dadas por los módulos cuadrados de las amplitudes.
 
-La formulación anterior puede generalizarse a registros de varios qubits. En ese caso, el espacio de estados total se obtiene mediante el producto tensorial de los espacios individuales, de modo que un sistema de $n$ qubits se describe en un espacio vectorial de dimensión $2^n$ \cite{Nielsen2010}. Su estado general se expresa como
+La formulación anterior puede generalizarse a registros de varios qubits. En ese caso, el espacio de estados total se obtiene mediante el producto tensorial de los espacios individuales, de modo que un sistema de $n$ qubits se describe en un espacio vectorial de dimensión $2^n$ \parencite{Nielsen2010}. Su estado general se expresa como
 \[
     \ket{\psi} = \sum_{i=0}^{2^n-1} \alpha_i \ket{i},
 \]
@@ -28,19 +28,19 @@ La superposición adquiere aquí una forma más amplia: el sistema completo pued
 
 \subsubsection{Entrelazamiento}
 
-El entrelazamiento aparece cuando el estado conjunto de un sistema no puede expresarse como el producto tensorial de estados independientes para cada una de sus partes \cite{Nielsen2010}. En estos casos, la información del sistema deja de poder describirse completamente a partir de sus componentes por separado y pasa a estar contenida en el estado global.
+El entrelazamiento aparece cuando el estado conjunto de un sistema no puede expresarse como el producto tensorial de estados independientes para cada una de sus partes \parencite{Nielsen2010}. En estos casos, la información del sistema deja de poder describirse completamente a partir de sus componentes por separado y pasa a estar contenida en el estado global.
 
 Un ejemplo clásico es el estado de Bell
 \[
     \ket{\Phi^+} = \frac{1}{\sqrt{2}}\left(\ket{00} + \ket{11}\right).
 \]
-Este estado no puede factorizarse como $\ket{\psi_1} \otimes \ket{\psi_2}$, por lo que sus componentes no admiten una descripción independiente completa. El entrelazamiento introduce correlaciones no clásicas entre las partes del sistema y constituye uno de los rasgos distintivos de la computación cuántica \cite{Nielsen2010}.
+Este estado no puede factorizarse como $\ket{\psi_1} \otimes \ket{\psi_2}$, por lo que sus componentes no admiten una descripción independiente completa. El entrelazamiento introduce correlaciones no clásicas entre las partes del sistema y constituye uno de los rasgos distintivos de la computación cuántica \parencite{Nielsen2010}.
 
 Desde una perspectiva operativa, esta propiedad resulta fundamental porque muchas transformaciones cuánticas generan, modifican o explotan correlaciones de este tipo. En consecuencia, el entrelazamiento no solo es una característica teórica del modelo, sino también una propiedad estructural de gran importancia en la evolución de los estados cuánticos.
 
 \subsubsection{Interferencia}
 
-La interferencia es la propiedad mediante la cual las amplitudes complejas de un estado cuántico pueden combinarse de forma constructiva o destructiva durante la evolución del sistema \cite{Nielsen2010}. A diferencia de un esquema puramente probabilístico, en un sistema cuántico no se suman directamente probabilidades, sino amplitudes, y solo después se obtienen probabilidades a partir de sus módulos cuadrados.
+La interferencia es la propiedad mediante la cual las amplitudes complejas de un estado cuántico pueden combinarse de forma constructiva o destructiva durante la evolución del sistema \parencite{Nielsen2010}. A diferencia de un esquema puramente probabilístico, en un sistema cuántico no se suman directamente probabilidades, sino amplitudes, y solo después se obtienen probabilidades a partir de sus módulos cuadrados.
 
 Esto implica que la fase relativa entre amplitudes desempeña un papel central. Dos contribuciones de magnitud similar pueden reforzarse entre sí o cancelarse parcialmente según su relación de fase. Por esta razón, la evolución cuántica no depende únicamente de cuánto ``peso'' tenga cada estado base, sino también de cómo se relacionan sus amplitudes complejas.
 
@@ -50,7 +50,7 @@ La interferencia explica cómo ciertas configuraciones del sistema pueden aument
 
 \subsubsection{Evolución unitaria y compuertas cuánticas}
 
-El modelo de circuitos cuánticos representa un algoritmo como una secuencia finita de transformaciones unitarias aplicadas sobre un registro de qubits \cite{Nielsen2010}. Si el estado actual del sistema es $\ket{\psi}$ y se aplica una operación unitaria $U$, el nuevo estado queda dado por
+El modelo de circuitos cuánticos representa un algoritmo como una secuencia finita de transformaciones unitarias aplicadas sobre un registro de qubits \parencite{Nielsen2010}. Si el estado actual del sistema es $\ket{\psi}$ y se aplica una operación unitaria $U$, el nuevo estado queda dado por
 \[
     \ket{\psi'} = U\ket{\psi}.
 \]
@@ -81,7 +81,7 @@ Esta descripción resalta que el circuito puede interpretarse como una composici
 
 \subsubsection{Compuertas controladas y operaciones sobre varios qubits}
 
-Además de las operaciones de un solo qubit, los circuitos cuánticos utilizan compuertas que actúan sobre más de un qubit de manera conjunta. Una de las más conocidas es la compuerta CNOT, que aplica una negación controlada sobre un qubit objetivo dependiendo del valor del qubit de control \cite{Nielsen2010}.
+Además de las operaciones de un solo qubit, los circuitos cuánticos utilizan compuertas que actúan sobre más de un qubit de manera conjunta. Una de las más conocidas es la compuerta CNOT, que aplica una negación controlada sobre un qubit objetivo dependiendo del valor del qubit de control \parencite{Nielsen2010}.
 
 Las compuertas controladas permiten construir correlaciones entre qubits y son fundamentales para la generación de entrelazamiento. Por ejemplo, si se parte de $\ket{00}$, se aplica una compuerta Hadamard al primer qubit y después una CNOT controlada por ese mismo qubit, el resultado es
 \[
@@ -104,9 +104,9 @@ La forma más directa de representar un sistema cuántico en una computadora cl�
 
 Cada elemento del arreglo representa una amplitud del sistema, mientras que su posición identifica el estado base asociado. Esta equivalencia convierte la formulación matemática del estado cuántico en una estructura de datos concreta sobre la cual pueden aplicarse operaciones numéricas.
 
-El uso explícito del vector de estado caracteriza a la simulación de estado completo, también conocida como simulación tipo Schr\"odinger \cite{Jones2019}. En ella, el sistema se representa manteniendo todas sus amplitudes y actualizándolas conforme se aplican las compuertas del circuito. La principal ventaja de esta aproximación es su correspondencia directa con la formulación matemática del modelo cuántico.
+El uso explícito del vector de estado caracteriza a la simulación de estado completo, también conocida como simulación tipo Schr\"odinger \parencite{Jones2019}. En ella, el sistema se representa manteniendo todas sus amplitudes y actualizándolas conforme se aplican las compuertas del circuito. La principal ventaja de esta aproximación es su correspondencia directa con la formulación matemática del modelo cuántico.
 
-Existen otros enfoques de simulación clásica, como los basados en redes tensoriales, diagramas de decisión o métodos de suma sobre caminos \cite{Vidal2003,Viamontes2003,Chen2018}. De manera general, estos métodos buscan representar la evolución cuántica mediante estructuras alternativas que explotan diferentes formas de organización algebraica o combinatoria. Sin embargo, la representación explícita por vector de estado ofrece el marco más directo para comprender cómo se traduce un sistema cuántico a memoria clásica y cómo se implementa su evolución sobre arreglos numéricos. Esta distinción también es importante porque no todas las estrategias para reducir memoria cambian la representación matemática del estado: algunas, como la que se estudia en este trabajo, mantienen el formalismo Schr\"odinger y actúan únicamente sobre la manera de almacenar los datos.
+Existen otros enfoques de simulación clásica, como los basados en redes tensoriales, diagramas de decisión o métodos de suma sobre caminos \parencite{Vidal2003,Viamontes2003,Chen2018}. De manera general, estos métodos buscan representar la evolución cuántica mediante estructuras alternativas que explotan diferentes formas de organización algebraica o combinatoria. Sin embargo, la representación explícita por vector de estado ofrece el marco más directo para comprender cómo se traduce un sistema cuántico a memoria clásica y cómo se implementa su evolución sobre arreglos numéricos. Esta distinción también es importante porque no todas las estrategias para reducir memoria cambian la representación matemática del estado: algunas, como la que se estudia en este trabajo, mantienen el formalismo Schr\"odinger y actúan únicamente sobre la manera de almacenar los datos.
 
 \subsubsection{Aplicación de compuertas sobre el arreglo de amplitudes}
 
@@ -160,7 +160,7 @@ Si cada amplitud compleja ocupa 16 bytes, el consumo de memoria del vector de es
 \[
     M(n)=2^n \times 16\ \text{bytes}.
 \]
-Esta relación resume el costo directo de almacenar explícitamente el sistema en una simulación de estado completo \cite{Jones2019,wu2019full}. 
+Esta relación resume el costo directo de almacenar explícitamente el sistema en una simulación de estado completo \parencite{Jones2019,wu2019full}. 
 
 Por tanto, la representación clásica del vector de estado involucra dos aspectos complementarios: cuánto espacio se necesita para almacenar las amplitudes y cómo se accede a ellas durante la evolución del circuito. Estos dos elementos son fundamentales para entender la gestión de memoria sobre arreglos numéricos de gran tamaño.
 
@@ -186,13 +186,13 @@ En datos numéricos, la compresibilidad puede venir de repeticiones, regiones ho
 
 La compresión sin pérdida de arreglos de punto flotante busca reducir el espacio de almacenamiento preservando exactamente cada valor original. Esto implica que, tras la descompresión, tanto la representación numérica como la secuencia binaria asociada a cada dato deben coincidir con las del arreglo inicial.
 
-Aunque los datos en punto flotante pueden parecer poco compresibles a simple vista, en muchos contextos científicos presentan regularidades explotables. Estas regularidades no siempre se manifiestan como repeticiones exactas de valores, sino también como similitudes locales en exponentes, mantisas o agrupaciones de datos con cierta estructura. Compresores como FPC y FPZIP fueron diseñados precisamente para explotar este tipo de regularidades en arreglos de punto flotante sin alterar sus valores \cite{burtscher2009fpc,lindstrom2006fpzip}.
+Aunque los datos en punto flotante pueden parecer poco compresibles a simple vista, en muchos contextos científicos presentan regularidades explotables. Estas regularidades no siempre se manifiestan como repeticiones exactas de valores, sino también como similitudes locales en exponentes, mantisas o agrupaciones de datos con cierta estructura. Compresores como FPC y FPZIP fueron diseñados precisamente para explotar este tipo de regularidades en arreglos de punto flotante sin alterar sus valores \parencite{burtscher2009fpc,lindstrom2006fpzip}.
 
 Por ello, la compresibilidad de un arreglo numérico depende tanto del contenido como de la forma en que este se organiza antes de aplicar el compresor. Esta observación es importante cuando se trabaja con arreglos densos de amplitudes complejas, cuya estructura puede variar según el estado representado.
 
 \subsubsection{Compresión por bloques, descompresión selectiva y caché}
 
-Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \cite{wu2019full,Zhang2025BMQSim}.
+Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \parencite{wu2019full,Zhang2025BMQSim}.
 
 La descompresión selectiva se basa en esa granularidad: solo se reconstruyen temporalmente los bloques necesarios para una operación determinada. De este modo, la compresión puede integrarse con el patrón de acceso del sistema y no únicamente con el almacenamiento final de los datos.
 

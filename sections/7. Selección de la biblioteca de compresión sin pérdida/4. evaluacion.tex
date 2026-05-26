@@ -33,13 +33,13 @@ La matriz muestra una diferencia clara entre una biblioteca concebida con afinid
 datos numéricos particionados y bibliotecas generalistas de compresión sin pérdida.
 Blosc2 obtuvo la mayor valoración en adecuación a almacenamiento por bloques porque
 su modelo incorpora contenedores fragmentados, filtros reversibles y operación en
-memoria dentro de un marco unificado \cite{blosc2_docs}. Zstd y LZ4 alcanzaron una
+memoria dentro de un marco unificado \parencite{blosc2_docs}. Zstd y LZ4 alcanzaron una
 valoración favorable en costo de acceso e integración debido a sus APIs en memoria y a
 su perfil de alto desempeño, pero dependen en mayor medida de que el particionamiento,
 la política de acceso y la gestión de bloques sean resueltos por la aplicación
-\cite{ZstdRepo, ZstdSite, LZ4Repo}. zlib conserva valor como referencia estable y madura,
+\parencite{ZstdRepo, ZstdSite, LZ4Repo}. zlib conserva valor como referencia estable y madura,
 aunque su perfil resulta menos atractivo para una ruta crítica sensible a latencia y acceso
-repetido sobre fragmentos del vector de estado \cite{ZlibTechDetails}.
+repetido sobre fragmentos del vector de estado \parencite{ZlibTechDetails}.
 
 Las diferencias más relevantes se concentran en los criterios con mayor peso. Blosc2
 sobresale en estructura por bloques e integración porque ya articula un modelo de trabajo

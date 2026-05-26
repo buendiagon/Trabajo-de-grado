@@ -11,23 +11,23 @@ estado.
     numéricos, organizada alrededor de contenedores particionados y de un pipeline de
     filtros y códecs configurable. Su diseño incorpora filtros como \emph{shuffle} y
     \emph{bitshuffle}, y permite trabajar con datos en memoria dentro de una
-    organización por fragmentos \cite{blosc2_docs}.
+    organización por fragmentos \parencite{blosc2_docs}.
 
     \item \textbf{Zstandard (Zstd):} biblioteca generalista de compresión sin pérdida con
     un amplio rango de compromiso entre velocidad y ratio. Proporciona funciones de
     compresión y descompresión en memoria y resulta adecuada como códec base cuando
     el particionamiento y la gestión de bloques son responsabilidad de la aplicación
-    \cite{ZstdRepo, ZstdSite}.
+    \parencite{ZstdRepo, ZstdSite}.
 
     \item \textbf{LZ4:} biblioteca de compresión sin pérdida orientada a muy baja latencia,
     especialmente fuerte en descompresión. Su perfil resulta atractivo cuando el
     costo temporal del acceso tiene mayor peso que la tasa de compresión
-    \cite{LZ4Repo}.
+    \parencite{LZ4Repo}.
 
     \item \textbf{zlib/Deflate:} solución madura y ampliamente adoptada para compresión
     sin pérdida en memoria y en flujo. Aunque no está especializada en arreglos
     científicos ni en acceso por bloques, constituye una referencia estable para
-    contrastar bibliotecas más recientes \cite{ZlibTechDetails}.
+    contrastar bibliotecas más recientes \parencite{ZlibTechDetails}.
 \end{itemize}
 
 Las cuatro alternativas cubren perfiles distintos. Blosc2 representa una biblioteca con

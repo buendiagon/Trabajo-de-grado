@@ -1,19 +1,19 @@
 \section*{Introducción}
 \addcontentsline{toc}{section}{Introducción}
 
-La computación cuántica se ha consolidado como un campo con capacidad para abordar ciertos problemas mediante modelos de cómputo distintos a los de la computación clásica \cite{Nielsen2010}. Sin embargo, el diseño, la depuración y la evaluación de algoritmos cuánticos siguen dependiendo en gran medida de la simulación clásica, que permite trabajar en entornos controlados, reproducibles y comparables antes de llevar los circuitos a hardware real \cite{Jones2019,diaz2024software}.
+La computación cuántica se ha consolidado como un campo con capacidad para abordar ciertos problemas mediante modelos de cómputo distintos a los de la computación clásica \parencite{Nielsen2010}. Sin embargo, el diseño, la depuración y la evaluación de algoritmos cuánticos siguen dependiendo en gran medida de la simulación clásica, que permite trabajar en entornos controlados, reproducibles y comparables antes de llevar los circuitos a hardware real \parencite{Jones2019,diaz2024software}.
 
-Dentro de ese panorama, la simulación de estado completo o tipo Schr\"odinger ocupa un lugar central por su generalidad: mantiene explícitamente el vector de amplitudes complejas y lo actualiza compuerta por compuerta durante la ejecución del circuito \cite{Jones2019,qiskit_aer_doc}. Esta representación ofrece una referencia detallada y exacta del sistema, pero también impone su principal límite práctico: para $n$ qubits se requieren $2^n$ amplitudes, de modo que el costo de memoria crece exponencialmente. En doble precisión, ese crecimiento vuelve rápidamente inviable la simulación en hardware convencional; por ejemplo, 40 qubits demandan del orden de 16~TB y, al acercarse a 50 qubits, la exigencia entra en el rango de los petabytes \cite{wu2019full,Haner2017}.
+Dentro de ese panorama, la simulación de estado completo o tipo Schr\"odinger ocupa un lugar central por su generalidad: mantiene explícitamente el vector de amplitudes complejas y lo actualiza compuerta por compuerta durante la ejecución del circuito \parencite{Jones2019,qiskit_aer_doc}. Esta representación ofrece una referencia detallada y exacta del sistema, pero también impone su principal límite práctico: para $n$ qubits se requieren $2^n$ amplitudes, de modo que el costo de memoria crece exponencialmente. En doble precisión, ese crecimiento vuelve rápidamente inviable la simulación en hardware convencional; por ejemplo, 40 qubits demandan del orden de 16~TB y, al acercarse a 50 qubits, la exigencia entra en el rango de los petabytes \parencite{wu2019full,Haner2017}.
 
 En este contexto, la compresión sin pérdida de precisión resulta atractiva porque actúa
 sobre la forma de almacenar el vector de estado sin modificar sus amplitudes. Además,
 los arreglos científicos de punto flotante pueden contener regularidades aprovechables
 mediante transformaciones reversibles y compresión por bloques, aun cuando no
-parezcan compresibles a simple vista \cite{burtscher2009fpc,lindstrom2006fpzip,masui2015bitshuffle}.
+parezcan compresibles a simple vista \parencite{burtscher2009fpc,lindstrom2006fpzip,masui2015bitshuffle}.
 
 Con base en esta idea, el presente trabajo estudia una estrategia de gestión de memoria
 para simuladores cuánticos de estado completo implementada sobre TMFQSfullstate
-\cite{tmfqs_repo}. La propuesta combina almacenamiento comprimido por bloques,
+\parencite{tmfqs_repo}. La propuesta combina almacenamiento comprimido por bloques,
 descompresión selectiva y reutilización temporal mediante caché, y se evalúa frente a una
 referencia no comprimida y a una estrategia con pérdida basada en ZFP. El propósito no
 es únicamente reducir memoria, sino determinar en qué condiciones la compresión sin

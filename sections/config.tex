@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{newtxtext}
 \usepackage{newtxmath}
+\usepackage[final]{microtype}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -98,9 +99,9 @@
 \newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
 
 \usepackage[center]{caption}
-\DeclareCaptionLabelFormat{colon}{#1~#2:}
-\captionsetup[figure]{position=top,labelformat=colon,labelsep=newline}
-\captionsetup[table]{position=top,labelformat=colon,labelsep=newline}
+\DeclareCaptionLabelFormat{apa}{#1~#2}
+\captionsetup[figure]{position=top,labelformat=apa,labelsep=newline}
+\captionsetup[table]{position=top,labelformat=apa,labelsep=newline}
 
 \usepackage{longtable}
 
@@ -131,6 +132,7 @@
 
 \usepackage{float}
 
+\usepackage{csquotes}
 \usepackage[
   style=apa,
   backend=biber,
@@ -139,6 +141,7 @@
 ]{biblatex}
 \DeclareLanguageMapping{spanish}{spanish-apa}
 \addbibresource{bibliography.bib}
+\setlength{\bibhang}{\parindent}
 
 \usepackage{url}
 \usepackage[spanish]{babel}
@@ -186,7 +189,7 @@
 \makeatletter
 \let\oldappendix\appendices
 
-\captionsetup{justification=raggedright, singlelinecheck=false, labelfont={it,bf}}
+\captionsetup{justification=raggedright, singlelinecheck=false, labelfont=bf, textfont=it}
 
 \g@addto@macro\tableofcontents{%
   \let\tf@toc@orig\tf@toc
@@ -240,7 +243,15 @@
 \usepackage{titlesec}
 \titleformat{\section}{\centering\normalfont\normalsize\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\raggedright\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}[hang]{\raggedright\small}{\bfseries\itshape\thesubsubsection}{1em}{\bfseries\itshape}
+\titleformat{\subsubsection}[hang]{\raggedright\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries\itshape}{\theparagraph}{0pt}{}[.]
+\titleformat{\subparagraph}[runin]{\normalfont\normalsize\itshape}{\thesubparagraph}{0pt}{}[.]
+
+\titlespacing*{\section}{0pt}{2\baselineskip}{2\baselineskip}
+\titlespacing*{\subsection}{0pt}{\baselineskip}{0pt}
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0pt}
+\titlespacing*{\paragraph}{\parindent}{\baselineskip}{0.5em}
+\titlespacing*{\subparagraph}{\parindent}{\baselineskip}{0.5em}
 
 \newcommand{\fakesection}[1]{%
   \par\refstepcounter{section}

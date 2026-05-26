@@ -21,7 +21,7 @@ tipada de los datos antes de aplicar un códec general.
 
 \subsubsection{FPC (Burtscher \& Ratanaworabhan)}
 
-\textit{FPC} (\emph{Floating Point Compressor})\cite{burtscher2009fpc} es un algoritmo
+\textit{FPC} (\emph{Floating Point Compressor})\parencite{burtscher2009fpc} es un algoritmo
 de compresión sin pérdida diseñado para secuencias lineales de valores de punto
 flotante, especialmente en doble precisión. Su principio central consiste en predecir el
 siguiente valor a partir del historial reciente y comprimir únicamente la diferencia entre el
@@ -44,7 +44,7 @@ utilidad y las limitaciones de los esquemas predictivos sobre representaciones I
 
 \subsubsection{FPZIP (Lindstrom \& Isenburg)}
 
-\textit{FPZIP}\cite{lindstrom2006fpzip} es un compresor sin pérdida orientado a arreglos
+\textit{FPZIP}\parencite{lindstrom2006fpzip} es un compresor sin pérdida orientado a arreglos
 de punto flotante en contextos científicos. Su diseño parte de la idea de que muchos
 conjuntos de datos numéricos presentan continuidad o dependencia local, de modo que
 pueden describirse con mayor eficiencia a partir de errores de predicción que a partir de
@@ -68,7 +68,7 @@ en relaciones espaciales o estructurales más amplias.
 
 Una estrategia diferente consiste en no predecir los valores, sino transformar su
 disposición binaria para hacer visibles regularidades que no son evidentes en el orden
-original. Bajo esta idea, \textit{Bitshuffle}\cite{masui2015bitshuffle} actúa como un filtro
+original. Bajo esta idea, \textit{Bitshuffle}\parencite{masui2015bitshuffle} actúa como un filtro
 reversible que reorganiza los bits de una secuencia de valores de punto flotante antes de
 aplicar un códec de compresión general, usualmente LZ4.
 
@@ -90,7 +90,7 @@ autosuficiente.
 
 \subsubsection{Transformación de Datos Tipados (TDT)}
 
-La \textit{Transformación de Datos Tipados} (TDT)\cite{jamalidinan2025tdt} representa
+La \textit{Transformación de Datos Tipados} (TDT)\parencite{jamalidinan2025tdt} representa
 una línea más reciente de trabajo orientada a reorganizar datos de punto flotante antes
 de aplicar compresión generalista. A diferencia de Bitshuffle, que opera sobre una
 transposición fija de bits, TDT busca identificar posiciones de byte con comportamientos

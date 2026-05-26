@@ -16,10 +16,10 @@ exponencialmente, restringiendo su aplicabilidad a ciertos algoritmos.
 A medida que se buscaban métodos más generales, surgió la simulación tipo
 \textit{Schrödinger}, que almacena el vector de estado completo y lo actualiza
 en cada operación cuántica. Este enfoque, empleado en simuladores como QuEST y
-Qiskit Aer \cite{Jones2019, qiskit_aer_doc}, garantiza alta precisión y permite simular cualquier
+Qiskit Aer \parencite{Jones2019, qiskit_aer_doc}, garantiza alta precisión y permite simular cualquier
 circuito cuántico. Su desventaja principal es la extrema demanda de memoria, la
 cual crece exponencialmente con el número de qubits: una simulación de 45 qubits
-ya ha requerido 0.5 petabytes de memoria \cite{Haner2017}, y al extender esta
+ya ha requerido 0.5 petabytes de memoria \parencite{Haner2017}, y al extender esta
 representación de doble precisión a 50 qubits el costo pasa al orden de decenas de
 petabytes.
 
@@ -28,7 +28,7 @@ partición del circuito y caminos de Feynman. Por ejemplo, Chen y cols.\
 presentaron un algoritmo distribuido capaz
 de calcular amplitudes de salida y simular circuitos universales de hasta
 $12\times12$ qubits con profundidad moderada sin materializar el estado completo
-\cite{Chen2018}. Sin embargo, aunque reducen el
+\parencite{Chen2018}. Sin embargo, aunque reducen el
 almacenamiento requerido, estos métodos incrementan la complejidad computacional,
 ya que el número de caminos crece exponencialmente con la profundidad del
 circuito.
