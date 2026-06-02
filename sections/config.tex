@@ -160,29 +160,14 @@
 
 \usepackage[page]{appendix}
 
-\setcounter{tocdepth}{3}
-\renewcommand{\appendixtocname}{Lista de apéndices}
-\renewcommand{\appendixpagename}{}
-
-% Anexos setup
-\newcounter{anexo}
-\renewcommand{\theanexo}{\Alph{anexo}}
-
-\newcommand{\anexosection}[1]{%
-  \ifnum\value{anexo}>0\relax\clearpage\fi
-  \refstepcounter{anexo}%
-  \phantomsection
-  \section*{Anexo \theanexo\hspace{1em}#1}%
-  \addcontentsline{toc}{section}{Anexo \theanexo: #1}%
-  \addcontentsline{anx}{section}{Anexo \theanexo: #1}%
-}
-
+% Entradas de sección en la tabla de contenido sin negrita (APA: solo el título de la página va en bold)
 \makeatletter
-\newcommand{\listofanexos}{%
-  \section*{Lista de anexos}%
-  \@starttoc{anx}%
-}
+\renewcommand*\l@section[2]{\@dottedtocline{1}{1.5em}{2.3em}{#1}{#2}}
 \makeatother
+
+\setcounter{tocdepth}{3}
+\renewcommand{\appendixtocname}{Lista de Apéndices}
+\renewcommand{\appendixpagename}{}
 
 \makeatletter
 \let\oldappendix\appendices
@@ -195,6 +180,7 @@
 \renewcommand{\appendices}{%
   \clearpage
   \renewcommand{\thesubsection}{\thesection\arabic{subsection}}
+  \addcontentsline{toc}{section}{Apéndices}%
   \let\tf@toc\tf@app
   \addtocontents{app}{\protect\setcounter{tocdepth}{2}}
   \immediate\write\@auxout{%
@@ -235,13 +221,25 @@
 \newcommand*{\facultad}[1]{\def\fac{#1}}
 \newcommand*{\escuela}[1]{\def\esc{#1}}
 
-\renewcommand\contentsname{Tabla de Contenidos}
+\renewcommand\contentsname{Tabla de Contenido}
 \addto\captionsspanish{\renewcommand\tablename{Tabla}}
 
 \usepackage{titlesec}
 \titleformat{\section}{\centering\normalfont\normalsize\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\raggedright\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}[hang]{\raggedright\normalfont\normalsize}{\bfseries\itshape\thesubsubsection}{1em}{\bfseries\itshape}
+% Nivel 1: 2 interlineados arriba y abajo; niveles 2 y 3: 1 interlineado
+% Con doublespacing, \baselineskip ≈ 2 líneas simples, así que:
+%   2 interlineados simples = \baselineskip; 1 interlineado simple = 0.5\baselineskip
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+% Nivel 4: sangría, negrita, título del caso, punto al final, texto en misma línea
+\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{\parindent}{}[.]
+\titlespacing*{\paragraph}{\parindent}{0.5\baselineskip}{0.5em}
+% Nivel 5: sangría, negrita, cursiva, punto al final, texto en misma línea
+\titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries\itshape}{\thesubparagraph}{\parindent}{}[.]
+\titlespacing*{\subparagraph}{\parindent}{0.5\baselineskip}{0.5em}
 
 \newcommand{\fakesection}[1]{%
   \par\refstepcounter{section}

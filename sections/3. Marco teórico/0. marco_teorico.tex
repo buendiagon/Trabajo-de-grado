@@ -1,8 +1,8 @@
-\section{Marco teórico}
+\section{Marco Teórico}
 
-\subsection{\normalsize{Fundamentos de información cuántica}}
+\subsection{Fundamentos de Información Cuántica}
 
-\subsubsection{Qubits, espacio de estados y superposición}
+\subsubsection{Qubits, Espacio de Estados y Superposición}
 
 La unidad básica de información en computación cuántica es el qubit. A diferencia del bit clásico, cuyo valor solo puede ser 0 o 1, un qubit se describe mediante un vector de estado en un espacio de Hilbert generado por los estados base $\ket{0}$ y $\ket{1}$ \parencite{Nielsen2010}. Un estado general puede escribirse como
 \[
@@ -46,9 +46,9 @@ Esto implica que la fase relativa entre amplitudes desempeña un papel central. 
 
 La interferencia explica cómo ciertas configuraciones del sistema pueden aumentar su probabilidad de observación mientras otras disminuyen, aun cuando todas formen parte de la misma superposición. Junto con la superposición y el entrelazamiento, esta propiedad define la dinámica fundamental con la que la información cuántica es transformada.
 
-\subsection{\normalsize{Modelo de circuitos cuánticos}}
+\subsection{Modelo de Circuitos Cuánticos}
 
-\subsubsection{Evolución unitaria y compuertas cuánticas}
+\subsubsection{Evolución Unitaria y Compuertas Cuánticas}
 
 El modelo de circuitos cuánticos representa un algoritmo como una secuencia finita de transformaciones unitarias aplicadas sobre un registro de qubits \parencite{Nielsen2010}. Si el estado actual del sistema es $\ket{\psi}$ y se aplica una operación unitaria $U$, el nuevo estado queda dado por
 \[
@@ -79,7 +79,7 @@ En términos generales, si un circuito aplica sucesivamente las compuertas $U_1,
 \]
 Esta descripción resalta que el circuito puede interpretarse como una composición ordenada de transformaciones lineales sobre el vector de estado.
 
-\subsubsection{Compuertas controladas y operaciones sobre varios qubits}
+\subsubsection{Compuertas Controladas y Operaciones sobre Varios Qubits}
 
 Además de las operaciones de un solo qubit, los circuitos cuánticos utilizan compuertas que actúan sobre más de un qubit de manera conjunta. Una de las más conocidas es la compuerta CNOT, que aplica una negación controlada sobre un qubit objetivo dependiendo del valor del qubit de control \parencite{Nielsen2010}.
 
@@ -91,9 +91,9 @@ que corresponde a un estado entrelazado.
 
 En el modelo de circuitos, estas compuertas amplían la capacidad expresiva del sistema al introducir dependencias entre subsistemas. Su efecto puede describirse algebraicamente mediante matrices unitarias de mayor dimensión, aunque en la práctica suelen implementarse mediante reglas de actualización local sobre el vector de estado.
 
-\subsection{\normalsize{Del modelo cuántico a su representación clásica}}
+\subsection{Del Modelo Cuántico a su Representación Clásica}
 
-\subsubsection{El vector de estado como representación computacional}
+\subsubsection{El Vector de Estado como Representación Computacional}
 
 La forma más directa de representar un sistema cuántico en una computadora clásica consiste en almacenar explícitamente su vector de estado. En este enfoque, el sistema de $n$ qubits se materializa como una secuencia de $2^n$ amplitudes complejas:
 \[
@@ -108,7 +108,7 @@ El uso explícito del vector de estado caracteriza a la simulación de estado co
 
 Existen otros enfoques de simulación clásica, como los basados en redes tensoriales, diagramas de decisión o métodos de suma sobre caminos \parencite{Vidal2003,Viamontes2003,Chen2018}. De manera general, estos métodos buscan representar la evolución cuántica mediante estructuras alternativas que explotan diferentes formas de organización algebraica o combinatoria. Sin embargo, la representación explícita por vector de estado ofrece el marco más directo para comprender cómo se traduce un sistema cuántico a memoria clásica y cómo se implementa su evolución sobre arreglos numéricos. Esta distinción también es importante porque no todas las estrategias para reducir memoria cambian la representación matemática del estado: algunas, como la que se estudia en este trabajo, mantienen el formalismo Schr\"odinger y actúan únicamente sobre la manera de almacenar los datos.
 
-\subsubsection{Aplicación de compuertas sobre el arreglo de amplitudes}
+\subsubsection{Aplicación de Compuertas sobre el Arreglo de Amplitudes}
 
 Una vez que el estado cuántico se representa como un arreglo lineal, la aplicación de compuertas puede entenderse como una secuencia de operaciones numéricas sobre subconjuntos específicos de amplitudes.
 
@@ -154,7 +154,7 @@ Desde el punto de vista computacional, esta regularidad introduce patrones de ac
 
 Esta interpretación computacional del circuito es importante porque establece el vínculo entre álgebra lineal y acceso a memoria: simular la evolución cuántica equivale, en este marco, a recorrer, leer, combinar y reescribir posiciones concretas de un arreglo de amplitudes complejas.
 
-\subsubsection{Consideraciones básicas de almacenamiento y acceso}
+\subsubsection{Consideraciones Básicas de Almacenamiento y Acceso}
 
 Si cada amplitud compleja ocupa 16 bytes, el consumo de memoria del vector de estado puede expresarse como
 \[
@@ -164,9 +164,9 @@ Esta relación resume el costo directo de almacenar explícitamente el sistema e
 
 Por tanto, la representación clásica del vector de estado involucra dos aspectos complementarios: cuánto espacio se necesita para almacenar las amplitudes y cómo se accede a ellas durante la evolución del circuito. Estos dos elementos son fundamentales para entender la gestión de memoria sobre arreglos numéricos de gran tamaño.
 
-\subsection{\normalsize{Gestión de memoria y compresión de datos en arreglos numéricos}}
+\subsection{Gestión de Memoria y Compresión de Datos en Arreglos Numéricos}
 
-\subsubsection{Gestión de memoria en simulación científica}
+\subsubsection{Gestión de Memoria en Simulación Científica}
 
 La gestión de memoria en computación científica comprende las técnicas utilizadas para organizar, almacenar, recuperar y reutilizar estructuras numéricas de gran tamaño durante la ejecución de un programa. En este tipo de aplicaciones, el rendimiento no depende únicamente del costo aritmético de las operaciones, sino también del comportamiento de los datos en memoria.
 
@@ -174,7 +174,7 @@ Cuando una estructura domina el volumen de almacenamiento y concentra buena part
 
 Desde esta perspectiva, una estructura como el vector de estado puede analizarse no solo como objeto matemático, sino también como carga principal de memoria dentro de una simulación numérica.
 
-\subsubsection{Conceptos generales de compresión de datos}
+\subsubsection{Conceptos Generales de Compresión de Datos}
 
 La compresión de datos es el proceso mediante el cual una secuencia de información se representa utilizando menos espacio que en su forma original. La posibilidad de comprimir depende de la existencia de redundancia o regularidad aprovechable en los datos.
 
@@ -182,7 +182,7 @@ En términos generales, los métodos de compresión se clasifican en sin pérdid
 
 En datos numéricos, la compresibilidad puede venir de repeticiones, regiones homogéneas, distribuciones estructuradas o relaciones locales entre valores cercanos. Sin embargo, los arreglos en punto flotante presentan una estructura binaria que suele ser menos intuitiva que la de datos textuales o discretos, por lo que su compresión requiere técnicas adecuadas a esa naturaleza.
 
-\subsubsection{Compresión sin pérdida en datos de punto flotante}
+\subsubsection{Compresión sin Pérdida en Datos de Punto Flotante}
 
 La compresión sin pérdida de arreglos de punto flotante busca reducir el espacio de almacenamiento preservando exactamente cada valor original. Esto implica que, tras la descompresión, tanto la representación numérica como la secuencia binaria asociada a cada dato deben coincidir con las del arreglo inicial.
 
@@ -190,7 +190,7 @@ Aunque los datos en punto flotante pueden parecer poco compresibles a simple vis
 
 Por ello, la compresibilidad de un arreglo numérico depende tanto del contenido como de la forma en que este se organiza antes de aplicar el compresor. Esta observación es importante cuando se trabaja con arreglos densos de amplitudes complejas, cuya estructura puede variar según el estado representado.
 
-\subsubsection{Compresión por bloques, descompresión selectiva y caché}
+\subsubsection{Compresión por Bloques, Descompresión Selectiva y Caché}
 
 Una estrategia habitual para manejar arreglos grandes consiste en particionarlos en bloques y comprimir cada bloque de manera independiente. Esta organización permite trabajar de forma más granular sobre los datos y evita la necesidad de comprimir o descomprimir la estructura completa ante cada operación. En propuestas recientes de simulación cuántica con compresión, este tipo de organización se combina con mecanismos de acceso parcial y administración jerárquica de memoria para reducir presión sobre la RAM \parencite{wu2019full,Zhang2025BMQSim}.
 
@@ -202,7 +202,7 @@ Cuando ciertos bloques son reutilizados con frecuencia en intervalos cortos, res
 
 Bloques, descompresión selectiva y caché conforman así un conjunto de conceptos que permiten pensar la compresión como parte activa de la gestión de memoria sobre arreglos numéricos de gran tamaño.
 
-\subsubsection{Exactitud numérica e igualdad exacta}
+\subsubsection{Exactitud Numérica e Igualdad Exacta}
 
 En aplicaciones científicas, no siempre basta con obtener resultados aproximados. En muchos casos se requiere preservar exactamente los valores almacenados, de modo que cualquier transformación aplicada a los datos sea completamente reversible.
 

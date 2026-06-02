@@ -10,8 +10,8 @@
 \autor{Daniel Adrián González Buendía y Javier Andres Sarmiento Salazar}
 \optando{Ingeniero de Sistemas}
 
-\director[PhD.]{Luis Alberto Núñez de Villavicencio Martínez}{Escuela De Física}
-\codirector[PhD.]{Gilberto Javier Díaz Toro}{Escuela De Ingeniería De Sistemas e Informática} 
+\director[Doctor]{Luis Alberto Núñez de Villavicencio Martínez}{Escuela De Física}
+\codirector[Doctor]{Gilberto Javier Díaz Toro}{Escuela De Ingeniería De Sistemas e Informática}
 
 \universidad{Universidad Industrial de Santander}
 \facultad{Facultad De Ingenierías Fisicomecánicas}
@@ -24,7 +24,8 @@
     \input{sections/Generalidades/0. generalidades.tex}
     
     \input{sections/1. Planteamiento del problema/0. planteamiento_justificacion.tex}
-    
+
+    \clearpage
     \input{sections/2. Objetivos/0. objetivos.tex}
 
     \input{sections/3. Marco teórico/0. marco_teorico.tex}
@@ -47,17 +48,11 @@
 
     \input{sections/12. Conclusiones y trabajo futuro/0. conclusiones.tex}
 
+    \clearpage
+    \printbibliography[heading=bibintoc,title={Referencias Bibliográficas}]
+
     \begin{appendices}
         \input{sections/Apéndices/0. apendices.tex}
     \end{appendices}
-
-    \clearpage
-    \phantomsection
-    \addcontentsline{toc}{section}{Anexos}
-    \section*{Anexos}
-    \input{sections/Anexos/0. anexos.tex}
-
-    \newpage
-    \printbibliography[title={Referencias Bibliográficas}]
 
 \end{document}
