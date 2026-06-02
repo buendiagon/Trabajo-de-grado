@@ -18,37 +18,25 @@
         "reimplementación",
         "serializado"
     ],
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.outDir": ".",
     "latex-workshop.latex.tools": [
         {
-            "name": "pdflatex",
-            "command": "pdflatex",
+            "name": "latexmk",
+            "command": "latexmk",
             "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "-output-directory=%OUTDIR%",
+                "-pdf",
                 "%DOC%"
-            ]
-        },
-        {
-            "name": "biber",
-            "command": "biber",
-            "args": [
-                "--input-directory=%OUTDIR%",
-                "%DOCFILE%"
             ]
         }
     ],
     "latex-workshop.latex.recipes": [
         {
-            "name": "pdflatex -> biber -> pdflatex x2",
+            "name": "latexmk",
             "tools": [
-                "pdflatex",
-                "biber",
-                "pdflatex",
-                "pdflatex"
+                "latexmk"
             ]
         }
     ],
-    "latex-workshop.latex.recipe.default": "pdflatex -> biber -> pdflatex x2"
+    "latex-workshop.latex.recipe.default": "latexmk"
 }
