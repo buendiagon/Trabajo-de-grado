@@ -160,9 +160,28 @@
 
 \usepackage[page]{appendix}
 
-% Entradas de sección en la tabla de contenido sin negrita (APA: solo el título de la página va en bold)
+% Entradas de la tabla de contenido alineadas a la izquierda (sin tabulado tras el numero)
 \makeatletter
-\renewcommand*\l@section[2]{\@dottedtocline{1}{1.5em}{2.3em}{#1}{#2}}
+\newcommand*\tocnumberline[1]{#1\space}
+\newcommand*\tocnumberline@section[1]{#1.\space}
+\renewcommand*\l@section[2]{%
+  \begingroup
+  \let\numberline\tocnumberline@section
+  \@dottedtocline{1}{0em}{0em}{#1}{#2}%
+  \endgroup
+}
+\renewcommand*\l@subsection[2]{%
+  \begingroup
+  \let\numberline\tocnumberline
+  \@dottedtocline{2}{0em}{0em}{#1}{#2}%
+  \endgroup
+}
+\renewcommand*\l@subsubsection[2]{%
+  \begingroup
+  \let\numberline\tocnumberline
+  \@dottedtocline{3}{0em}{0em}{#1}{#2}%
+  \endgroup
+}
 \makeatother
 
 \setcounter{tocdepth}{3}
@@ -180,7 +199,8 @@
 \renewcommand{\appendices}{%
   \clearpage
   \renewcommand{\thesubsection}{\thesection\arabic{subsection}}
-  \addcontentsline{toc}{section}{Apéndices}%
+  \addcontentsline{toc}{section}{Apéndices}
+  \hypertarget{apendices-toc}{}
   \let\tf@toc\tf@app
   \addtocontents{app}{\protect\setcounter{tocdepth}{2}}
   \immediate\write\@auxout{%
